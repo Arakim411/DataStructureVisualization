@@ -1,14 +1,15 @@
 [versions]
 activity-compose = "1.7.2"
+android-gradle = "8.1.1"
 androidx-junit = "1.1.5"
+bom = "2023.09.00"
 core-ktx = "1.12.0"
 espresso-core = "3.5.1"
 junit = "4.13.2"
-lifecycle-runtime-ktx = "2.6.2"
-bom = "2023.09.00"
-android-gradle = "8.1.1"
 kotlin = "1.8.10"
 kotlinCompilerExtensionVersion = "1.4.3"
+ktlint = "11.5.1"
+lifecycle-runtime-ktx = "2.6.2"
 
 # Android config
 compileSdk = "34"
@@ -56,4 +57,5 @@ composeDebug = [
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
 android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 com-android-library = { id = "com.android.library", version.ref = "android-gradle" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 

@@ -45,6 +45,14 @@ android {
     }
 }
 
+ktlint {
+    android.set(true)
+
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)

@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "DataStructureVisualization"
 include(":app")
- 
