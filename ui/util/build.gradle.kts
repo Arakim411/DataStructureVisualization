@@ -11,6 +11,6 @@ android {
 
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
-    api(libs.androidx.compose.materialWindow)
+    implementation(libs.androidx.compose.materialWindow)
     implementation(libs.bundles.compose)
 }
