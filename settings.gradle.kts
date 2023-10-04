@@ -16,4 +16,7 @@ dependencyResolutionManagement {
 rootProject.name = "DataStructureVisualization"
 include(":app")
 include(":ui")
+include(":ui:common")
+include(":ui:navigation")
+include(":ui:navigation:ui-controller")
 include(":ui:util")
