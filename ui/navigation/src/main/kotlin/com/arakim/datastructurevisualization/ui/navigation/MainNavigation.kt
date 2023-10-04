@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -73,12 +74,14 @@ fun Screen(destination: MainNavDestinations, navUiController: NavigationUiContro
 }
 
 @Composable
+@Stable
 private fun getNavigationGroups(): ImmutableList<NavUiControllerGroup> = immutableListOf(
     getDataStructuresGroup(),
     getOtherGroup()
 )
 
 @Composable
+@Stable
 private fun getDataStructuresGroup(): NavUiControllerGroup = NavUiControllerGroup(
     name = stringResource(id = R.string.group_name_data_structure),
     items = immutableListOf(
@@ -91,6 +94,7 @@ private fun getDataStructuresGroup(): NavUiControllerGroup = NavUiControllerGrou
 )
 
 @Composable
+@Stable
 private fun getOtherGroup(): NavUiControllerGroup = NavUiControllerGroup(
     name = stringResource(id = R.string.group_name_other),
     items = immutableListOf(
@@ -101,6 +105,7 @@ private fun getOtherGroup(): NavUiControllerGroup = NavUiControllerGroup(
 
 //TODO correct icons
 @Composable
+@Stable
 private fun MainNavDestinations.toNavItem(): NavUiControllerItem = when (this) {
     MainNavDestinations.BinarySearchTree -> NavUiControllerItem(
         title = toStringResources(),
