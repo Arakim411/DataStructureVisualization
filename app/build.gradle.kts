@@ -52,6 +52,7 @@ ktlint {
 dependencies {
 
     implementation(project(":ui:util"))
+    implementation(project(":ui:navigation"))
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
@@ -59,7 +60,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
 
     implementation(platform(libs.androidx.compose.bom))

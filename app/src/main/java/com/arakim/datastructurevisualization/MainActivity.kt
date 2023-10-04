@@ -5,18 +5,22 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.arakim.dataStructureVisualization.ui.theme.AppTheme
+import com.arakim.datastructurevisualization.ui.navigation.MainNavigation
+import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
+import com.arakim.datastructurevisualization.ui.util.windowSizeClass.WindowSizeType
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
-                App()
+                WindowSizeType {
+                    App()
+                }
             }
         }
     }
@@ -25,7 +29,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     Surface(modifier = Modifier.fillMaxSize()) {
-        Text(text = "Hello World!")
+        MainNavigation()
     }
 }
 
@@ -33,7 +37,9 @@ fun App() {
 @Composable
 fun AppLightThemePreview() {
     AppTheme(useDarkTheme = false) {
-        App()
+        FakeWindowSizeType {
+            App()
+        }
     }
 }
 
@@ -41,6 +47,8 @@ fun AppLightThemePreview() {
 @Composable
 fun AppDarkThemePreview() {
     AppTheme(useDarkTheme = true) {
-        App()
+        FakeWindowSizeType {
+            App()
+        }
     }
 }

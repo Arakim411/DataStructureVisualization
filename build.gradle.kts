@@ -59,7 +59,7 @@ fun KotlinCompile.setUpKotlin() {
 
 fun Project.getNameSpace(): String {
     val moduleDirectories = projectDir.toString().removePrefix(rootDir.toString())
-    val nameSpace = moduleDirectories.replace("/", ".").replace("\\", ".")
+    val nameSpace = moduleDirectories.replace("/", ".").replace("\\", ".").replace("-", "")
 
     return libs.versions.baseNameSpace.get().plus(nameSpace)
 }
