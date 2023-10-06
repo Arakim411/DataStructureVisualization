@@ -13,7 +13,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.arakim.datastructurevisualization.navigation.uicontroller.modalNavigationDrawer.ModalNavigationDrawer
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.arakim.datastructurevisualization.navigation.uicontroller.controllers.ModalNavigationDrawer
+import com.arakim.datastructurevisualization.navigation.uicontroller.controllers.NavigationDrawer
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerGroup
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerItem
 import com.arakim.datastructurevisualization.ui.navigation.uicontroller.R
@@ -43,85 +46,82 @@ fun NavigationUiController(
                 content = content,
             )
 
-            WindowSizeType.Expanded -> TODO()
+            WindowSizeType.Expanded -> NavigationDrawer(
+                navigationUiControllerState = navigationUiControllerState,
+                navigationGroups = navUiControllerGroups,
+                onItemClick = onItemClick,
+                selectedRoute = selectedRoute,
+                content = content,
+            )
         }
     }
 }
 
-@Preview
+
 @Composable
-fun NavigationUiControllerPreview() {
-    val fakeNavGroups = immutableListOf(
-        NavUiControllerGroup(
-            name = "data structures",
-            items = immutableListOf(
-                NavUiControllerItem(
-                    title = "title",
-                    route = "route1",
-                    iconId = R.drawable.ic_for_preview,
-                ),
-                NavUiControllerItem(
-                    title = "title",
-                    route = "route2",
-                    iconId = R.drawable.ic_for_preview,
-                ),
-                NavUiControllerItem(
-                    title = "title",
-                    route = "route3",
-                    iconId = R.drawable.ic_for_preview,
-                )
-            )
-        ),
-        NavUiControllerGroup(
-            name = "other",
-            items = immutableListOf(
-                NavUiControllerItem(
-                    title = "title",
-                    route = "route4",
-                    iconId = R.drawable.ic_for_preview,
-                ),
-                NavUiControllerItem(
-                    title = "title",
-                    route = "route5",
-                    iconId = R.drawable.ic_for_preview,
-                ),
-            )
-        )
-    )
+@Preview(showBackground = true)
+private fun NavUiControllerCompactMediumPreview(
+    @PreviewParameter(
+        NavGroupsPreviewParameterProvider::class,
+        limit = 2,
+    ) navGroups: ImmutableList<NavUiControllerGroup>,
+) {
+
+    FakeWindowSizeType(width = WindowSizeType.Medium) {
+        NavigationUiControllerPreview(navGroups = navGroups)
+    }
+}
+
+@Composable
+@Preview(
+    showBackground = true
+)
+private fun NavUiControllerExpandedPreview(
+    @PreviewParameter(
+        NavGroupsPreviewParameterProvider::class,
+        limit = 2,
+    ) navGroups: ImmutableList<NavUiControllerGroup>,
+) {
+
+    FakeWindowSizeType(width = WindowSizeType.Expanded) {
+        NavigationUiControllerPreview(navGroups = navGroups)
+    }
+}
+
+@Composable
+private fun NavigationUiControllerPreview(navGroups: ImmutableList<NavUiControllerGroup>) {
+
     val navUiControllerState = rememberNavUiControllerState()
-    val selectedRoute = remember { mutableStateOf(fakeNavGroups[0].items[0].route) }
+    val selectedRoute = remember { mutableStateOf(navGroups[0].items[0].route) }
 
-    FakeWindowSizeType {
-        NavigationUiController(
-            navigationUiControllerState = navUiControllerState,
-            navUiControllerGroups = fakeNavGroups,
-            selectedRoute = selectedRoute.value,
-            onItemClick = {
-                selectedRoute.value = it.route
-            }
+    NavigationUiController(
+        navigationUiControllerState = navUiControllerState,
+        navUiControllerGroups = navGroups,
+        selectedRoute = selectedRoute.value,
+        onItemClick = {
+            selectedRoute.value = it.route
+        }
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center,
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                val navigationType = navUiControllerState.navigationType.collectAsState().value
-                Column {
-                    if (navigationType is NavigationOverlayType.Modal) {
-                        val scope = rememberCoroutineScope()
-                        Button(
-                            onClick = {
-                                scope.launch { navigationType.drawerState.open() }
-                            },
-                        ) {
-                            Text(text = "Open")
-                        }
-
+            val navigationType = navUiControllerState.navigationType.collectAsState().value
+            Column {
+                if (navigationType is NavigationOverlayType.Modal) {
+                    val scope = rememberCoroutineScope()
+                    Button(
+                        onClick = {
+                            scope.launch { navigationType.drawerState.open() }
+                        },
+                    ) {
+                        Text(text = "Open")
                     }
-                    Text(text = "content: ${selectedRoute.value}")
-                }
-            }
 
+                }
+                Text(text = "content: ${selectedRoute.value}")
+            }
         }
     }
 }
