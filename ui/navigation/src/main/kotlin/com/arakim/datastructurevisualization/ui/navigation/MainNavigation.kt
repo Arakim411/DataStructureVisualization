@@ -19,6 +19,7 @@ import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUi
 import com.arakim.datastructurevisualization.navigation.uicontroller.rememberNavUiControllerState
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
+import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
 
 //TODO add intent filters
 @Composable
@@ -154,5 +155,7 @@ private fun MainNavDestinations.toNavItem(): NavUiControllerItem = when (this) {
 @Preview
 @Composable
 fun MainNavigationPreview() {
-
+    FakeWindowSizeType {
+        MainNavigation()
+    }
 }

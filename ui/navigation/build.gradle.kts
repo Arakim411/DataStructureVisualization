@@ -15,5 +15,6 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.bundles.compose)
+    implementation(libs.bundles.composeDebug)
     implementation(platform(libs.androidx.compose.bom))
 }
