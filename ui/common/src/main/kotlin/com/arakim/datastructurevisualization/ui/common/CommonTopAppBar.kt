@@ -9,6 +9,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationOverlayType
+import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
+import kotlinx.coroutines.launch
 
 //TODO name
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,5 +33,34 @@ fun CommonTopAppBar(
                 }
             }
         },
+        actions = actions,
+    )
+}
+
+@Composable
+fun CommonTopAppBar(
+    title: String,
+    navigationUiControllerState: NavigationUiControllerState,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
+
+    val coroutineScope = rememberCoroutineScope()
+    val navigationType = navigationUiControllerState.navigationType.collectAsStateWithLifecycle().value
+
+    val navAction = remember(navigationType) {
+        (navigationType as? NavigationOverlayType.Modal)?.let {
+            {
+                coroutineScope.launch {
+                    it.drawerState.open()
+                }
+                Unit
+            }
+        }
+    }
+
+    CommonTopAppBar(
+        title = title,
+        actions = actions,
+        onNavigationAction = navAction,
     )
 }

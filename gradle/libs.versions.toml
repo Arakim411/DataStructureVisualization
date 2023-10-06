@@ -19,7 +19,6 @@ compileSdk = "34"
 minSdk = "24"
 baseNameSpace = "com.arakim.datastructurevisualization"
 
-
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
@@ -37,8 +36,8 @@ androidx-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-runtime-ktx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
-
 
 junit = { module = "junit:junit", version.ref = "junit" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -49,8 +48,8 @@ compose = [
     "androidx-compose-ui",
     "androidx-compose-ui-graphics",
     "androidx-compose-ui-tooling-preview",
-    "androidx-compose-ui-tooling-preview",
     "androidx-compose-material3",
+    "androidx-lifecycle-compose"
 ]
 
 composeDebug = [

@@ -10,6 +10,9 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.androidx.compose.bom))
+    implementation(project(":ui:navigation:ui-controller"))
+
     implementation(libs.bundles.compose)
+    implementation(libs.androidx.lifecycle.compose)
+    implementation(platform(libs.androidx.compose.bom))
 }
