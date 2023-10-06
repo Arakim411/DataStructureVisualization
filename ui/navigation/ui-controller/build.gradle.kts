@@ -13,5 +13,6 @@ dependencies {
     implementation(project(":ui:util"))
 
     implementation(libs.bundles.compose)
+    implementation(libs.bundles.composeDebug)
     implementation(platform(libs.androidx.compose.bom))
 }
