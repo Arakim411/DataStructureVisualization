@@ -17,6 +17,7 @@ import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationU
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerGroup
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerItem
 import com.arakim.datastructurevisualization.navigation.uicontroller.rememberNavUiControllerState
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.BinarySearchTreeScreen
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
@@ -53,24 +54,18 @@ fun MainNavigation() {
 }
 
 @Composable
-fun Screen(destination: MainNavDestinations, navUiController: NavigationUiControllerState) {
+fun Screen(
+    destination: MainNavDestinations,
+    navUiController: NavigationUiControllerState,
+) {
     when (destination) {
-        MainNavDestinations.BinarySearchTree -> Unit
+        MainNavDestinations.BinarySearchTree -> BinarySearchTreeScreen(navUiController)
         MainNavDestinations.Stack -> Unit
         MainNavDestinations.Queue -> Unit
         MainNavDestinations.LinkedList -> Unit
         MainNavDestinations.HashTable -> Unit
         MainNavDestinations.Favorite -> Unit
         MainNavDestinations.Delete -> Unit
-    }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-
-        Text(text = "screen: ${destination.route}")
     }
 }
 
