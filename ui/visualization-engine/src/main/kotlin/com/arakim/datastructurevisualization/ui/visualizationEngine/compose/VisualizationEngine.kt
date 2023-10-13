@@ -1,6 +1,5 @@
 package com.arakim.datastructurevisualization.ui.visualizationEngine.compose
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
@@ -31,8 +30,10 @@ import kotlin.time.Duration
 
 //TODO performance check
 //TODO anime arrow
+//TODO learn more about gestures and apply to improve managing canvas size
 //TODO play with path effect when you finish
 //TODO make use of it more declarative with .() and infix
+//TODO add auto scale when elements can't fit into screen
 @Composable
 fun VisualizationEngine(
     presenter: VisualizationEnginePresenter,
@@ -118,12 +119,18 @@ fun VisualizationEngine(
                 val vertexPosition = vertex.element.position.toOffset(density)
 
                 // TODO O(n * a) improve
-                connections?.forEach {
-                    val toPosition = presenter.getPositionOf(it)?.toOffset(density) ?: return@forEach
+                // TODO make more declarative
+                connections?.forEach { idOfConnection ->
+                    val toPosition = if (idOfConnection == currentVertexTransition.value?.id)
+                        vertexTransitionAnim.value
+                    else
+                        presenter.getPositionOf(idOfConnection)?.toOffset(density) ?: return@forEach
+
                     val from = if (id == currentVertexTransition.value?.id)
                         vertexTransitionAnim.value
                     else
                         vertexPosition
+
                     drawConnection(
                         from = from,
                         to = toPosition,
