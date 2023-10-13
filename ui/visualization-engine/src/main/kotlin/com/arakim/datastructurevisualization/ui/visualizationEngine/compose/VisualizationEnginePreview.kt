@@ -16,6 +16,9 @@ import com.arakim.datastructurevisualization.ui.visualizationEngine.presenter.gr
 import com.arakim.datastructurevisualization.ui.visualizationEngine.presenter.graph.VertexId
 import com.arakim.datastructurevisualization.ui.visualizationEngine.presenter.model.DefaultPresenterSetUp
 import com.arakim.datastructurevisualization.ui.visualizationEngine.presenter.model.VisualizationElement
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 
 @Composable
 internal fun rememberVisualizationEngineState() = remember {
@@ -32,6 +35,12 @@ private fun VisualizationEnginePreview() {
             setUp = DefaultPresenterSetUp,
         )
     }
+
+    VisualizationEngine(
+        presenter = state,
+        drawStyle = remember { DrawStyleDefault },
+    )
+
 
     var lastY = remember { 300.dp }
     LaunchedEffect(Unit) {
@@ -65,6 +74,24 @@ private fun VisualizationEnginePreview() {
         )
 
         state.createConnection(VertexId("1"), VertexId("5"))
+        coroutineScope.launch(Dispatchers.IO) {
+            (0..20).forEach {
+                state.createVertex(
+                    Vertex(
+                        id = VertexId("XD$it"),
+                        element = VisualizationElement(
+                            "$it",
+                            randomDp()
+                        ),
+                    )
+
+                )
+                state.createConnection(
+                    VertexId("XD$it"),
+                    VertexId("1")
+                )
+            }
+        }
     }
 
     Row {
@@ -90,10 +117,6 @@ private fun VisualizationEnginePreview() {
         }
     }
 
-    VisualizationEngine(
-        presenter = state,
-        drawStyle = remember { DrawStyleDefault },
-    )
 }
 
 private fun randomDp(): DpOffset {
