@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.DpOffset
+import com.arakim.datastructurevisualization.ui.util.views.TransformableBox
 import com.arakim.datastructurevisualization.ui.visualizationEngine.compose.helper.drawConnection
 import com.arakim.datastructurevisualization.ui.visualizationEngine.compose.helper.drawVertex
 import com.arakim.datastructurevisualization.ui.visualizationEngine.compose.helper.toOffset
@@ -34,8 +35,23 @@ import kotlin.time.Duration
 //TODO play with path effect when you finish
 //TODO make use of it more declarative with .() and infix
 //TODO add auto scale when elements can't fit into screen
+
+
 @Composable
 fun VisualizationEngine(
+    presenter: VisualizationEnginePresenter,
+    drawStyle: DrawStyle,
+) {
+    TransformableBox {
+        VisualizationEngineView(
+            presenter = presenter,
+            drawStyle = drawStyle,
+        )
+    }
+}
+
+@Composable
+private fun VisualizationEngineView(
     presenter: VisualizationEnginePresenter,
     drawStyle: DrawStyle,
 ) {
