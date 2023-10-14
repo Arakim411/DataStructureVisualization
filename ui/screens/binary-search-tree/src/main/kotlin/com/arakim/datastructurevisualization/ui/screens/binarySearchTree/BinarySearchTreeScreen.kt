@@ -6,10 +6,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
+import com.arakim.datastructurevisualization.navigation.uicontroller.rememberNavUiControllerState
 import com.arakim.datastructurevisualization.ui.common.CommonTopAppBar
+import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
 
 @Composable
 fun BinarySearchTreeScreen(
@@ -32,5 +36,16 @@ fun BinarySearchTreeScreen(
                 }
             }
         }
+    }
+}
+
+
+@Preview
+@Composable
+fun BinarySearchTreeScreenPreview() {
+    FakeWindowSizeType {
+        BinarySearchTreeScreen(
+            navigationUiControllerState = rememberNavUiControllerState(),
+        )
     }
 }
