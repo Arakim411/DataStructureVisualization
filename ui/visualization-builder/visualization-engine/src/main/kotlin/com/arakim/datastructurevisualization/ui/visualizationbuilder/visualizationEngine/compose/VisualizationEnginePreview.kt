@@ -10,16 +10,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyleDefault
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyle
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenterImpl
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.Vertex
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultPresenterSetUp
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElement
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElementShape
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
+// TODO make more and better previews
 @Composable
 internal fun rememberVisualizationEngineState() = remember {
     VisualizationEnginePresenterImpl()
@@ -38,7 +39,7 @@ private fun VisualizationEnginePreview() {
 
     VisualizationEngine(
         presenter = state,
-        drawStyle = remember { DrawStyleDefault },
+        drawStyle = remember { DrawStyle.Default },
     )
 
 
@@ -49,7 +50,8 @@ private fun VisualizationEnginePreview() {
                 id = VertexId("1"),
                 element = VisualizationElement(
                     "1",
-                    DpOffset(200.dp, 200.dp)
+                    DpOffset(200.dp, 200.dp),
+                    shape = VisualizationElementShape.Square,
                 ),
             ),
         )
@@ -58,7 +60,8 @@ private fun VisualizationEnginePreview() {
                 id = VertexId("5"),
                 element = VisualizationElement(
                     "5",
-                    DpOffset(200.dp, 300.dp)
+                    DpOffset(200.dp, 300.dp),
+                    shape = VisualizationElementShape.Circle,
                 ),
             ),
         )
@@ -68,30 +71,13 @@ private fun VisualizationEnginePreview() {
                 id = VertexId("30"),
                 element = VisualizationElement(
                     "5",
-                    DpOffset(300.dp, 400.dp)
+                    DpOffset(300.dp, 400.dp),
+                    shape = VisualizationElementShape.Square,
                 ),
             ),
         )
 
         state.createConnection(VertexId("1"), VertexId("5"))
-        coroutineScope.launch(Dispatchers.IO) {
-            (0..20).forEach {
-                state.createVertex(
-                    Vertex(
-                        id = VertexId("XD$it"),
-                        element = VisualizationElement(
-                            "$it",
-                            randomDp()
-                        ),
-                    )
-
-                )
-                state.createConnection(
-                    VertexId("XD$it"),
-                    VertexId("1")
-                )
-            }
-        }
     }
 
     Row {
@@ -102,6 +88,7 @@ private fun VisualizationEnginePreview() {
                     element = VisualizationElement(
                         "5",
                         randomDp(),
+                        shape = VisualizationElementShape.Square,
                     ),
                 ),
             )

@@ -20,7 +20,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.DpOffset
 import com.arakim.datastructurevisualization.ui.util.views.TransformableBox
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawConnection
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawVertex
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawVisualizationElement
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.toOffset
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyle
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenter
@@ -117,10 +117,10 @@ private fun VisualizationEngineView(
         Canvas(
             modifier = Modifier.fillMaxSize(),
             onDraw = {
-                drawVertex(
-                    vertex = vertex,
+                drawVisualizationElement(
+                    element = vertex.element,
                     textMeasurer = textMeasurer,
-                    position = vertexTransitionAnim.value,
+                    center = vertexTransitionAnim.value,
                     drawStyle = drawStyle,
                 )
             },
@@ -155,10 +155,10 @@ private fun VisualizationEngineView(
                 }
 
                 if (id == currentVertexTransition.value?.id) return@forEach
-                drawVertex(
-                    vertex = vertex,
+                drawVisualizationElement(
+                    element = vertex.element,
                     textMeasurer = textMeasurer,
-                    position = vertexPosition,
+                    center = vertexPosition,
                     drawStyle = drawStyle,
                 )
             }
