@@ -13,7 +13,15 @@ data class DrawStyle(
     val elementStartPosition: DpOffset,
     val colors: DrawColors,
     val sizes: DrawSizes,
-)
+) {
+    companion object {
+        val Default = DrawStyle(
+            elementStartPosition = DpOffset(0.dp, 0.dp),
+            colors = ColorsDefault,
+            sizes = SizesDefault,
+        )
+    }
+}
 
 @Immutable
 data class DrawColors(
@@ -28,9 +36,9 @@ data class DrawColors(
 @Immutable
 data class DrawSizes(
     val circleRadius: Float,
+    val squareEdgeSize: Float,
     val elementStroke: Float,
     val lineStroke: Float,
-    val squareEdgeSize: Float,
     val textSize: TextUnit,
     val arrowSize: Float
 )
@@ -50,16 +58,7 @@ private val SizesDefault =
         circleRadius = 50f,
         elementStroke = 4f,
         lineStroke = 3f,
-        squareEdgeSize = 40f,
+        squareEdgeSize = 80f,
         textSize = 12.sp,
         arrowSize = 30f
     )
-
-//TODO count depends on dpi
-internal val DrawStyleDefault =
-    DrawStyle(
-        elementStartPosition = DpOffset(0.dp, 0.dp),
-        colors = ColorsDefault,
-        sizes = SizesDefault,
-    )
-
