@@ -14,11 +14,9 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenterImpl
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.Vertex
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultPresenterSetUp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultVisualizationEnginePresenterSetUp
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElement
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElementShape
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 // TODO make more and better previews
 @Composable
@@ -33,7 +31,7 @@ private fun VisualizationEnginePreview() {
     val state = rememberVisualizationEngineState().apply {
         initialize(
             coroutineScope = coroutineScope,
-            setUp = DefaultPresenterSetUp,
+            setUp = DefaultVisualizationEnginePresenterSetUp,
         )
     }
 

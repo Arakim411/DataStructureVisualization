@@ -10,8 +10,8 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.helpers.createEnterTransition
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.helpers.createMoveTransition
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.helpers.tryEmptyTransitionQueue
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.PresenterSetUp
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationEnginePresenterSetUp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -25,17 +25,19 @@ abstract class VisualizationEnginePresenter :
     DirectionalVisualizationGraph by DirectionalVisualizationGraphImpl() {
 
     internal lateinit var coroutineScope: CoroutineScope
-    lateinit var setUp: PresenterSetUp
+    lateinit var setUp: VisualizationEnginePresenterSetUp
 
     abstract val currentVertexTransition: Flow<VertexTransition?>
     abstract fun moveVertex(id: VertexId, newPosition: DpOffset)
+
+    abstract fun getVertex(id: VertexId): Vertex?
 
     abstract fun createVertexWithEnterTransition(vertex: Vertex, comparisons: ImmutableList<DpOffset>)
     fun createVertexWithEnterTransition(
         vertex: Vertex,
     ) = createVertexWithEnterTransition(vertex, immutableListOf())
 
-    fun initialize(coroutineScope: CoroutineScope, setUp: PresenterSetUp) {
+    fun initialize(coroutineScope: CoroutineScope, setUp: VisualizationEnginePresenterSetUp) {
         this.coroutineScope = coroutineScope
         this.setUp = setUp
 
@@ -60,6 +62,10 @@ internal class VisualizationEnginePresenterImpl @Inject constructor() : Visualiz
         tryEmptyTransitionQueue()
     }
 
+    // TODO very bad approach improve
+    override fun getVertex(id: VertexId): Vertex? =
+        vertexStateMap[id] ?: transitionQueue.getVertex(id) ?: _currentVertexTransition.getVertex(id)
+
     override fun createVertexWithEnterTransition(vertex: Vertex, comparisons: ImmutableList<DpOffset>) {
         val enterTransition = createEnterTransition(vertex, comparisons)
         transitionQueue.add(enterTransition)
@@ -74,3 +80,14 @@ internal class VisualizationEnginePresenterImpl @Inject constructor() : Visualiz
     }
 }
 
+
+private fun Queue<VertexTransition>.getVertex(
+    id: VertexId,
+): Vertex? = find { it.vertex.id == id }?.vertex
+
+private fun MutableStateFlow<VertexTransition?>.getVertex(id: VertexId) = value.let { transition ->
+    when (transition?.vertex?.id) {
+        id -> transition.vertex
+        else -> null
+    }
+}

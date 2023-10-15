@@ -3,12 +3,12 @@ package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizat
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-data class PresenterSetUp(
+data class VisualizationEnginePresenterSetUp(
     val vertexTransitionTime: Duration,
     val comparisonTransitionTime: Duration,
 )
 
-val DefaultPresenterSetUp = PresenterSetUp(
+val DefaultVisualizationEnginePresenterSetUp = VisualizationEnginePresenterSetUp(
     vertexTransitionTime = 1.seconds,
     comparisonTransitionTime = 1.seconds,
 )
