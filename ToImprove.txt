@@ -1,0 +1,5 @@
+
+VisualizationEnginePresenter:
+
+1. vertex is added to vertexStateMap after transition. Should be added right away with flag if transition is
+finished, or vertexStateMap should manage info about transitions to now split close logic between to components
