@@ -12,8 +12,11 @@ import com.arakim.dataStructureVisualization.ui.theme.AppTheme
 import com.arakim.datastructurevisualization.ui.navigation.MainNavigation
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.WindowSizeType
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
