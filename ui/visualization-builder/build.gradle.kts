@@ -14,7 +14,10 @@ android {
 dependencies {
 
     implementation(project(":ui:util"))
-    implementation(project(":ui:visualization-builder:visualization-engine"))
+    api(project(":ui:visualization-builder:visualization-engine"))
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.constraintlayout)
 
     kapt(libs.google.hilt.compiler)
     implementation(libs.google.hilt)
