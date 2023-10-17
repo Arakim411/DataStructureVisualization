@@ -15,7 +15,7 @@ material = "1.9.0"
 navigationCompose = "2.7.2"
 hilt = "2.44"
 hiltNavigationCompose = "1.0.0"
-
+coroutinesVersion = "1.7.3"
 
 # Android config
 compileSdk = "34"
@@ -48,6 +48,10 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androix-lifecycle-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 google-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 google-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
+
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
