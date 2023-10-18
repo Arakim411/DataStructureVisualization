@@ -19,6 +19,7 @@ import javax.inject.Inject
 //TODO as interface
 //TODO simplify with infix funs
 //TODO refactor names itd..
+//TODO inherit form VisualizationEnginePresenter instead of using it as dependency
 @Immutable
 class VisualizationBuilderPresenter @Inject constructor(
     val enginePresenter: VisualizationEnginePresenter,

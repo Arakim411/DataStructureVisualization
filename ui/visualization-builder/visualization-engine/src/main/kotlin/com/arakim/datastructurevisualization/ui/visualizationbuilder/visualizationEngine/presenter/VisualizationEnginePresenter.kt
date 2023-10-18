@@ -21,6 +21,7 @@ import java.util.LinkedList
 import java.util.Queue
 import javax.inject.Inject
 
+// TODO adapt to allows wrapper inherit from it instead of using as dependency
 abstract class VisualizationEnginePresenter :
     DirectionalVisualizationGraph by DirectionalVisualizationGraphImpl() {
 
