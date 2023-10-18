@@ -1,12 +1,7 @@
 package com.arakim.datastructurevisualization.ui.navigation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -17,7 +12,7 @@ import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationU
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerGroup
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerItem
 import com.arakim.datastructurevisualization.navigation.uicontroller.rememberNavUiControllerState
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.BinarySearchTreeScreen
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.compose.BinarySearchTreeScreen
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
