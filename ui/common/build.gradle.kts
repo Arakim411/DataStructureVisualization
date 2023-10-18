@@ -11,6 +11,7 @@ android {
 
 dependencies {
     api(project(":ui:navigation:ui-controller"))
+    implementation(project(":ui:util"))
 
     implementation(libs.bundles.compose)
     implementation(libs.androidx.lifecycle.compose)
