@@ -42,18 +42,18 @@ fun BinarySearchTreeView(
 ) {
     val state = presenter.stateFlow.collectAsStateWithLifecycle()
 
-    Crossfade(
-        targetState = state.value,
-        label = "",
-    ) { stateValue ->
-        when (stateValue) {
-            BinarySearchTreeState.ReadyState -> ReadyState(
-                visualizationBuilderPresenter = presenter.visualizationBuilder.visualizationBuilderPresenter,
-                navigationUiControllerState = navigationUiControllerState,
-                onAction = presenter::onAction,
-            )
+        Crossfade(
+            targetState = state.value,
+            label = "",
+        ) { stateValue ->
+            when (stateValue) {
+                BinarySearchTreeState.ReadyState -> ReadyState(
+                    visualizationBuilderPresenter = presenter.visualizationBuilder.visualizationBuilderPresenter,
+                    navigationUiControllerState = navigationUiControllerState,
+                    onAction = presenter::onAction,
+                )
+            }
         }
-    }
 }
 
 @Composable

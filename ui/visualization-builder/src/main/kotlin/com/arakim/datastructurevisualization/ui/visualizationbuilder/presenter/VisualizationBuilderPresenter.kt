@@ -7,10 +7,9 @@ import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.helpers.toDpOffset
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.VertexPosition
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenter
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.Vertex
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultVisualizationEnginePresenterSetUp
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElement
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexInfo
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElementShape
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
@@ -29,7 +28,6 @@ class VisualizationBuilderPresenter @Inject constructor(
         coroutineScope: CoroutineScope,
     ) {
         enginePresenter.initialize(
-            coroutineScope = coroutineScope,
             setUp = DefaultVisualizationEnginePresenterSetUp,
         )
     }
@@ -40,7 +38,7 @@ class VisualizationBuilderPresenter @Inject constructor(
         position: VertexPosition,
         shape: VisualizationElementShape = VisualizationElementShape.Circle,
     ) {
-        val vertex = getVertex(vertexId, title, position, shape)
+        val vertex = getVertexInfo(vertexId, title, position, shape)
         enginePresenter.createVertex(vertex)
     }
 
@@ -51,7 +49,7 @@ class VisualizationBuilderPresenter @Inject constructor(
         shape: VisualizationElementShape = VisualizationElementShape.Circle,
         comparisons: ImmutableList<DpOffset> = immutableListOf(),
     ) {
-        val vertex = getVertex(vertexId, title, position, shape)
+        val vertex = getVertexInfo(vertexId, title, position, shape)
         enginePresenter.createVertexWithEnterTransition(vertex, comparisons)
     }
 
@@ -60,26 +58,23 @@ class VisualizationBuilderPresenter @Inject constructor(
         to: VertexId,
     ) = enginePresenter.createConnection(from, to)
 
-    private fun getVertex(
+    private fun getVertexInfo(
         vertexId: VertexId,
         title: String,
         position: VertexPosition,
         shape: VisualizationElementShape = VisualizationElementShape.Circle,
-    ): Vertex {
+    ): VertexInfo {
+
         val getVertexLambda = { id: VertexId ->
             enginePresenter.getVertex(id)
                 ?: throw IllegalArgumentException(vertexId.vertexNotFoundErrorMessage())
         }
 
-        val element = VisualizationElement(
+        return VertexInfo(
+            id = vertexId,
             title = title,
             position = position.toDpOffset(getVertexLambda),
             shape = shape,
-        )
-
-        return Vertex(
-            id = vertexId,
-            element = element
         )
     }
 }
