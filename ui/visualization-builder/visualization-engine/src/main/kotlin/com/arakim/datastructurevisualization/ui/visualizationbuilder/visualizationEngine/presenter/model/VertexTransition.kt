@@ -1,28 +1,14 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model
 
-import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.DpOffset
-import com.arakim.datastructurevisualization.ui.util.ImmutableList
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.Vertex
-import kotlin.time.Duration
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
 
-@Immutable
 sealed interface VertexTransition {
 
-    val vertex: Vertex
-    val vertexTransitionTime: Duration
-
-    @Immutable
-    data class EnterVertexTransition(
-        override val vertex: Vertex,
-        val comparisons: ImmutableList<DpOffset>,
-        override val vertexTransitionTime: Duration,
-        val comparisonTransitionTime: Duration,
+    data class EnterTransition(
+        val vertexId: VertexId,
+        val comparisons: List<DpOffset>,
     ) : VertexTransition
 
-    @Immutable
-    data class MoveVertexTransition(
-        override val vertex: Vertex,
-        override val vertexTransitionTime: Duration,
-    ) : VertexTransition
+    data class MoveTransition(val vertexGroup: List<Pair<VertexId, DpOffset>>) : VertexTransition
 }
