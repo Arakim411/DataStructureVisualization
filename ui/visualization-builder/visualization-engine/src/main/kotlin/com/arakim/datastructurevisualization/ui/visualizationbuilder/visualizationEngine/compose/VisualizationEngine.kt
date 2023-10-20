@@ -1,33 +1,20 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.VectorConverter
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.DpOffset
 import com.arakim.datastructurevisualization.ui.util.views.TransformableBox
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawConnection
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawVisualizationElement
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.toOffset
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyle
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenter
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.Vertex
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition
-import kotlin.time.Duration
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState.ComparingState
 
 //TODO performance check
 //TODO anime arrow
@@ -58,103 +45,31 @@ private fun VisualizationEngineView(
     val density = LocalDensity.current
     val textMeasurer = rememberTextMeasurer()
 
-    val currentVertexTransition = remember { mutableStateOf<Vertex?>(null) }
-    val vertexTransitionAnim = remember {
-        Animatable(initialValue = Offset.Zero, Offset.VectorConverter)
-    }
 
-    val shapeTransitionAnim = remember { Animatable(initialValue = Offset.Zero, Offset.VectorConverter) }
+    val shapeTransitionState = presenter.comparisonState.value
 
-    suspend fun animateVertexToPosition(
-        vertex: Vertex,
-        startPosition: Offset,
-        time: Duration,
-    ) {
-        currentVertexTransition.value = vertex
-        vertexTransitionAnim.snapTo(startPosition)
-        vertexTransitionAnim.animateTo(
-            targetValue = vertex.element.position.toOffset(density),
-            animationSpec = tween(time.inWholeMilliseconds.toInt()),
-        )
-    }
-
-    suspend fun handleTransition(transition: VertexTransition) {
-        when (transition) {
-            is VertexTransition.EnterVertexTransition -> {
-
-                transition.comparisons.forEach {
-                    shapeTransitionAnim.animateTo(
-                        targetValue = it.toOffset(density),
-                        animationSpec = tween(transition.comparisonTransitionTime.inWholeMilliseconds.toInt()),
-                    )
-                }
-                animateVertexToPosition(
-                    vertex = transition.vertex,
-                    startPosition = drawStyle.elementStartPosition.toOffset(density),
-                    time = transition.vertexTransitionTime,
-                )
-            }
-
-            is VertexTransition.MoveVertexTransition ->
-                animateVertexToPosition(
-                    vertex = transition.vertex,
-                    startPosition = presenter.getPositionOf(transition.vertex.id)!!.toOffset(density),
-                    time = transition.vertexTransitionTime,
-                )
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        presenter.currentVertexTransition.collect { transition ->
-            if (transition == null) return@collect
-            handleTransition(transition)
-            currentVertexTransition.value = null
-        }
-    }
-
-    val vertex = currentVertexTransition.value
-    if (vertex != null && vertexTransitionAnim.isRunning) {
-        Canvas(
-            modifier = Modifier.fillMaxSize(),
-            onDraw = {
-                drawVisualizationElement(
-                    element = vertex.element,
-                    textMeasurer = textMeasurer,
-                    center = vertexTransitionAnim.value,
-                    drawStyle = drawStyle,
-                )
-            },
-        )
-    }
 
     Canvas(
         modifier = Modifier.fillMaxSize(),
         onDraw = {
             presenter.vertexStateMap.forEach { (id, vertex) ->
+                if (!vertex.element.isVisible && !vertex.element.position.isRunning) return@forEach
+
                 val connections = presenter.vertexConnectionsState[id]
-                val vertexPosition = vertex.element.position.toOffset(density)
+                val vertexPosition = vertex.element.position.value.toOffset(density)
 
-                // TODO O(n * a) improve
-                // TODO make more declarative
                 connections?.forEach { idOfConnection ->
-                    val toPosition = if (idOfConnection == currentVertexTransition.value?.id)
-                        vertexTransitionAnim.value
-                    else
-                        presenter.getPositionOf(idOfConnection)?.toOffset(density) ?: return@forEach
-
-                    val from = if (id == currentVertexTransition.value?.id)
-                        vertexTransitionAnim.value
-                    else
-                        vertexPosition
+                    val vertexToConnect = presenter.vertexStateMap[idOfConnection]
+                    if (vertexToConnect?.element?.isVisible == false && !vertexToConnect.element.position.isRunning) return@forEach
+                    val toPosition = vertexToConnect?.element?.position?.value?.toOffset(density)
+                        ?: return@forEach
 
                     drawConnection(
-                        from = from,
+                        from = vertexPosition,
                         to = toPosition,
                         drawStyle = drawStyle,
                     )
                 }
-
-                if (id == currentVertexTransition.value?.id) return@forEach
                 drawVisualizationElement(
                     element = vertex.element,
                     textMeasurer = textMeasurer,
@@ -165,24 +80,19 @@ private fun VisualizationEngineView(
         },
     )
 
-    AnimatedVisibility(
-        visible = shapeTransitionAnim.isRunning,
-        enter = fadeIn(),
-        exit = fadeOut(),
-    ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            drawCircle(
-                color = drawStyle.colors.animShapeColor,
-                radius = drawStyle.sizes.circleRadius,
-                center = shapeTransitionAnim.value,
-                style = Stroke(drawStyle.sizes.elementStroke),
-            )
+    Crossfade(shapeTransitionState, label = "") { stateValue ->
+        if (stateValue is ComparingState) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                drawCircle(
+                    color = drawStyle.colors.animShapeColor,
+                    radius = drawStyle.sizes.circleRadius,
+                    center = stateValue.position.value.toOffset(density),
+                    style = Stroke(drawStyle.sizes.elementStroke),
+                )
+            }
         }
     }
 }
-
-private fun VisualizationEnginePresenter.getPositionOf(id: VertexId): DpOffset? =
-    this.vertexStateMap[id]?.element?.position
 
 
 

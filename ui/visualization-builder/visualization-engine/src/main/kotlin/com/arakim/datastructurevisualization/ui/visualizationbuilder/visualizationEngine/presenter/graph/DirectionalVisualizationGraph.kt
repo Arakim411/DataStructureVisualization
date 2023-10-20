@@ -1,16 +1,57 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.snapshots.SnapshotStateMap
+import androidx.compose.ui.unit.DpOffset
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexInfo
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElement
 
 
-interface DirectionalVisualizationGraph {
-    val vertexStateMap: SnapshotStateMap<VertexId, Vertex>
-    val vertexConnectionsState: SnapshotStateMap<VertexId, HashSet<VertexId>>
+abstract class DirectionalVisualizationGraph {
+    val vertexStateMap = mutableStateMapOf<VertexId, Vertex>()
+    val vertexConnectionsState = mutableStateMapOf<VertexId, HashSet<VertexId>>()
 
-    fun createVertex(vertex: Vertex)
-    fun createConnection(from: VertexId, to: VertexId)
+    fun createVertex(vertexInfo: VertexInfo) {
+        createVertex(
+            vertexInfo = vertexInfo,
+            hasEnterTransition = false,
+        )
+    }
+
+    protected fun createVertex(vertexInfo: VertexInfo, hasEnterTransition: Boolean) {
+        vertexStateMap[vertexInfo.id] = buildVertex(
+            vertexInfo = vertexInfo,
+            hasEnterTransition = hasEnterTransition,
+        )
+    }
+
+    private fun buildVertex(vertexInfo: VertexInfo, hasEnterTransition: Boolean): Vertex {
+        return Vertex(
+            id = vertexInfo.id,
+            element = VisualizationElement(
+                title = vertexInfo.title,
+                position = Animatable(
+                    initialValue = vertexInfo.position,
+                    typeConverter = DpOffset.VectorConverter
+                ),
+                finalPosition = vertexInfo.position,
+                shape = vertexInfo.shape,
+                isVisible = !hasEnterTransition,
+            ),
+        )
+    }
+
+    fun createConnection(from: VertexId, to: VertexId) {
+        val vertex = vertexConnectionsState[from]
+        if (vertex == null) {
+            vertexConnectionsState[from] = hashSetOf(to)
+        } else {
+            vertex.add(to)
+        }
+    }
+
+    fun getVertex(id: VertexId): Vertex? = vertexStateMap[id]
 }
 
 
@@ -22,23 +63,3 @@ data class Vertex(
     val element: VisualizationElement,
 )
 
-internal class DirectionalVisualizationGraphImpl : DirectionalVisualizationGraph {
-
-    //  It's not best practise to make it public, but here we aim for simplicity and performance
-    override val vertexStateMap = mutableStateMapOf<VertexId, Vertex>()
-    override val vertexConnectionsState = mutableStateMapOf<VertexId, HashSet<VertexId>>()
-
-    override fun createVertex(vertex: Vertex) {
-        vertexStateMap[vertex.id] = vertex
-    }
-
-    override fun createConnection(from: VertexId, to: VertexId) {
-        val vertex = vertexConnectionsState[from]
-        if (vertex == null) {
-            vertexConnectionsState[from] = hashSetOf(to)
-        } else {
-            vertex.add(to)
-        }
-    }
-
-}
