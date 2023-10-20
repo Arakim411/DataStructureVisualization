@@ -1,13 +1,20 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose
 
+import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
+import androidx.lifecycle.Lifecycle.Event.ON_RESUME
+import androidx.lifecycle.LifecycleEventObserver
 import com.arakim.datastructurevisualization.ui.util.views.TransformableBox
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawConnection
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawVisualizationElement
@@ -45,9 +52,27 @@ private fun VisualizationEngineView(
     val density = LocalDensity.current
     val textMeasurer = rememberTextMeasurer()
 
-
     val shapeTransitionState = presenter.comparisonState.value
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    val coroutineScope = rememberCoroutineScope()
+    DisposableEffect(Unit) {
+        val lifecycleObserver = LifecycleEventObserver { _, event ->
+            when (event) {
+                ON_RESUME -> presenter.onViewReady(coroutineScope)
+                ON_PAUSE -> presenter.onViewNotReady()
+                else -> Unit
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
+
+        onDispose {
+            presenter.onViewNotReady()
+            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
+        }
+    }
 
     Canvas(
         modifier = Modifier.fillMaxSize(),
