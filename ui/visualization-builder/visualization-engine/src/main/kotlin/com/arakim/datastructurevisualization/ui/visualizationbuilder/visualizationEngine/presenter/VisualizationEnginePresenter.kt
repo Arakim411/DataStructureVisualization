@@ -11,7 +11,6 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState.IdleState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexInfo
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.Companion.DefaultPriority
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.Companion.HighPriority
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.EnterTransition
@@ -27,18 +26,26 @@ class VisualizationEnginePresenter @Inject constructor(
 
     val comparisonState = mutableStateOf<ComparisonState>(IdleState)
 
-    internal lateinit var coroutineScope: CoroutineScope
+    //it's okay until we remember to clear it when composition is finished
+    internal var composeCoroutineScope: CoroutineScope? = null
+
     lateinit var setUp: VisualizationEnginePresenterSetUp
 
-    fun initialize(coroutineScope: CoroutineScope, setUp: VisualizationEnginePresenterSetUp) {
-        this.coroutineScope = coroutineScope
+    fun initialize(setUp: VisualizationEnginePresenterSetUp) {
         this.setUp = setUp
 
         transitionQueueHelper.initialize(
-            coroutineScope = coroutineScope,
             handleTransition = { with(transitionHandlerHelper) { handleTransition(it) } }
         )
+    }
 
+    fun onViewReady(composeCoroutineScope: CoroutineScope) {
+        this.composeCoroutineScope = composeCoroutineScope
+        with(transitionQueueHelper) { tryEmptyTransitionQueue() }
+    }
+
+    fun onViewNotReady() {
+        composeCoroutineScope = null
     }
 
     fun moveVertex(id: VertexId, newPosition: DpOffset) {

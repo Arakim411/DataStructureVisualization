@@ -2,7 +2,6 @@ package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizat
 
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenter
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.PriorityQueue
@@ -10,9 +9,7 @@ import javax.inject.Inject
 
 class TransitionQueueHelper @Inject constructor() {
 
-    private lateinit var coroutineScope: CoroutineScope
     private lateinit var handleTransition: suspend VisualizationEnginePresenter.(VertexTransition) -> Unit
-
 
     private val transitionQueue: PriorityQueue<VertexTransition> = PriorityQueue(
         compareBy<VertexTransition> {
@@ -22,10 +19,8 @@ class TransitionQueueHelper @Inject constructor() {
     private var transitionJob: Job? = null
 
     fun initialize(
-        coroutineScope: CoroutineScope,
         handleTransition: suspend VisualizationEnginePresenter.(VertexTransition) -> Unit
     ) {
-        this.coroutineScope = coroutineScope
         this.handleTransition = handleTransition
     }
 
@@ -36,13 +31,13 @@ class TransitionQueueHelper @Inject constructor() {
     fun VisualizationEnginePresenter.tryEmptyTransitionQueue() {
         if (!shouldEmptyTransitionQueue()) return
 
-        transitionJob = coroutineScope.launch {
+        transitionJob = composeCoroutineScope?.launch {
             emptyTransitionQueue()
         }
     }
 
-    //TODO don't empty queue when view is not collecting
-    private fun shouldEmptyTransitionQueue(): Boolean = transitionJob?.isActive != true
+    private fun VisualizationEnginePresenter.shouldEmptyTransitionQueue(): Boolean =
+        (transitionJob?.isActive != true) && composeCoroutineScope != null
 
     private suspend fun VisualizationEnginePresenter.emptyTransitionQueue() {
         var transition = transitionQueue.poll()

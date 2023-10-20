@@ -32,10 +32,8 @@ internal fun rememberVisualizationEngineState() = remember {
 @Preview(showBackground = true, showSystemUi = false)
 @Composable
 private fun VisualizationEnginePreview() {
-    val coroutineScope = rememberCoroutineScope()
     val state = rememberVisualizationEngineState().apply {
         initialize(
-            coroutineScope = coroutineScope,
             setUp = DefaultVisualizationEnginePresenterSetUp,
         )
     }
