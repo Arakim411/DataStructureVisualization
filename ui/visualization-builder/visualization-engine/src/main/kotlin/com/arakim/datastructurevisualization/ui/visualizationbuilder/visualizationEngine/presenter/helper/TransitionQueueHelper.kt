@@ -5,8 +5,7 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.util.LinkedList
-import java.util.Queue
+import java.util.PriorityQueue
 import javax.inject.Inject
 
 class TransitionQueueHelper @Inject constructor() {
@@ -14,7 +13,12 @@ class TransitionQueueHelper @Inject constructor() {
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var handleTransition: suspend VisualizationEnginePresenter.(VertexTransition) -> Unit
 
-    private val transitionQueue: Queue<VertexTransition> = LinkedList()
+
+    private val transitionQueue: PriorityQueue<VertexTransition> = PriorityQueue(
+        compareBy<VertexTransition> {
+            it.priority
+        }
+    )
     private var transitionJob: Job? = null
 
     fun initialize(

@@ -11,6 +11,9 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState.IdleState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexInfo
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.Companion.DefaultPriority
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.Companion.HighPriority
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.EnterTransition
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.MoveTransition
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationEnginePresenterSetUp
@@ -42,8 +45,16 @@ class VisualizationEnginePresenter @Inject constructor(
         moveVertexGroup(listOf(id to newPosition))
     }
 
-    fun moveVertexGroup(vertexIdToPosition: List<Pair<VertexId, DpOffset>>) {
-        transitionQueueHelper.addToQueue(MoveTransition(vertexIdToPosition))
+    fun moveVertexGroup(
+        vertexIdToPosition: List<Pair<VertexId, DpOffset>>,
+        immediately: Boolean = false,
+    ) {
+        transitionQueueHelper.addToQueue(
+            MoveTransition(
+                vertexGroup = vertexIdToPosition,
+                priority = if (immediately) HighPriority else DefaultPriority,
+            )
+        )
         with(transitionQueueHelper) { tryEmptyTransitionQueue() }
     }
 
@@ -55,7 +66,12 @@ class VisualizationEnginePresenter @Inject constructor(
             vertexInfo = vertexInfo,
             hasEnterTransition = true,
         )
-        transitionQueueHelper.addToQueue(EnterTransition(vertexInfo.id, comparisons))
+        transitionQueueHelper.addToQueue(
+            EnterTransition(
+                vertexId = vertexInfo.id,
+                comparisons = comparisons,
+            )
+        )
         with(transitionQueueHelper) { tryEmptyTransitionQueue() }
     }
 
