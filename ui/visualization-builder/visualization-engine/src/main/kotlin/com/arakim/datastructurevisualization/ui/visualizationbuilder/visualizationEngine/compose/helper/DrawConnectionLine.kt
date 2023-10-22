@@ -5,20 +5,20 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotateRad
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyle
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.model.DrawConfigUiModel
 
-internal fun DrawScope.drawConnection(from: Offset, to: Offset, drawStyle: DrawStyle) {
+internal fun DrawScope.drawConnection(from: Offset, to: Offset, drawConfig: DrawConfigUiModel) {
     val angelRadForStartCircle = StrictMath.atan2(to.y.toDouble() - from.y, to.x.toDouble() - from.x)
     val angelRadForEndCircle = StrictMath.atan2(from.y.toDouble() - to.y, from.x.toDouble() - to.x)
 
     val lineStartOffset = getPointOnCircle(
-        radius = drawStyle.sizes.circleRadius,
+        radius = drawConfig.sizes.circleRadius,
         angelRad = angelRadForStartCircle,
         center = from,
     )
 
     val lineEndOffset = getPointOnCircle(
-        radius = drawStyle.sizes.circleRadius * 1.8f,
+        radius = drawConfig.sizes.circleRadius * 1.8f,
         angelRad = angelRadForEndCircle,
         center = to,
     )
@@ -26,13 +26,13 @@ internal fun DrawScope.drawConnection(from: Offset, to: Offset, drawStyle: DrawS
     drawConnectionLine(
         from = lineStartOffset,
         to = lineEndOffset,
-        drawStyle = drawStyle
+        drawConfig = drawConfig
     )
 
     drawConnectionArrow(
         offset = lineEndOffset,
         angelRad = angelRadForEndCircle.toFloat(),
-        drawStyle = drawStyle,
+        drawConfig = drawConfig,
     )
 
 }
@@ -40,7 +40,7 @@ internal fun DrawScope.drawConnection(from: Offset, to: Offset, drawStyle: DrawS
 private fun DrawScope.drawConnectionLine(
     from: Offset,
     to: Offset,
-    drawStyle: DrawStyle,
+    drawConfig: DrawConfigUiModel,
 ) = Path().apply {
 
     moveTo(from.x, from.y)
@@ -48,16 +48,16 @@ private fun DrawScope.drawConnectionLine(
 
     drawPath(
         path = this,
-        color = drawStyle.colors.connectionLineColor,
+        color = drawConfig.colors.connectionLineColor,
         style = Stroke(
-            width = drawStyle.sizes.lineStroke,
+            width = drawConfig.sizes.lineStroke,
         ),
     )
 }
 
-private fun DrawScope.drawConnectionArrow(offset: Offset, angelRad: Float, drawStyle: DrawStyle) =
+private fun DrawScope.drawConnectionArrow(offset: Offset, angelRad: Float, drawConfig: DrawConfigUiModel) =
     Path().apply {
-        val size = drawStyle.sizes.arrowSize
+        val size = drawConfig.sizes.arrowSize
         val halfSize = size / 2
         rotateRad(
             radians = angelRad - degrees90InRad,
@@ -72,7 +72,7 @@ private fun DrawScope.drawConnectionArrow(offset: Offset, angelRad: Float, drawS
 
             drawPath(
                 path = this@apply,
-                color = drawStyle.colors.connectionArrowColor,
+                color = drawConfig.colors.connectionArrowColor,
             )
         }
     }

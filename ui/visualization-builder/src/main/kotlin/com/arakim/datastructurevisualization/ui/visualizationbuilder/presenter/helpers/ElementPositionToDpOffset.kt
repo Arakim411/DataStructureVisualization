@@ -17,9 +17,9 @@ private fun VertexPosition.RelativePosition.referencePositionToDpOffset(
     relativeVertex: Vertex,
 ): DpOffset {
 
-    val relativePosition = relativeVertex.element.position
+    val relativePosition = relativeVertex.element.finalPosition
 
-    return relativePosition.value.let {
+    return relativePosition.let {
         when (relativePositionDistance) {
             is RelativePositionDistance.Above -> DpOffset(it.x, it.y - relativePositionDistance.distance)
             is RelativePositionDistance.Below -> DpOffset(it.x, it.y + relativePositionDistance.distance)

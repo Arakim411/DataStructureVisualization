@@ -3,6 +3,7 @@ package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizat
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.ui.unit.DpOffset
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VisualizationElementShape
 
 sealed interface ComparisonState {
 

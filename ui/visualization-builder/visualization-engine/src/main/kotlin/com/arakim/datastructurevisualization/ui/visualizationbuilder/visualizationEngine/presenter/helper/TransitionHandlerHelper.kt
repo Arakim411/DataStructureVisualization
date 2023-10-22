@@ -4,14 +4,14 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.unit.DpOffset
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenter
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationCorePresenter
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState.IdleState
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.EnterTransition
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.MoveTransition
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElementShape
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.EnterTransition
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.GoToFinalPositionTransition
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VisualizationElementShape
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -19,13 +19,13 @@ import javax.inject.Inject
 
 class TransitionHandlerHelper @Inject constructor() {
 
-    suspend fun VisualizationEnginePresenter.handleTransition(transition: VertexTransition) =
+    suspend fun VisualizationCorePresenter.handleTransition(transition: VertexTransition) =
         when (transition) {
             is EnterTransition -> handleEnterTransition(transition)
-            is MoveTransition -> handleMoveTransition(transition)
+            is GoToFinalPositionTransition -> handleGoToFinalPositionTransition(transition)
         }
 
-    private suspend fun VisualizationEnginePresenter.handleEnterTransition(enterTransition: EnterTransition) {
+    private suspend fun VisualizationCorePresenter.handleEnterTransition(enterTransition: EnterTransition) {
         val vertex = requireNotNull(vertexStateMap[enterTransition.vertexId])
 
         vertex.element.apply {
@@ -33,7 +33,6 @@ class TransitionHandlerHelper @Inject constructor() {
             position.snapTo(setUp.enterTransStartPosition)
 
             handleComparisons(enterTransition.comparisons, shape)
-
             position.animateTo(
                 finalPosition,
                 tween(setUp.vertexTransitionTime.inWholeMilliseconds.toInt())
@@ -41,7 +40,7 @@ class TransitionHandlerHelper @Inject constructor() {
         }
     }
 
-    private suspend fun VisualizationEnginePresenter.handleComparisons(
+    private suspend fun VisualizationCorePresenter.handleComparisons(
         comparisons: List<DpOffset>,
         shape: VisualizationElementShape,
     ) {
@@ -59,19 +58,21 @@ class TransitionHandlerHelper @Inject constructor() {
         }
     }
 
-    private suspend fun VisualizationEnginePresenter.handleMoveTransition(moveTransition: MoveTransition) {
+    private suspend fun VisualizationCorePresenter.handleGoToFinalPositionTransition(
+        goToFinalPositionTransition: GoToFinalPositionTransition,
+    ) {
         coroutineScope {
             var lastJob: Job? = null
-            moveTransition.vertexsIdToMove.forEach { vertexIdToPosition ->
+            goToFinalPositionTransition.vertexsIds.forEach { vertexIdToPosition ->
                 lastJob = launch {
-                    handleMove(vertexIdToPosition)
+                    goToFinalPosition(vertexIdToPosition)
                 }
             }
             lastJob?.join()
         }
     }
 
-    private suspend fun VisualizationEnginePresenter.handleMove(
+    private suspend fun VisualizationCorePresenter.goToFinalPosition(
         vertexId: VertexId
     ) {
         requireNotNull(vertexStateMap[vertexId]).element.apply {
