@@ -52,6 +52,27 @@ abstract class DirectionalVisualizationGraph {
     }
 
     fun getVertex(id: VertexId): Vertex? = vertexStateMap[id]
+    fun getConnections(id: VertexId): HashSet<VertexId> = vertexConnectionsState[id] ?: hashSetOf()
+
+    fun getAllConnections(vertexId: VertexId): MutableSet<VertexId> {
+
+        val allConnections = mutableSetOf<VertexId>()
+        getAllConnectionsRecursive(vertexId, allConnections)
+        allConnections.remove(vertexId)
+
+        return allConnections
+    }
+
+    private fun getAllConnectionsRecursive(
+        vertexId: VertexId,
+        connections: MutableSet<VertexId>
+    ) {
+        getConnections(vertexId).forEach { connectionId ->
+            if (connections.contains(connectionId)) return@forEach
+            connections.add(connectionId)
+            getAllConnectionsRecursive(connectionId, connections)
+        }
+    }
 }
 
 
