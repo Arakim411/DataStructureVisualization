@@ -10,8 +10,8 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultVisualizationEnginePresenterSetUp
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexInfo
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexMoveType.MoveBy
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElementShape
-import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 
@@ -23,10 +23,7 @@ import javax.inject.Inject
 class VisualizationBuilderPresenter @Inject constructor(
     val enginePresenter: VisualizationEnginePresenter,
 ) {
-
-    fun initialize(
-        coroutineScope: CoroutineScope,
-    ) {
+    fun initialize() {
         enginePresenter.initialize(
             setUp = DefaultVisualizationEnginePresenterSetUp,
         )
@@ -51,6 +48,18 @@ class VisualizationBuilderPresenter @Inject constructor(
     ) {
         val vertex = getVertexInfo(vertexId, title, position, shape)
         enginePresenter.createVertexWithEnterTransition(vertex, comparisons)
+    }
+
+    fun moveVertexWithConnections(vertexId: VertexId, transition: DpOffset) {
+        enginePresenter.apply {
+            val connections = getAllConnections(vertexId)
+
+            val vertexIdToMove = (listOf(vertexId) + connections).map { vertexId ->
+                vertexId to MoveBy(transition)
+            }
+
+            enginePresenter.moveVertexGroup(vertexIdToMove)
+        }
     }
 
     fun createConnection(

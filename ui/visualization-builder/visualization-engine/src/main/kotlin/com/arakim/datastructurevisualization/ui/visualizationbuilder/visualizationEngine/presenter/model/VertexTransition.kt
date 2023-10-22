@@ -14,7 +14,7 @@ sealed interface VertexTransition {
 
     data class MoveTransition(
         override val priority: Int = DefaultPriority,
-        val vertexGroup: List<Pair<VertexId, DpOffset>>,
+        val vertexsIdToMove: List<VertexId>,
     ) : VertexTransition
 
     companion object {
