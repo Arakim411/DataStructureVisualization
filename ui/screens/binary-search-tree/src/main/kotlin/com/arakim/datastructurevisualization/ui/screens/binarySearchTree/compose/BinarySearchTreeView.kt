@@ -31,7 +31,7 @@ import com.arakim.datastructurevisualization.ui.screens.binarysearchtree.R
 import com.arakim.datastructurevisualization.ui.screens.binarysearchtree.R.string
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.compose.VisualizationBuilder
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilderPresenter
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
 
 //TODO commons and refact0r
 
@@ -42,23 +42,23 @@ fun BinarySearchTreeView(
 ) {
     val state = presenter.stateFlow.collectAsStateWithLifecycle()
 
-        Crossfade(
-            targetState = state.value,
-            label = "",
-        ) { stateValue ->
-            when (stateValue) {
-                BinarySearchTreeState.ReadyState -> ReadyState(
-                    visualizationBuilderPresenter = presenter.visualizationBuilder.visualizationBuilderPresenter,
-                    navigationUiControllerState = navigationUiControllerState,
-                    onAction = presenter::onAction,
-                )
-            }
+    Crossfade(
+        targetState = state.value,
+        label = "",
+    ) { stateValue ->
+        when (stateValue) {
+            BinarySearchTreeState.ReadyState -> ReadyState(
+                visualizationBuilder = presenter.treeVisualizationBuilder.visualizationBuilder,
+                navigationUiControllerState = navigationUiControllerState,
+                onAction = presenter::onAction,
+            )
         }
+    }
 }
 
 @Composable
 private fun ReadyState(
-    visualizationBuilderPresenter: VisualizationBuilderPresenter,
+    visualizationBuilder: VisualizationBuilder,
     navigationUiControllerState: NavigationUiControllerState,
     onAction: (BinarySearchTreeAction) -> Unit,
 ) {
@@ -106,7 +106,7 @@ private fun ReadyState(
                 .fillMaxSize()
                 .padding(contentPadding)
         ) {
-            VisualizationBuilder(visualizationPresenter = visualizationBuilderPresenter)
+            VisualizationBuilder(visualizationPresenter = visualizationBuilder)
         }
     }
 }

@@ -1,21 +1,21 @@
-package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel
+package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-//TODO name
 @Immutable
-data class DrawStyle(
+data class DrawConfig(
     val elementStartPosition: DpOffset,
     val colors: DrawColors,
     val sizes: DrawSizes,
 ) {
     companion object {
-        val Default = DrawStyle(
+        val Default = DrawConfig(
             elementStartPosition = DpOffset(0.dp, 0.dp),
             colors = ColorsDefault,
             sizes = SizesDefault,
@@ -35,12 +35,12 @@ data class DrawColors(
 
 @Immutable
 data class DrawSizes(
-    val circleRadius: Float,
-    val squareEdgeSize: Float,
-    val elementStroke: Float,
-    val lineStroke: Float,
+    val circleRadius: Dp,
+    val squareEdgeSize: Dp,
+    val elementStroke: Dp,
+    val lineStroke: Dp,
     val textSize: TextUnit,
-    val arrowSize: Float
+    val arrowSize: Dp
 )
 
 private val ColorsDefault =
@@ -55,10 +55,10 @@ private val ColorsDefault =
 
 private val SizesDefault =
     DrawSizes(
-        circleRadius = 50f,
-        elementStroke = 4f,
-        lineStroke = 3f,
-        squareEdgeSize = 80f,
+        circleRadius = 15.dp,
+        elementStroke = 1.dp,
+        lineStroke = 1.5.dp,
+        squareEdgeSize = 10.dp,
         textSize = 12.sp,
-        arrowSize = 30f
+        arrowSize = 7.dp,
     )

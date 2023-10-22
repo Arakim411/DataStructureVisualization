@@ -1,17 +1,15 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.compose
 
 import androidx.compose.runtime.Composable
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilderPresenter
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.VisualizationEngine
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyle
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.VisualizationCore
 
 @Composable
 fun VisualizationBuilder(
-    visualizationPresenter: VisualizationBuilderPresenter,
+    visualizationPresenter: VisualizationBuilder,
 ) {
 
-    VisualizationEngine(
-        presenter = visualizationPresenter.enginePresenter,
-        drawStyle = DrawStyle.Default,
+    VisualizationCore(
+        presenter = visualizationPresenter.visualizationCore,
     )
 }

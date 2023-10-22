@@ -9,19 +9,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyle
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenter
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationCorePresenter
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.helper.TransitionHandlerHelper
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.helper.TransitionQueueHelper
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultVisualizationEnginePresenterSetUp
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexInfo
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElementShape.Circle
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultVisualizationSetUp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexInfo
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VisualizationElementShape.Circle
 
 // TODO make more and better previews
 @Composable
 internal fun rememberVisualizationEngineState() = remember {
-    VisualizationEnginePresenter(
+    VisualizationCorePresenter(
         transitionQueueHelper = TransitionQueueHelper(),
         transitionHandlerHelper = TransitionHandlerHelper(),
     )
@@ -32,13 +31,12 @@ internal fun rememberVisualizationEngineState() = remember {
 private fun VisualizationEnginePreview() {
     val state = rememberVisualizationEngineState().apply {
         initialize(
-            setUp = DefaultVisualizationEnginePresenterSetUp,
+            setUp = DefaultVisualizationSetUp,
         )
     }
 
-    VisualizationEngine(
+    VisualizationCore(
         presenter = state,
-        drawStyle = remember { DrawStyle.Default },
     )
 
 

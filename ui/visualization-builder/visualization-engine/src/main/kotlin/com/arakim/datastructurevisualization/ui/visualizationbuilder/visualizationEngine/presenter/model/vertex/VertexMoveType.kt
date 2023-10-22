@@ -1,4 +1,4 @@
-package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model
+package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex
 
 import androidx.compose.ui.unit.DpOffset
 

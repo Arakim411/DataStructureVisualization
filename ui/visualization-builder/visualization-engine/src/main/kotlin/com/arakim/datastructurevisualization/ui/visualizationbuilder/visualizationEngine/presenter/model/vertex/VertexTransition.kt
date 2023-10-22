@@ -1,4 +1,4 @@
-package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model
+package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex
 
 import androidx.compose.ui.unit.DpOffset
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
@@ -12,9 +12,9 @@ sealed interface VertexTransition {
         val comparisons: List<DpOffset>,
     ) : VertexTransition
 
-    data class MoveTransition(
+    data class GoToFinalPositionTransition(
         override val priority: Int = DefaultPriority,
-        val vertexsIdToMove: List<VertexId>,
+        val vertexsIds: List<VertexId>,
     ) : VertexTransition
 
     companion object {

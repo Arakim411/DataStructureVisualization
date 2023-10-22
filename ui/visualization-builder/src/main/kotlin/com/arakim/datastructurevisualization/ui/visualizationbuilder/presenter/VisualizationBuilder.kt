@@ -4,29 +4,29 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.DpOffset
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
+import com.arakim.datastructurevisualization.ui.util.mapToImmutable
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.helpers.toDpOffset
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.VertexPosition
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenter
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationCorePresenter
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultVisualizationEnginePresenterSetUp
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexInfo
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexMoveType.MoveBy
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElementShape
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultVisualizationSetUp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexInfo
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexMoveType.MoveBy
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VisualizationElementShape
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationSetUp
 import javax.inject.Inject
 
 
 //TODO as interface
 //TODO simplify with infix funs
 //TODO refactor names itd..
-//TODO inherit form VisualizationEnginePresenter instead of using it as dependency
+//TODO inherit form VisualizationCorePresenter instead of using it as dependency
 @Immutable
-class VisualizationBuilderPresenter @Inject constructor(
-    val enginePresenter: VisualizationEnginePresenter,
+class VisualizationBuilder @Inject constructor(
+    val visualizationCore: VisualizationCorePresenter,
 ) {
-    fun initialize() {
-        enginePresenter.initialize(
-            setUp = DefaultVisualizationEnginePresenterSetUp,
-        )
+    fun initialize(setUp: VisualizationSetUp = DefaultVisualizationSetUp  ) {
+        visualizationCore.initialize(setUp)
     }
 
     fun createVertex(
@@ -36,7 +36,7 @@ class VisualizationBuilderPresenter @Inject constructor(
         shape: VisualizationElementShape = VisualizationElementShape.Circle,
     ) {
         val vertex = getVertexInfo(vertexId, title, position, shape)
-        enginePresenter.createVertex(vertex)
+        visualizationCore.createVertex(vertex)
     }
 
     fun createVertexWithEnterTransition(
@@ -44,28 +44,31 @@ class VisualizationBuilderPresenter @Inject constructor(
         title: String,
         position: VertexPosition,
         shape: VisualizationElementShape = VisualizationElementShape.Circle,
-        comparisons: ImmutableList<DpOffset> = immutableListOf(),
+        comparisons: ImmutableList<VertexId> = immutableListOf(),
     ) {
         val vertex = getVertexInfo(vertexId, title, position, shape)
-        enginePresenter.createVertexWithEnterTransition(vertex, comparisons)
+        val comparisonsPositions = comparisons.mapToImmutable {
+            visualizationCore.getVertex(it)!!.element.finalPosition
+        }
+        visualizationCore.createVertexWithEnterTransition(vertex, comparisonsPositions)
     }
 
     fun moveVertexWithConnections(vertexId: VertexId, transition: DpOffset) {
-        enginePresenter.apply {
+        visualizationCore.apply {
             val connections = getAllConnections(vertexId)
 
             val vertexIdToMove = (listOf(vertexId) + connections).map { vertexId ->
                 vertexId to MoveBy(transition)
             }
 
-            enginePresenter.moveVertexGroup(vertexIdToMove)
+            visualizationCore.moveVertexGroup(vertexIdToMove)
         }
     }
 
     fun createConnection(
         from: VertexId,
         to: VertexId,
-    ) = enginePresenter.createConnection(from, to)
+    ) = visualizationCore.createConnection(from, to)
 
     private fun getVertexInfo(
         vertexId: VertexId,
@@ -75,7 +78,7 @@ class VisualizationBuilderPresenter @Inject constructor(
     ): VertexInfo {
 
         val getVertexLambda = { id: VertexId ->
-            enginePresenter.getVertex(id)
+            visualizationCore.getVertex(id)
                 ?: throw IllegalArgumentException(vertexId.vertexNotFoundErrorMessage())
         }
 

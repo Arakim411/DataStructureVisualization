@@ -7,25 +7,25 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyle
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElement
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElementShape
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.model.DrawConfigUiModel
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VisualizationElement
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VisualizationElementShape
 
 internal fun DrawScope.drawVisualizationElement(
     element: VisualizationElement,
     textMeasurer: TextMeasurer,
     center: Offset,
-    drawStyle: DrawStyle,
+    drawConfig: DrawConfigUiModel,
 ) {
     when (element.shape) {
         VisualizationElementShape.Circle -> drawElementCircleShape(
             center = center,
-            drawStyle = drawStyle,
+            drawConfig = drawConfig,
         )
 
         VisualizationElementShape.Square -> drawElementSquareShape(
             center = center,
-            drawStyle = drawStyle,
+            drawConfig = drawConfig,
         )
     }
 
@@ -33,62 +33,61 @@ internal fun DrawScope.drawVisualizationElement(
         title = element.title,
         textMeasurer = textMeasurer,
         center = center,
-        drawStyle = drawStyle,
+        drawConfig = drawConfig,
     )
 
 }
 
 private fun DrawScope.drawElementCircleShape(
     center: Offset,
-    drawStyle: DrawStyle,
+    drawConfig: DrawConfigUiModel,
 ) {
     drawCircle(
-        color = drawStyle.colors.elementBackground,
-        radius = drawStyle.sizes.circleRadius,
+        color = drawConfig.colors.elementBackground,
+        radius = drawConfig.sizes.circleRadius,
         center = center,
     )
 
     drawCircle(
-        color = drawStyle.colors.elementLineColor,
-        radius = drawStyle.sizes.circleRadius,
+        color = drawConfig.colors.elementLineColor,
+        radius = drawConfig.sizes.circleRadius,
         center = center,
-        style = Stroke(drawStyle.sizes.elementStroke),
+        style = Stroke(drawConfig.sizes.elementStroke),
     )
 }
 
 private fun DrawScope.drawElementSquareShape(
     center: Offset,
-    drawStyle: DrawStyle,
+    drawConfig: DrawConfigUiModel,
 ) {
-    val edgeSize = drawStyle.sizes.squareEdgeSize
-    val halfEdge = drawStyle.sizes.squareEdgeSize / 2
+    val edgeSize = drawConfig.sizes.squareEdgeSize
+    val halfEdge = drawConfig.sizes.squareEdgeSize / 2
 
     val topLeft = Offset(center.x - halfEdge, center.y - halfEdge)
 
     drawRect(
         topLeft = topLeft,
-        color = drawStyle.colors.elementBackground,
+        color = drawConfig.colors.elementBackground,
         size = Size(edgeSize, edgeSize)
     )
 
     drawRect(
         topLeft = topLeft,
-        color = drawStyle.colors.elementLineColor,
-        style = Stroke(drawStyle.sizes.elementStroke),
+        color = drawConfig.colors.elementLineColor,
+        style = Stroke(drawConfig.sizes.elementStroke),
         size = Size(edgeSize, edgeSize)
     )
-
 }
 
 private fun DrawScope.drawElementTitle(
     title: String,
     textMeasurer: TextMeasurer,
     center: Offset,
-    drawStyle: DrawStyle,
+    drawConfig: DrawConfigUiModel,
 ) {
     val measure = textMeasurer.measure(
         text = title,
-        style = TextStyle.Default.copy(fontSize = drawStyle.sizes.textSize),
+        style = TextStyle.Default.copy(fontSize = drawConfig.sizes.textSize),
     )
 
     val textTopLeft = Offset(
@@ -96,5 +95,5 @@ private fun DrawScope.drawElementTitle(
         y = center.y - measure.size.height / 2,
     )
 
-    drawText(measure, topLeft = textTopLeft, color = drawStyle.colors.textColor)
+    drawText(measure, topLeft = textTopLeft, color = drawConfig.colors.textColor)
 }

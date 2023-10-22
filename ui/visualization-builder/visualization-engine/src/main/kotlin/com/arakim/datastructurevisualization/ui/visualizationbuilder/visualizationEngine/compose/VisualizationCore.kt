@@ -1,11 +1,11 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose
 
-import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -19,8 +19,8 @@ import com.arakim.datastructurevisualization.ui.util.views.TransformableBox
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawConnection
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawVisualizationElement
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.toOffset
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyle
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenter
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.model.toUiModel
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationCorePresenter
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState.ComparingState
 
 //TODO performance check
@@ -32,22 +32,19 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 
 
 @Composable
-fun VisualizationEngine(
-    presenter: VisualizationEnginePresenter,
-    drawStyle: DrawStyle,
+fun VisualizationCore(
+    presenter: VisualizationCorePresenter,
 ) {
     TransformableBox {
-        VisualizationEngineView(
+        VisualizationCoreView(
             presenter = presenter,
-            drawStyle = drawStyle,
         )
     }
 }
 
 @Composable
-private fun VisualizationEngineView(
-    presenter: VisualizationEnginePresenter,
-    drawStyle: DrawStyle,
+private fun VisualizationCoreView(
+    presenter: VisualizationCorePresenter,
 ) {
     val density = LocalDensity.current
     val textMeasurer = rememberTextMeasurer()
@@ -55,8 +52,12 @@ private fun VisualizationEngineView(
     val shapeTransitionState = presenter.comparisonState.value
 
     val lifecycleOwner = LocalLifecycleOwner.current
-
     val coroutineScope = rememberCoroutineScope()
+
+    val drawConfig = remember(presenter.setUp.drawConfig) {
+        presenter.setUp.drawConfig.toUiModel(density)
+    }
+
     DisposableEffect(Unit) {
         val lifecycleObserver = LifecycleEventObserver { _, event ->
             when (event) {
@@ -92,14 +93,14 @@ private fun VisualizationEngineView(
                     drawConnection(
                         from = vertexPosition,
                         to = toPosition,
-                        drawStyle = drawStyle,
+                        drawConfig = drawConfig,
                     )
                 }
                 drawVisualizationElement(
                     element = vertex.element,
                     textMeasurer = textMeasurer,
                     center = vertexPosition,
-                    drawStyle = drawStyle,
+                    drawConfig = drawConfig,
                 )
             }
         },
@@ -109,10 +110,10 @@ private fun VisualizationEngineView(
         if (stateValue is ComparingState) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 drawCircle(
-                    color = drawStyle.colors.animShapeColor,
-                    radius = drawStyle.sizes.circleRadius,
+                    color = drawConfig.colors.animShapeColor,
+                    radius = drawConfig.sizes.circleRadius,
                     center = stateValue.position.value.toOffset(density),
-                    style = Stroke(drawStyle.sizes.elementStroke),
+                    style = Stroke(drawConfig.sizes.elementStroke),
                 )
             }
         }

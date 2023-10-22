@@ -2,54 +2,86 @@ package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presen
 
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.helpers.Side.Left
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.helpers.Side.None
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.helpers.Side.Right
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilderPresenter
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.helpers.model.InsertSide
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.helpers.model.InsertSide.Left
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.helpers.model.InsertSide.Right
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.helpers.model.NodeId
+import com.arakim.datastructurevisualization.ui.util.mapToImmutable
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.RelativePositionDistance
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.RelativePositionDistance.BelowOnLeft
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.RelativePositionDistance.BelowOnRight
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.VertexPosition
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationSetUp
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 @ViewModelScoped
 class BinarySearchTreeVisualizationBuilder @Inject constructor(
-    val visualizationBuilderPresenter: VisualizationBuilderPresenter,
+    val visualizationBuilder: VisualizationBuilder,
+    private val branchAlignHelper: BranchAlignHelper,
 ) : BinarySearchTree() {
 
-    fun initialize(coroutineScope: CoroutineScope) {
-        visualizationBuilderPresenter.initialize(coroutineScope)
+    lateinit var setUp: VisualizationSetUp
+
+    private val belowDistance by lazy { (setUp.drawConfig.sizes.circleRadius * 3f) }
+    private val horizontalDistance by lazy { (setUp.drawConfig.sizes.circleRadius * 3f) }
+
+    fun initialize(setUp: VisualizationSetUp) {
+        this.setUp = setUp
+        visualizationBuilder.initialize(setUp)
+        branchAlignHelper.initialize(
+            visualizationBuilder = visualizationBuilder,
+            horizontalAlignDistance = horizontalDistance,
+        )
     }
 
-    override fun onInserted(previous: Number?, inserted: Number, side: Side) {
-        if (previous == null) {
-            visualizationBuilderPresenter.createVertexWithEnterTransition(
-                vertexId = VertexId(inserted.toString()),
-                position = VertexPosition.CoordinatesPosition(DpOffset(200.dp, 100.dp)),
-                title = inserted.toString(),
-            )
-        } else {
-            visualizationBuilderPresenter.createVertexWithEnterTransition(
-                vertexId = VertexId(inserted.toString()),
-                position = VertexPosition.RelativePosition(
-                    relativeVertexId = VertexId(previous.toString()),
-                    relativePositionDistance = side.getRelativePosition()
-                ),
-                title = inserted.toString(),
-            )
-            visualizationBuilderPresenter.createConnection(
-                from = VertexId(previous.toString()),
-                to = VertexId(inserted.toString()),
-            )
-        }
+    override fun onRootInserted(node: Node) {
+        visualizationBuilder.createVertexWithEnterTransition(
+            vertexId = node.toVertexId(),
+            //TODO should be at middle of screen, compose needs to initialize it
+            position = VertexPosition.CoordinatesPosition(DpOffset(200.dp, 100.dp)),
+            title = node.title(),
+        )
     }
 
-    private fun Side.getRelativePosition(): RelativePositionDistance = when (this) {
-        Left -> BelowOnLeft(belowDistance = 50.dp, leftDistance = 35.dp)
-        Right -> BelowOnRight(belowDistance = 50.dp, rightDistance = 35.dp)
-        None -> TODO()
+    override fun onNodeInserted(
+        node: Node,
+        rootInsertSide: InsertSide,
+        traveledNodes: Set<NodeId>,
+    ) {
+        visualizationBuilder.createVertexWithEnterTransition(
+            vertexId = node.toVertexId(),
+            position = VertexPosition.RelativePosition(
+                relativeVertexId = node.parent!!.toVertexId(),
+                relativePositionDistance = node.insertSide!!.getRelativePosition()
+            ),
+            title = node.title(),
+            comparisons = traveledNodes.mapToImmutable { it.toVertexId() }
+        )
+        visualizationBuilder.createConnection(
+            from = node.parent.toVertexId(),
+            to = node.toVertexId(),
+        )
+
+        branchAlignHelper.alignTreeIfNeeded(node, rootInsertSide)
     }
+
+    private fun InsertSide.getRelativePosition(): RelativePositionDistance = when (this) {
+        Left -> BelowOnLeft(belowDistance = belowDistance, leftDistance = horizontalDistance)
+        Right -> BelowOnRight(belowDistance = belowDistance, rightDistance = horizontalDistance)
+    }
+}
+
+fun Node.toVertexId(): VertexId = id.toVertexId()
+fun NodeId.toVertexId(): VertexId = VertexId(value)
+
+fun Node.title(): String {
+    val valueFloat = value.toFloat()
+    val valueInt = value.toInt()
+
+    return if (valueFloat > valueInt)
+        valueFloat.toString() else
+        valueInt.toString()
 }

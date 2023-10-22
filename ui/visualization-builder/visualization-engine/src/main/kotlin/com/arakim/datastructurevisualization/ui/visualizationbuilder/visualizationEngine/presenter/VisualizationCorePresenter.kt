@@ -10,22 +10,22 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.helper.TransitionQueueHelper
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState.IdleState
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexInfo
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexMoveType
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexMoveType.MoveBy
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexMoveType.MoveTo
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.Companion.DefaultPriority
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.Companion.HighPriority
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.EnterTransition
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VertexTransition.MoveTransition
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationElement
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationEnginePresenterSetUp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexInfo
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexMoveType
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexMoveType.MoveBy
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexMoveType.MoveTo
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.Companion.DefaultPriority
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.Companion.HighPriority
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.EnterTransition
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.GoToFinalPositionTransition
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VisualizationElement
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationSetUp
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 typealias Transition = DpOffset
 
-class VisualizationEnginePresenter @Inject constructor(
+class VisualizationCorePresenter @Inject constructor(
     private val transitionQueueHelper: TransitionQueueHelper,
     private val transitionHandlerHelper: TransitionHandlerHelper,
 ) : DirectionalVisualizationGraph() {
@@ -35,9 +35,9 @@ class VisualizationEnginePresenter @Inject constructor(
     //it's okay until we remember to clear it when composition is finished
     internal var composeCoroutineScope: CoroutineScope? = null
 
-    lateinit var setUp: VisualizationEnginePresenterSetUp
+    lateinit var setUp: VisualizationSetUp
 
-    fun initialize(setUp: VisualizationEnginePresenterSetUp) {
+    fun initialize(setUp: VisualizationSetUp) {
         this.setUp = setUp
 
         transitionQueueHelper.initialize(
@@ -64,8 +64,8 @@ class VisualizationEnginePresenter @Inject constructor(
     ) {
         updateVertexFinalPositions(vertexIdToMove)
         transitionQueueHelper.addToQueue(
-            MoveTransition(
-                vertexsIdToMove = vertexIdToMove.map { it.first },
+            GoToFinalPositionTransition(
+                vertexsIds = vertexIdToMove.map { it.first },
                 priority = if (immediately) HighPriority else DefaultPriority,
             )
         )

@@ -1,4 +1,4 @@
-package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model
+package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector2D

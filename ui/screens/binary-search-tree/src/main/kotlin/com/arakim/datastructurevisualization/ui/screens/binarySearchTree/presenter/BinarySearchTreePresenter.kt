@@ -6,6 +6,8 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.ReadyState
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.helpers.BinarySearchTreeVisualizationBuilder
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.reducers.UpdateTreeReducer
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultVisualizationSetUp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationSetUp
 import javax.inject.Inject
 
 internal typealias State = BinarySearchTreeState
@@ -13,7 +15,7 @@ typealias Action = BinarySearchTreeAction
 
 @Stable
 class BinarySearchTreePresenter @Inject constructor(
-    val visualizationBuilder: BinarySearchTreeVisualizationBuilder,
+    val treeVisualizationBuilder: BinarySearchTreeVisualizationBuilder,
     updateTreeReducer: UpdateTreeReducer,
 ) : ReducerPresenter<State, Action>(ReadyState) {
 
@@ -23,7 +25,8 @@ class BinarySearchTreePresenter @Inject constructor(
 
     override fun onInitialized() {
         super.onInitialized()
-        visualizationBuilder.initialize(coroutineScope)
+        //TODO dp values depends of screen
+        treeVisualizationBuilder.initialize(DefaultVisualizationSetUp)
     }
 
 }
