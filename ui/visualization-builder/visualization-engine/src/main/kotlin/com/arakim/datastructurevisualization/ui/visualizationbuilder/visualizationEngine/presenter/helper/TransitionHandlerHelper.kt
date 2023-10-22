@@ -62,7 +62,7 @@ class TransitionHandlerHelper @Inject constructor() {
     private suspend fun VisualizationEnginePresenter.handleMoveTransition(moveTransition: MoveTransition) {
         coroutineScope {
             var lastJob: Job? = null
-            moveTransition.vertexGroup.forEach { vertexIdToPosition ->
+            moveTransition.vertexsIdToMove.forEach { vertexIdToPosition ->
                 lastJob = launch {
                     handleMove(vertexIdToPosition)
                 }
@@ -72,12 +72,12 @@ class TransitionHandlerHelper @Inject constructor() {
     }
 
     private suspend fun VisualizationEnginePresenter.handleMove(
-        vertexIdToPosition: Pair<VertexId, DpOffset>
+        vertexId: VertexId
     ) {
-        requireNotNull(vertexStateMap[vertexIdToPosition.first]).element.apply {
+        requireNotNull(vertexStateMap[vertexId]).element.apply {
             isVisible = true
             position.animateTo(
-                vertexIdToPosition.second,
+                finalPosition,
                 tween(setUp.comparisonTransitionTime.inWholeMilliseconds.toInt())
             )
         }

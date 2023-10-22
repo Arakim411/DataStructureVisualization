@@ -6,11 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.uiModel.DrawStyle
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationEnginePresenter
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
@@ -65,20 +63,26 @@ private fun VisualizationEnginePreview() {
             )
         )
 
-        state.createVertexWithEnterTransition(
+        state.createVertex(
             VertexInfo(
                 id = VertexId("3"),
                 title = "3",
                 position = DpOffset(150.dp, 300.dp),
                 shape = Circle,
             ),
-            comparisons = immutableListOf(
-                DpOffset(100.dp, 100.dp),
-                DpOffset(100.dp, 200.dp),
-                DpOffset(150.dp, 300.dp)
             )
+        state.createVertex(
+            VertexInfo(
+                id = VertexId("4"),
+                title = "4",
+                position = DpOffset(150.dp, 350.dp),
+                shape = Circle,
+            ),
         )
         state.createConnection(VertexId("1"), VertexId("3"))
+        state.createConnection(VertexId("1"), VertexId("2"))
+        state.createConnection(VertexId("3"), VertexId("4"))
+        state.createConnection(VertexId("4"), VertexId("1"))
     }
 
     Row {
@@ -101,15 +105,11 @@ private fun VisualizationEnginePreview() {
         }
         Button(
             onClick = {
-                state.moveVertexGroup(
-                    listOf(
-                        VertexId("1") to randomDp(),
-                        VertexId("2") to randomDp(),
-                    )
-                )
+                state.getAllConnections(VertexId(("1")))
+
             },
         ) {
-            Text(text = "move")
+            Text(text = "get all connections")
         }
     }
 

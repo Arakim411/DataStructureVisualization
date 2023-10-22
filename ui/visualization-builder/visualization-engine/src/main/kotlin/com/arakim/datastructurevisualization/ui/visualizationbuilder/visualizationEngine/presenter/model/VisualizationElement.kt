@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.DpOffset
 data class VisualizationElement(
     val title: String,
     val position: Animatable<DpOffset, AnimationVector2D>,
-    val finalPosition: DpOffset,
+    var finalPosition: DpOffset,
     val shape: VisualizationElementShape,
     var isVisible: Boolean,
 )
