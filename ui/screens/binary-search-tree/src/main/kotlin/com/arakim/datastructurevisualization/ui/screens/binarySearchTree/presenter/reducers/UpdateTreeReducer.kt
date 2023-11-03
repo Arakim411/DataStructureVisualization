@@ -9,7 +9,7 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.InsertAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.ReadyState
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.State
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.helpers.BinarySearchTreeVisualizationBuilder
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.BinarySearchTreeVisualizationBuilder
 import javax.inject.Inject
 
 class UpdateTreeReducer @Inject constructor(
@@ -22,10 +22,18 @@ class UpdateTreeReducer @Inject constructor(
 
     private fun ReadyState.reduceUpdateTreeAction(action: UpdateTreeAction): State {
         when (action) {
-            is DeleteAction -> Unit
+            is DeleteAction -> visualizationBuilder.delete(action.value)
             is FindAction -> Unit
             is InsertAction ->  visualizationBuilder.insert(action.value)
         }
         return this
     }
 }
+
+// delete 35, 36 - zle przesuniecie
+
+// delete 54 - zle przesuniecie
+
+// delte 50 - zle dopasowanie
+
+// add 37, delete 29, 34, 35

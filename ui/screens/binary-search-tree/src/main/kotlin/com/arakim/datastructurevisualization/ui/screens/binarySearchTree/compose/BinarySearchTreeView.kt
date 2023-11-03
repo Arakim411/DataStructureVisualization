@@ -8,6 +8,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +33,11 @@ import com.arakim.datastructurevisualization.ui.screens.binarysearchtree.R.strin
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.compose.VisualizationBuilder
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.random.Random
+import kotlin.random.Random.Default
 
 //TODO commons and refact0r
 
@@ -41,6 +47,16 @@ fun BinarySearchTreeView(
     navigationUiControllerState: NavigationUiControllerState
 ) {
     val state = presenter.stateFlow.collectAsStateWithLifecycle()
+
+    presenter.treeVisualizationBuilder.insert(0)
+
+    LaunchedEffect(Unit) {
+        for(i in 0 until 20){
+            val random = Random.nextInt(from = -200, until = 200)
+            presenter.treeVisualizationBuilder.insert(random)
+        }
+
+    }
 
     Crossfade(
         targetState = state.value,
