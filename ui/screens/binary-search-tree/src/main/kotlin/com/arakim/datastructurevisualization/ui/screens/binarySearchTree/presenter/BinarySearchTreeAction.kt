@@ -7,5 +7,4 @@ sealed interface BinarySearchTreeAction {
         data class DeleteAction(val value: Number) : UpdateTreeAction
         data class FindAction(val value: Number) : UpdateTreeAction
     }
-
 }
