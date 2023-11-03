@@ -17,15 +17,16 @@ import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.LifecycleEventObserver
 import com.arakim.datastructurevisualization.ui.util.views.TransformableBox
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawConnection
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawElementTitle
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.drawVisualizationElement
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.helper.toOffset
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.model.toUiModel
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationCorePresenter
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState.ComparingState
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.TextTransitionState.MovingState
 
 //TODO performance check
 //TODO anime arrow
-//TODO learn more about gestures and apply to improve managing canvas size
 //TODO play with path effect when you finish
 //TODO make use of it more declarative with .() and infix
 //TODO add auto scale when elements can't fit into screen
@@ -50,6 +51,7 @@ private fun VisualizationCoreView(
     val textMeasurer = rememberTextMeasurer()
 
     val shapeTransitionState = presenter.comparisonState.value
+    val textTransition = presenter.textTransitionState.value
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
@@ -86,9 +88,10 @@ private fun VisualizationCoreView(
 
                 connections?.forEach { idOfConnection ->
                     val vertexToConnect = presenter.vertexStateMap[idOfConnection]
+                    if(vertexToConnect?.element?.showIncomingConnections == false) return@forEach
                     if (vertexToConnect?.element?.isVisible == false && !vertexToConnect.element.position.isRunning) return@forEach
-                    val toPosition = vertexToConnect?.element?.position?.value?.toOffset(density)
-                        ?: return@forEach
+                    val toPosition =
+                        vertexToConnect?.element?.position?.value?.toOffset(density) ?: return@forEach
 
                     drawConnection(
                         from = vertexPosition,
@@ -105,6 +108,18 @@ private fun VisualizationCoreView(
             }
         },
     )
+    Crossfade(textTransition, label = "") { stateValue ->
+        if (stateValue is MovingState) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                drawElementTitle(
+                    title = stateValue.text,
+                    center = stateValue.position.value.toOffset(density),
+                    drawConfig = drawConfig,
+                    textMeasurer = textMeasurer,
+                )
+            }
+        }
+    }
 
     Crossfade(shapeTransitionState, label = "") { stateValue ->
         if (stateValue is ComparingState) {
