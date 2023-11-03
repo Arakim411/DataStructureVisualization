@@ -9,8 +9,10 @@ data class VisualizationElement(
     val title: String,
     val position: Animatable<DpOffset, AnimationVector2D>,
     var finalPosition: DpOffset,
+    var shotTitle: Boolean,
     val shape: VisualizationElementShape,
     var isVisible: Boolean,
+    var showIncomingConnections: Boolean,
 )
 
 @Immutable

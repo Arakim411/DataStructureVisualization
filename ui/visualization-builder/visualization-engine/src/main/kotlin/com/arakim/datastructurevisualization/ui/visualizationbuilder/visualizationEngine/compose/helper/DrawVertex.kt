@@ -29,12 +29,14 @@ internal fun DrawScope.drawVisualizationElement(
         )
     }
 
-    drawElementTitle(
-        title = element.title,
-        textMeasurer = textMeasurer,
-        center = center,
-        drawConfig = drawConfig,
-    )
+    if (element.shotTitle) {
+        drawElementTitle(
+            title = element.title,
+            textMeasurer = textMeasurer,
+            center = center,
+            drawConfig = drawConfig,
+        )
+    }
 
 }
 
@@ -79,7 +81,7 @@ private fun DrawScope.drawElementSquareShape(
     )
 }
 
-private fun DrawScope.drawElementTitle(
+ fun DrawScope.drawElementTitle(
     title: String,
     textMeasurer: TextMeasurer,
     center: Offset,

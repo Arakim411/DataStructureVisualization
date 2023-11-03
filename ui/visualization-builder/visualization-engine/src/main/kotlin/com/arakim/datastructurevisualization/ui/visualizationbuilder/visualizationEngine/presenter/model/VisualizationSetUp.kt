@@ -13,8 +13,8 @@ data class VisualizationSetUp(
 )
 
 val DefaultVisualizationSetUp = VisualizationSetUp(
-    vertexTransitionTime = 1.seconds,
-    comparisonTransitionTime = 1.seconds,
+    vertexTransitionTime = 0.5.seconds,
+    comparisonTransitionTime = 0.5.seconds,
     enterTransStartPosition = DpOffset(50.dp, 50.dp),
     drawConfig = DrawConfig.Default,
 )

@@ -87,14 +87,14 @@ private fun VisualizationEnginePreview() {
         Button(onClick = {
 
             val id = VertexId(index.toString())
-            state.createVertexWithEnterTransition(
-                VertexInfo(
-                    id = id,
-                    title = index.toString(),
-                    position = randomDp(),
-                    shape = Circle,
-                )
-            )
+//            state.createVertexWithEnterTransition(
+//                VertexInfo(
+//                    id = id,
+//                    title = index.toString(),
+//                    position = randomDp(),
+//                    shape = Circle,
+//                )
+//            )
             state.createConnection(VertexId("1"), id)
             state.createConnection(VertexId("2"), id)
             index++
@@ -103,7 +103,7 @@ private fun VisualizationEnginePreview() {
         }
         Button(
             onClick = {
-                state.getAllConnections(VertexId(("1")))
+                state.getAllOutGoingConnections(VertexId(("1")))
 
             },
         ) {

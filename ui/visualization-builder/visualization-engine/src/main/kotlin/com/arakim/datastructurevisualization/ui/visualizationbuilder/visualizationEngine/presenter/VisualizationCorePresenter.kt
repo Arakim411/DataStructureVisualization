@@ -1,29 +1,17 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.unit.DpOffset
-import com.arakim.datastructurevisualization.ui.util.ImmutableList
-import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.DirectionalVisualizationGraph
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.helper.TransitionHandlerHelper
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.helper.TransitionQueueHelper
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.ComparisonState.IdleState
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexInfo
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexMoveType
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexMoveType.MoveBy
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexMoveType.MoveTo
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.Companion.DefaultPriority
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.Companion.HighPriority
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.EnterTransition
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition.GoToFinalPositionTransition
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VisualizationElement
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.TextTransitionState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationSetUp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.TransitionGroup
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VertexTransition
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
-
-typealias Transition = DpOffset
 
 class VisualizationCorePresenter @Inject constructor(
     private val transitionQueueHelper: TransitionQueueHelper,
@@ -31,6 +19,7 @@ class VisualizationCorePresenter @Inject constructor(
 ) : DirectionalVisualizationGraph() {
 
     val comparisonState = mutableStateOf<ComparisonState>(IdleState)
+    val textTransitionState = mutableStateOf<TextTransitionState>(TextTransitionState.IdleState)
 
     //it's okay until we remember to clear it when composition is finished
     internal var composeCoroutineScope: CoroutineScope? = null
@@ -54,52 +43,8 @@ class VisualizationCorePresenter @Inject constructor(
         composeCoroutineScope = null
     }
 
-    fun moveVertex(id: VertexId, moveType: VertexMoveType) {
-        moveVertexGroup(listOf(id to moveType))
-    }
-
-    fun moveVertexGroup(
-        vertexIdToMove: List<Pair<VertexId, VertexMoveType>>,
-        immediately: Boolean = false,
-    ) {
-        updateVertexFinalPositions(vertexIdToMove)
-        transitionQueueHelper.addToQueue(
-            GoToFinalPositionTransition(
-                vertexsIds = vertexIdToMove.map { it.first },
-                priority = if (immediately) HighPriority else DefaultPriority,
-            )
-        )
+    fun addTransitionToQueue(vararg actionTransitions: VertexTransition) {
+        transitionQueueHelper.addToQueue(TransitionGroup(actionTransitions.toList()))
         with(transitionQueueHelper) { tryEmptyTransitionQueue() }
     }
-
-    fun createVertexWithEnterTransition(
-        vertexInfo: VertexInfo,
-        comparisons: ImmutableList<DpOffset> = immutableListOf(),
-    ) {
-        super.createVertex(
-            vertexInfo = vertexInfo,
-            hasEnterTransition = true,
-        )
-        transitionQueueHelper.addToQueue(
-            EnterTransition(
-                vertexId = vertexInfo.id,
-                comparisons = comparisons,
-            )
-        )
-        with(transitionQueueHelper) { tryEmptyTransitionQueue() }
-    }
-
-    private fun updateVertexFinalPositions(vertexIdToMove: List<Pair<VertexId, VertexMoveType>>) {
-        vertexIdToMove.forEach { (vertexId, moveType) ->
-            val element = vertexStateMap[vertexId]?.element!!
-            element.finalPosition = element.getPositionAfterMove(moveType)
-        }
-    }
-
-    private fun VisualizationElement.getPositionAfterMove(moveType: VertexMoveType): DpOffset =
-        when (moveType) {
-            is MoveBy -> finalPosition + moveType.dpOffset
-            is MoveTo -> moveType.dpOffset
-        }
-
 }

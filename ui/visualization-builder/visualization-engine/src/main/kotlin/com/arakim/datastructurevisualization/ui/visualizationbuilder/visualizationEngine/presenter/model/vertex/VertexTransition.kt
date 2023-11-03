@@ -1,24 +1,21 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex
 
-import androidx.compose.ui.unit.DpOffset
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.VisualizationCorePresenter
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.helper.TransitionScope.HandleTransitionScope
 
 sealed interface VertexTransition {
-    val priority: Int
+    val invokeBefore: (VisualizationCorePresenter.() -> Unit)?
+    val invokeAfter: (VisualizationCorePresenter.() -> Unit)?
 
-    data class EnterTransition(
-        override val priority: Int = DefaultPriority,
-        val vertexId: VertexId,
-        val comparisons: List<DpOffset>,
+    data class ActionTransition(
+        val action: suspend HandleTransitionScope.(VisualizationCorePresenter) -> Unit,
+        override val invokeBefore: (VisualizationCorePresenter.() -> Unit)? = null,
+        override val invokeAfter: (VisualizationCorePresenter.() -> Unit)? = null,
     ) : VertexTransition
-
-    data class GoToFinalPositionTransition(
-        override val priority: Int = DefaultPriority,
-        val vertexsIds: List<VertexId>,
-    ) : VertexTransition
-
-    companion object {
-        const val DefaultPriority = 0
-        const val HighPriority = 1
-    }
 }
+
+data class TransitionGroup(
+    val transitions: List<VertexTransition>,
+)
+
+
