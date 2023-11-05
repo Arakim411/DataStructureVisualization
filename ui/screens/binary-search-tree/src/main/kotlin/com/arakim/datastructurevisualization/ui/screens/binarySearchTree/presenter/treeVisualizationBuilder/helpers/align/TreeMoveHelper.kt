@@ -6,10 +6,8 @@ import androidx.compose.ui.unit.dp
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.BinarySearchTree
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.firstAboveInsertedOnLeft
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.firstAboveInsertedOnRight
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.firstWithNumberOnLeft
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.firstWithNumberOnRight
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.firstWithInsertedOnRight
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.getWithAllChildNodes
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.isLessThen
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.InsertSide
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.InsertSide.Left
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.InsertSide.Right
@@ -73,27 +71,23 @@ abstract class TreeMoveHelper constructor(
         }
 
         //root: left, parent: left
-        private fun alignForInsertedOnLeft(insertedNode: Node, distance: Dp) {
+        private fun alignForInsertedOnLeft(node: Node, distance: Dp) {
+            if (binarySearchTree.root.left?.id == node.id) return
 
-            val firstWithNumberOnRight = binarySearchTree.root.left?.firstWithNumberOnRight(
-                insertedNode.value
-            ) ?: return
+            var nodeToMove: Node? = node.firstAboveInsertedOnRight()?.parent ?: return
 
-            moveWithOneSideConnections(
-                node = firstWithNumberOnRight,
-                distance = distance,
-                side = Left,
-            )
-
-            var nextToMove: Node? = firstWithNumberOnRight
-            do {
-                nextToMove = nextToMove?.right?.left?.firstWithNumberOnRight(
-                    insertedNode.value
-                )?.also {
-                    moveWithOneSideConnections(node = it, distance = distance, side = Left)
+            while (nodeToMove != null) {
+                val nodeToMoves = mutableSetOf(nodeToMove).apply {
+                    addAll(nodeToMove!!.left?.getWithAllChildNodes() ?: emptyList())
+                    nodeToMove = nodeToMove!!.firstAboveInsertedOnRight()?.parent
                 }
-            } while (nextToMove != null)
 
+                visualizationBuilder.addTransitionHelper.moveVertexGroupTransition(
+                    vertexIdToMove = nodeToMoves.map {
+                        it.toVertexId() to MoveBy(DpOffset(distance, 0.dp))
+                    }
+                )
+            }
         }
     }
 
@@ -122,25 +116,23 @@ abstract class TreeMoveHelper constructor(
         }
 
         //root: right, parent: right
-        private fun alignForInsertedOnRight(insertedNode: Node, distance: Dp) {
-            val firstWithNumberOnLeft = binarySearchTree.root.right?.firstWithNumberOnLeft(
-                insertedNode.value
-            ) ?: return
+        private fun alignForInsertedOnRight(node: Node, distance: Dp) {
+            if (binarySearchTree.root.right?.id == node.id) return
 
-            moveWithOneSideConnections(
-                node = firstWithNumberOnLeft,
-                distance = distance,
-                side = Right,
-            )
+            var nodeToMove: Node? = node.firstAboveInsertedOnLeft()?.parent ?: return
 
-            var nextToMove: Node? = firstWithNumberOnLeft
-            do {
-                nextToMove = nextToMove?.left?.right?.firstWithNumberOnLeft(
-                    insertedNode.value
-                )?.also {
-                    moveWithOneSideConnections(node = it, distance = distance, side = Right)
+            while (nodeToMove != null) {
+                val nodeToMoves = mutableSetOf(nodeToMove).apply {
+                    addAll(nodeToMove!!.right?.getWithAllChildNodes() ?: emptyList())
+                    nodeToMove = nodeToMove!!.firstAboveInsertedOnLeft()?.parent
                 }
-            } while (nextToMove != null)
+
+                visualizationBuilder.addTransitionHelper.moveVertexGroupTransition(
+                    vertexIdToMove = nodeToMoves.map {
+                        it.toVertexId() to MoveBy(DpOffset(distance, 0.dp))
+                    }
+                )
+            }
         }
     }
 

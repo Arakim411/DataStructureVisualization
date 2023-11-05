@@ -71,12 +71,14 @@ fun Node.firstAboveInsertedOnLeft(): Node? =
         null -> null
     }
 
-fun Node.firstWithNumberOnLeft(number: Number): Node? = when {
-    number isLessThen value -> this
-    else -> right?.firstWithNumberOnLeft(number)
+fun Node.firstWithInsertedOnLeft(node: Node): Node? = when {
+    node.value isLessThen value -> this
+    else -> right?.firstWithInsertedOnLeft(node)
 }
 
-fun Node.firstWithNumberOnRight(number: Number): Node? = when {
-    number isLessThen value -> left?.firstWithNumberOnRight(number)
-    else -> this
+fun Node.firstWithInsertedOnRight(node: Node): Node? {
+    return when {
+        node.value isGreaterOrEquals value && node.id != id -> this
+        else -> left?.firstWithInsertedOnRight(node)
+    }
 }
