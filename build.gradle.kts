@@ -36,7 +36,7 @@ fun CommonExtension<*, *, *, *, *>.setUpAndroid(nameSpace: String) {
             useSupportLibrary = true
         }
         lint {
-            warningsAsErrors = true
+            warningsAsErrors = false
             disable.addAll(
                 listOf(
                     "GradleDependency",

@@ -1,5 +1,6 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.helpers
 
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.BinarySearchTree
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.BinarySearchTreeListener
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.childrenCount
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.find
@@ -14,14 +15,24 @@ import javax.inject.Inject
 
 class HandleTreeNodeDeletionHelper @Inject constructor() {
 
+    lateinit var binarySearchTree: BinarySearchTree
+
+    fun initialize(binarySearchTree: BinarySearchTree) {
+        this.binarySearchTree = binarySearchTree
+    }
+
     operator fun invoke(
-        root: Node,
         numberToDelete: Number,
         listeners: Set<BinarySearchTreeListener>,
     ) {
+        val localRoot = binarySearchTree.root ?: return
         val traveledNodes = mutableSetOf<NodeId>()
-        val nodeToDelete = root.find(numberToDelete, traveledNodes) ?: return
+        val nodeToDelete = localRoot.find(numberToDelete, traveledNodes) ?: return
 
+        val rootInsertSide = when (nodeToDelete.id) {
+            localRoot.id -> null
+            else -> localRoot.getInsertSide(numberToDelete)
+        }
         when (nodeToDelete.childrenCount()) {
             2 -> deleteNodeWith2Children(
                 nodeToDelete = nodeToDelete,
@@ -33,14 +44,14 @@ class HandleTreeNodeDeletionHelper @Inject constructor() {
                 nodeToDelete = nodeToDelete,
                 listeners = listeners,
                 traveledNodes = traveledNodes,
-                rootInsertSide = root.getInsertSide(numberToDelete),
+                rootInsertSide = rootInsertSide,
             )
 
             0 -> deleteNodeWith0Children(
                 nodeToDelete = nodeToDelete,
                 listeners = listeners,
                 traveledNodes = traveledNodes,
-                rootInsertSide = root.getInsertSide(numberToDelete),
+                rootInsertSide = rootInsertSide,
             )
         }
     }
@@ -89,9 +100,14 @@ class HandleTreeNodeDeletionHelper @Inject constructor() {
         nodeToDelete: Node,
         listeners: Set<BinarySearchTreeListener>,
         traveledNodes: Set<NodeId>,
-        rootInsertSide: InsertSide,
+        rootInsertSide: InsertSide?,
     ) {
         val child = nodeToDelete.left ?: nodeToDelete.right!!
+
+        if (nodeToDelete.id == binarySearchTree.root?.id) {
+            binarySearchTree.root = child
+        }
+
         listeners.forEach {
             it.on1ChildNodeDeleted(
                 node = nodeToDelete,
@@ -124,8 +140,12 @@ class HandleTreeNodeDeletionHelper @Inject constructor() {
         nodeToDelete: Node,
         listeners: Set<BinarySearchTreeListener>,
         traveledNodes: Set<NodeId>,
-        rootInsertSide: InsertSide,
+        rootInsertSide: InsertSide?,
     ) {
+        if (nodeToDelete.id == binarySearchTree.root?.id) {
+            binarySearchTree.root = null
+        }
+
         listeners.forEach { listener ->
             listener.on0ChildNodeDeleted(
                 node = nodeToDelete,
