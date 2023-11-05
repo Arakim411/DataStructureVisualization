@@ -1,12 +1,13 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.align
 
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.isLessThen
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.InsertSide
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.InsertSide.Left
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.InsertSide.Right
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.Node
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.NodeId
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.toVertexId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
@@ -43,7 +44,7 @@ class AlignNodeDeletion @Inject constructor(
 
     fun align1ChildNodeDeleted(
         node: Node,
-        newConnection: NodeId,
+        newConnection: Node,
         rootInsertSide: InsertSide,
         deletedNodePosition: DpOffset,
     ) {
@@ -57,8 +58,7 @@ class AlignNodeDeletion @Inject constructor(
             rootInsertSide = rootInsertSide,
             distance = if (rootInsertSide == Left) horizontalAlignDistance else -horizontalAlignDistance,
         )
-
-        moveToOtherNodePosition(
+        alignNewConnectionNode(
             deletedNode = node,
             newConnection = newConnection,
             deletedNodePosition = deletedNodePosition,
@@ -66,33 +66,68 @@ class AlignNodeDeletion @Inject constructor(
         )
     }
 
-    fun moveToOtherNodePosition(
+    private fun alignNewConnectionNode(
         deletedNode: Node,
-        newConnection: NodeId,
+        newConnection: Node,
         deletedNodePosition: DpOffset,
         rootInsertSide: InsertSide,
     ) {
 
         val newConnectionPosition = getFinalPosition(newConnection.toVertexId())
-        val parentPosition = getFinalPosition(deletedNode.parent?.id?.toVertexId()!!)
 
-        val differenceY = deletedNodePosition.y - newConnectionPosition.y
-        var differenceX = parentPosition.x - newConnectionPosition.x
+        val y = deletedNodePosition.y - newConnectionPosition.y
+        var x = when (rootInsertSide) {
+            Left -> getXForRootLeft(
+                deletedNode = deletedNode,
+                newConnection = newConnection,
+            )
 
-        differenceX += when (deletedNode.insertSide) {
-            Left -> -horizontalAlignDistance
-            Right -> horizontalAlignDistance
-            null -> 0.dp
+            Right -> getXForRootRight(
+                deletedNode = deletedNode,
+                newConnection = newConnection,
+            )
         }
 
         visualizationBuilder.addTransitionHelper.moveVertexWithConnectionsTransition(
-            newConnection.toVertexId(),
-            DpOffset(
-                differenceX,
-                differenceY,
+            vertexId = newConnection.toVertexId(),
+            transition = DpOffset(
+                x = x,
+                y = y,
             ),
         )
     }
+
+    private fun getXForRootRight(deletedNode: Node, newConnection: Node): Dp =
+        when (deletedNode.insertSide) {
+            Left -> when {
+                newConnection.value isLessThen deletedNode.value -> horizontalAlignDistance
+                else -> 0.dp
+            }
+
+            Right -> when {
+                newConnection.value isLessThen deletedNode.value -> 0.dp
+                else -> -horizontalAlignDistance
+            }
+
+            null -> 0.dp
+        }
+
+    private fun getXForRootLeft(deletedNode: Node, newConnection: Node): Dp =
+        when (deletedNode.insertSide) {
+            Left -> when {
+                newConnection.value isLessThen deletedNode.value -> horizontalAlignDistance
+                else -> 0.dp
+            }
+
+            Right -> when {
+                newConnection.value isLessThen deletedNode.value -> 0.dp
+                else -> -horizontalAlignDistance
+            }
+
+            null -> 0.dp
+        }
+
+
     private fun getFinalPosition(
         vertexId: VertexId
     ): DpOffset = visualizationBuilder.visualizationCore.getFinalPosition(vertexId)!!

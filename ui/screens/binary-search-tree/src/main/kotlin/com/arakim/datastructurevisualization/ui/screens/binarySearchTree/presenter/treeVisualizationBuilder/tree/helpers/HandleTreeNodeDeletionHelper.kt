@@ -96,7 +96,7 @@ class HandleTreeNodeDeletionHelper @Inject constructor() {
             it.on1ChildNodeDeleted(
                 node = nodeToDelete,
                 traveledNodes = traveledNodes,
-                newConnection = child.id,
+                newConnection = child,
                 rootInsertSide = rootInsertSide,
             )
         }

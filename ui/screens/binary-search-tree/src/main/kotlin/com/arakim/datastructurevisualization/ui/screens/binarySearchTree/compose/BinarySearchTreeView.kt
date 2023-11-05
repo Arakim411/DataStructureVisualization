@@ -1,5 +1,6 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.compose
 
+import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,11 +49,13 @@ fun BinarySearchTreeView(
 
     LaunchedEffect(Unit) {
         presenter.treeVisualizationBuilder.insert(0)
-        for(i in 0 until 200){
+
+        val values = mutableListOf<Int>()
+        for(i in 0 until 30){
             val random = Random.nextInt(from = -200, until = 200)
+            values.add(random)
             presenter.treeVisualizationBuilder.insert(random)
         }
-
     }
 
     Crossfade(

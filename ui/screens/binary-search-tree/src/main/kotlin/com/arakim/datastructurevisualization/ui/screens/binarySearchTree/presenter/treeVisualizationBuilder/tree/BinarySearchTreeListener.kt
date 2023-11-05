@@ -24,7 +24,7 @@ interface BinarySearchTreeListener {
     fun on1ChildNodeDeleted(
         node: Node,
         traveledNodes: Set<NodeId>,
-        newConnection: NodeId,
+        newConnection: Node,
         rootInsertSide: InsertSide,
     ) = Unit
 

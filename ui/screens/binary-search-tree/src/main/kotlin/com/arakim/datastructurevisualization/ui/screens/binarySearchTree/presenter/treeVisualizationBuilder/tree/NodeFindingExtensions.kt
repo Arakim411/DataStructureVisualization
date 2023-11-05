@@ -57,6 +57,16 @@ internal fun Node.getNodeWithLowestValue(traveledNodes: MutableSet<NodeId>): Nod
     return left?.getNodeWithLowestValue(traveledNodes) ?: this
 }
 
+fun Node.getLeftNodesCount(): Int = left?.getLeftNodesCountRecursive(0) ?: 0
+
+private fun Node.getLeftNodesCountRecursive(count: Int): Int =
+    left?.getLeftNodesCountRecursive(count + 1) ?: (count + 1)
+
+fun Node.getRightNodesCount(): Int = right?.getRightNodesCountRecursive(0) ?: 0
+
+private fun Node.getRightNodesCountRecursive(count: Int): Int =
+    right?.getLeftNodesCountRecursive(count + 1) ?: (count + 1)
+
 fun Node.firstAboveInsertedOnRight(): Node? =
     when (insertSide) {
         Right -> this

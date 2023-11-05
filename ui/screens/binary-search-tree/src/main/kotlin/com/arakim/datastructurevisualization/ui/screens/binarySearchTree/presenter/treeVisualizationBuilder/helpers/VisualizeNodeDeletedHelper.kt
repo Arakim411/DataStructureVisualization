@@ -59,7 +59,7 @@ class VisualizeNodeDeletedHelper @Inject constructor(
     override fun on1ChildNodeDeleted(
         node: Node,
         traveledNodes: Set<NodeId>,
-        newConnection: NodeId,
+        newConnection: Node,
         rootInsertSide: InsertSide,
     ) {
         val deletedNodePosition = visualizationBuilder.visualizationCore.getFinalPosition(node.toVertexId())!!
@@ -79,7 +79,7 @@ class VisualizeNodeDeletedHelper @Inject constructor(
     }
 
     override fun on2ChildNodeDeleted(
-        node: Node,
+        replacedNode: Node,
         traveledNodes: Set<NodeId>,
         replacement: Node,
     ) {
@@ -98,7 +98,7 @@ class VisualizeNodeDeletedHelper @Inject constructor(
         )
         visualizationBuilder.addTransitionHelper.moveTextTransition(
             from = replacement.toVertexId(),
-            to = node.toVertexId(),
+            to = replacedNode.toVertexId(),
             invokeAfter = {
                 when (replacement.childrenCount()) {
                     0 -> on0ChildNodeDeleted(
@@ -110,7 +110,7 @@ class VisualizeNodeDeletedHelper @Inject constructor(
                     1 -> on1ChildNodeDeleted(
                         node = replacement,
                         traveledNodes = setOf(),
-                        newConnection = replacement.right!!.id,
+                        newConnection = replacement.right!!,
                         rootInsertSide = binarySearchTree.root.getInsertSide(replacement.value),
                     )
 
