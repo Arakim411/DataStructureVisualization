@@ -39,8 +39,6 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 import kotlin.random.Random.Default
 
-//TODO commons and refact0r
-
 @Composable
 fun BinarySearchTreeView(
     presenter: BinarySearchTreePresenter,
@@ -48,10 +46,9 @@ fun BinarySearchTreeView(
 ) {
     val state = presenter.stateFlow.collectAsStateWithLifecycle()
 
-    presenter.treeVisualizationBuilder.insert(0)
-
     LaunchedEffect(Unit) {
-        for(i in 0 until 20){
+        presenter.treeVisualizationBuilder.insert(0)
+        for(i in 0 until 200){
             val random = Random.nextInt(from = -200, until = 200)
             presenter.treeVisualizationBuilder.insert(random)
         }

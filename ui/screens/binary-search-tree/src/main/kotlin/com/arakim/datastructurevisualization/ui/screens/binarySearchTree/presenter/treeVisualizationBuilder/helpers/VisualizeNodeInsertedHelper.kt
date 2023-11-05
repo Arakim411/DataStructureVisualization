@@ -56,10 +56,8 @@ class VisualizeNodeInsertedHelper @Inject constructor(
                     from = node.parent!!.toVertexId(),
                     to = node.toVertexId(),
                 )
-            }
+            },
         )
-
-
         treeAlignHelper.alignNodeInsertion.alignTreeAfterInsertion(node, rootInsertSide)
     }
 

@@ -21,6 +21,8 @@ internal fun Node.title(): String {
 }
 
 internal infix fun Number.isLessThen(other: Number): Boolean = this.toDouble() < other.toDouble()
+internal infix fun Number.isGreaterThen(other: Number): Boolean = this.toDouble() > other.toDouble()
+internal infix fun Number.isGreaterOrEquals(other: Number): Boolean = this.toDouble() >= other.toDouble()
 internal infix fun Number.isEquals(other: Number): Boolean = this.toDouble() == other.toDouble()
 internal fun Node.getInsertSide(number: Number): InsertSide = when {
     number isLessThen value -> Left
