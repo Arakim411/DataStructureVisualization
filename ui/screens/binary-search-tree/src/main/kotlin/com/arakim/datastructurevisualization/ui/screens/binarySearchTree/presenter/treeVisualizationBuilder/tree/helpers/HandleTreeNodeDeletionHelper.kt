@@ -106,6 +106,7 @@ class HandleTreeNodeDeletionHelper @Inject constructor() {
 
         if (nodeToDelete.id == binarySearchTree.root?.id) {
             binarySearchTree.root = child
+            child.parent = null
         }
 
         listeners.forEach {
