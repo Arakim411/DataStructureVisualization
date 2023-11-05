@@ -80,18 +80,18 @@ private fun VisualizationCoreView(
     Canvas(
         modifier = Modifier.fillMaxSize(),
         onDraw = {
-            presenter.vertexStateMap.forEach { (id, vertex) ->
-                if (!vertex.element.isVisible && !vertex.element.position.isRunning) return@forEach
+            presenter.vertexStateMap.forEach vertexForEach@ { (id, vertex) ->
+                if (!vertex.element.isVisible && !vertex.element.position.isRunning) return@vertexForEach
 
                 val connections = presenter.vertexConnectionsState[id]
                 val vertexPosition = vertex.element.position.value.toOffset(density)
 
-                connections?.forEach { idOfConnection ->
+                connections?.forEach connectionsForEach@ { idOfConnection ->
                     val vertexToConnect = presenter.vertexStateMap[idOfConnection]
-                    if(vertexToConnect?.element?.showIncomingConnections == false) return@forEach
-                    if (vertexToConnect?.element?.isVisible == false && !vertexToConnect.element.position.isRunning) return@forEach
+                    if(vertexToConnect?.element?.showIncomingConnections == false) return@connectionsForEach
+                    if (vertexToConnect?.element?.isVisible == false && !vertexToConnect.element.position.isRunning) return@connectionsForEach
                     val toPosition =
-                        vertexToConnect?.element?.position?.value?.toOffset(density) ?: return@forEach
+                        vertexToConnect?.element?.position?.value?.toOffset(density) ?: return@connectionsForEach
 
                     drawConnection(
                         from = vertexPosition,

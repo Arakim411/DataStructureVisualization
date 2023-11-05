@@ -41,7 +41,7 @@ class VisualizeNodeDeletedHelper @Inject constructor(
     override fun on0ChildNodeDeleted(
         node: Node,
         traveledNodes: Set<NodeId>,
-        rootInsertSide: InsertSide,
+        rootInsertSide: InsertSide?,
     ) {
         visualizationBuilder.addTransitionHelper.removeVertexTransition(
             vertexId = node.toVertexId(),
@@ -60,7 +60,7 @@ class VisualizeNodeDeletedHelper @Inject constructor(
         node: Node,
         traveledNodes: Set<NodeId>,
         newConnection: Node,
-        rootInsertSide: InsertSide,
+        rootInsertSide: InsertSide?,
     ) {
         val deletedNodePosition = visualizationBuilder.visualizationCore.getFinalPosition(node.toVertexId())!!
 
@@ -104,14 +104,14 @@ class VisualizeNodeDeletedHelper @Inject constructor(
                     0 -> on0ChildNodeDeleted(
                         node = replacement,
                         traveledNodes = setOf(),
-                        rootInsertSide = binarySearchTree.root.getInsertSide(replacement.value),
+                        rootInsertSide = binarySearchTree.root!!.getInsertSide(replacement.value),
                     )
 
                     1 -> on1ChildNodeDeleted(
                         node = replacement,
                         traveledNodes = setOf(),
                         newConnection = replacement.right!!,
-                        rootInsertSide = binarySearchTree.root.getInsertSide(replacement.value),
+                        rootInsertSide = binarySearchTree.root!!.getInsertSide(replacement.value),
                     )
 
                     else -> throw IllegalStateException("replacement should have 0 or 1 child")

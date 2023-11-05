@@ -48,10 +48,10 @@ fun BinarySearchTreeView(
     val state = presenter.stateFlow.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        presenter.treeVisualizationBuilder.insert(0)
+        presenter.treeVisualizationBuilder.insert(-200)
 
         val values = mutableListOf<Int>()
-        for(i in 0 until 30){
+        for(i in 0 until 5){
             val random = Random.nextInt(from = -200, until = 200)
             values.add(random)
             presenter.treeVisualizationBuilder.insert(random)

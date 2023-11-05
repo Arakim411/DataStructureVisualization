@@ -21,8 +21,9 @@ class AlignNodeDeletion @Inject constructor(
 
     fun align0ChildNodeDeleted(
         node: Node,
-        rootInsertSide: InsertSide
+        rootInsertSide: InsertSide?
     ) {
+
         when (rootInsertSide) {
             Left -> {
                 alignTreeHorizontally(
@@ -39,25 +40,32 @@ class AlignNodeDeletion @Inject constructor(
                     distance = -horizontalAlignDistance,
                 )
             }
+            else -> {}
         }
     }
 
     fun align1ChildNodeDeleted(
         node: Node,
         newConnection: Node,
-        rootInsertSide: InsertSide,
+        rootInsertSide: InsertSide?,
         deletedNodePosition: DpOffset,
     ) {
-        visualizationBuilder.visualizationCore.createConnection(
-            node.parent!!.toVertexId(),
-            newConnection.toVertexId()
-        )
 
-        alignTreeHorizontally(
-            node = node,
-            rootInsertSide = rootInsertSide,
-            distance = if (rootInsertSide == Left) horizontalAlignDistance else -horizontalAlignDistance,
-        )
+
+        node.parent?.also { parent ->
+            visualizationBuilder.visualizationCore.createConnection(
+                parent.toVertexId(),
+                newConnection.toVertexId()
+            )
+        }
+
+        rootInsertSide?.also {
+            alignTreeHorizontally(
+                node = node,
+                rootInsertSide = it,
+                distance = if (rootInsertSide == Left) horizontalAlignDistance else -horizontalAlignDistance,
+            )
+        }
         alignNewConnectionNode(
             deletedNode = node,
             newConnection = newConnection,
@@ -70,7 +78,7 @@ class AlignNodeDeletion @Inject constructor(
         deletedNode: Node,
         newConnection: Node,
         deletedNodePosition: DpOffset,
-        rootInsertSide: InsertSide,
+        rootInsertSide: InsertSide?,
     ) {
 
         val newConnectionPosition = getFinalPosition(newConnection.toVertexId())
@@ -86,6 +94,8 @@ class AlignNodeDeletion @Inject constructor(
                 deletedNode = deletedNode,
                 newConnection = newConnection,
             )
+
+            null -> deletedNodePosition.x - newConnectionPosition.x
         }
 
         visualizationBuilder.addTransitionHelper.moveVertexWithConnectionsTransition(

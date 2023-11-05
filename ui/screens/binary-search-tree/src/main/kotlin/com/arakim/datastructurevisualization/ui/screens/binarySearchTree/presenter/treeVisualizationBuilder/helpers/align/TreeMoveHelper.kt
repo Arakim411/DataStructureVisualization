@@ -72,7 +72,7 @@ abstract class TreeMoveHelper constructor(
 
         //root: left, parent: left
         private fun alignForInsertedOnLeft(node: Node, distance: Dp) {
-            if (binarySearchTree.root.left?.id == node.id) return
+            if (binarySearchTree.root!!.left?.id == node.id) return
 
             var nodeToMove: Node? = node.firstAboveInsertedOnRight()?.parent ?: return
 
@@ -117,7 +117,7 @@ abstract class TreeMoveHelper constructor(
 
         //root: right, parent: right
         private fun alignForInsertedOnRight(node: Node, distance: Dp) {
-            if (binarySearchTree.root.right?.id == node.id) return
+            if (binarySearchTree.root!!.right?.id == node.id) return
 
             var nodeToMove: Node? = node.firstAboveInsertedOnLeft()?.parent ?: return
 
