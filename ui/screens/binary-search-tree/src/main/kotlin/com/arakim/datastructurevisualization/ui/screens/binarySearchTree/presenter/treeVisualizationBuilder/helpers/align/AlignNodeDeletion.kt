@@ -10,7 +10,7 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.Node
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.toVertexId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.graph.VertexId
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 

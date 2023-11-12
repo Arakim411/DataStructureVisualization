@@ -19,10 +19,10 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.ComparisonTimeId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.VertexTimeId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setuppicker.R
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DefaultVisualizationSetUp
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DrawColors
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.DrawSizes
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationSetUp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.DefaultVisualizationSetUp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.DrawColors
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.DrawSizes
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.VisualizationSetUp
 import javax.inject.Inject
 
 class InitializeReducer @Inject constructor() : StateReducer<State, Action, InitializeAction>() {

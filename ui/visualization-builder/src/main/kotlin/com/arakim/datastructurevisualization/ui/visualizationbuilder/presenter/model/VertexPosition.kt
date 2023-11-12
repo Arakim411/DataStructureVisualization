@@ -2,7 +2,7 @@ package com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.graph.VertexId
 
 
 sealed interface VertexPosition {

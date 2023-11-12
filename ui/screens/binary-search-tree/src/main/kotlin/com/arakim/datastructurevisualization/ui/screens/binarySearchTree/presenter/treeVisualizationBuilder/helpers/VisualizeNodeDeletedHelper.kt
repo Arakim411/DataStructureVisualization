@@ -14,7 +14,7 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.util.mapToImmutable
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.helpers.transitions.getComparisonsPositions
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.vertex.VisualizationElementShape.Circle
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.vertex.VisualizationElementShape.Circle
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
