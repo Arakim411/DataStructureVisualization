@@ -51,7 +51,7 @@ private fun DrawScope.drawElementCircleShape(
     )
 
     drawCircle(
-        color = drawConfig.colors.elementLineColor,
+        color = drawConfig.colors.elementShapeColor,
         radius = drawConfig.sizes.circleRadius,
         center = center,
         style = Stroke(drawConfig.sizes.elementStroke),
@@ -75,7 +75,7 @@ private fun DrawScope.drawElementSquareShape(
 
     drawRect(
         topLeft = topLeft,
-        color = drawConfig.colors.elementLineColor,
+        color = drawConfig.colors.elementShapeColor,
         style = Stroke(drawConfig.sizes.elementStroke),
         size = Size(edgeSize, edgeSize)
     )

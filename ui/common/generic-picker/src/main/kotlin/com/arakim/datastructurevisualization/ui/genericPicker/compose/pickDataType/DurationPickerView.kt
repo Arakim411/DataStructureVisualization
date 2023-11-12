@@ -29,6 +29,7 @@ import kotlin.time.Duration.Companion.seconds
 @Composable
 internal fun PickDurationView(
     durationType: DurationType,
+    title: String,
     onDurationPicked: (duration: Duration) -> Unit,
     onCancel: () -> Unit,
 ) {
@@ -44,7 +45,7 @@ internal fun PickDurationView(
             Column {
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = stringResource(R.string.pick_duration_title),
+                    text = stringResource(R.string.pick_duration_title, title),
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Spacer(modifier = Modifier.height(16.dp))

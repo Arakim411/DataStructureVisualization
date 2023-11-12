@@ -37,6 +37,7 @@ fun PickDataTypeDialog(
 
             is DurationType -> PickDurationView(
                 durationType = dataType,
+                title = item.title.getString(),
                 onDurationPicked = { duration ->
                     onAction(DurationPickedAction(item.id, duration))
                 },

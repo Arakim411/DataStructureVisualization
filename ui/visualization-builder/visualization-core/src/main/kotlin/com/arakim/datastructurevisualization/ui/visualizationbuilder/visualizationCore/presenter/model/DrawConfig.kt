@@ -26,8 +26,8 @@ data class DrawConfig(
 @Immutable
 data class DrawColors(
     val elementBackground: Color,
-    val animShapeColor: Color, //TODO NAME
-    val elementLineColor: Color,
+    val comparisonShapeColor: Color,
+    val elementShapeColor: Color,
     val connectionLineColor: Color,
     val connectionArrowColor: Color,
     val textColor: Color,
@@ -46,8 +46,8 @@ data class DrawSizes(
 private val ColorsDefault =
     DrawColors(
         elementBackground = Color.Green,
-        animShapeColor = Color.Red,
-        elementLineColor = Color.Black,
+        comparisonShapeColor = Color.Red,
+        elementShapeColor = Color.Black,
         connectionLineColor = Color.DarkGray,
         connectionArrowColor = Color.DarkGray,
         textColor = Color.Black,

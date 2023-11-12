@@ -6,8 +6,8 @@ enum class VisualizationSetUpItemId(val idString: String) {
     ComparisonTimeId("ComparisonTransitionTimeId"),
 
     BackgroundColorId("ElementBackgroundId"),
-    ShapeColorId("ElementShapeColorId"),
-    LineColorId("ElementLineColorId"),
+    ComparisonShapeColorId("ComparisonShapeColorId"),
+    ElementShapeColorId("ElementShapeColorId"),
     ConnectionLineColorId("ConnectionLineColorId"),
     ArrowColorId("ConnectionArrowColorId"),
     TextColorId("TextColorId"),
@@ -15,7 +15,7 @@ enum class VisualizationSetUpItemId(val idString: String) {
     CircleRadiusId("CircleRadiusSizeId"),
     SquareEdgeId("SquareEdgeSizeId"),
     ElementStrokeId("ElementStroke"),
-    LineStrokeId("LineStrokeId"),
+    ConnectionLineStrokeId("ConnectionLineStrokeId"),
     TextSizeId("TextSizeId"),
     ArrowSize("ArrowSizeId"),
 
