@@ -125,7 +125,7 @@ private fun VisualizationCoreView(
         if (stateValue is ComparingState) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 drawCircle(
-                    color = drawConfig.colors.animShapeColor,
+                    color = drawConfig.colors.comparisonShapeColor,
                     radius = drawConfig.sizes.circleRadius,
                     center = stateValue.position.value.toOffset(density),
                     style = Stroke(drawConfig.sizes.elementStroke),

@@ -30,15 +30,15 @@ class HandleVisualizationSetUpUpdated @Inject constructor(
             ItemId.VertexTimeId.idString -> updateVertexTime(item as GenericPickerItem<DurationType>)
             ItemId.ComparisonTimeId.idString -> updateComparisonTime(item as GenericPickerItem<DurationType>)
             ItemId.BackgroundColorId.idString -> updateBackgroundColor(item as GenericPickerItem<ColorType>)
-            ItemId.ShapeColorId.idString -> updateShapeColor(item as GenericPickerItem<ColorType>)
-            ItemId.LineColorId.idString -> updateLineColor(item as GenericPickerItem<ColorType>)
+            ItemId.ComparisonShapeColorId.idString -> updateShapeColor(item as GenericPickerItem<ColorType>)
+            ItemId.ElementShapeColorId.idString -> updateLineColor(item as GenericPickerItem<ColorType>)
             ItemId.ConnectionLineColorId.idString -> updateConnectionLineColor(item as GenericPickerItem<ColorType>)
             ItemId.ArrowColorId.idString -> updateArrowColor(item as GenericPickerItem<ColorType>)
             ItemId.TextColorId.idString -> updateTextColor(item as GenericPickerItem<ColorType>)
             ItemId.CircleRadiusId.idString -> updateCircleRadius(item as GenericPickerItem<NumericType>)
             ItemId.SquareEdgeId.idString -> updateSquareEdge(item as GenericPickerItem<NumericType>)
             ItemId.ElementStrokeId.idString -> updateElementStroke(item as GenericPickerItem<NumericType>)
-            ItemId.LineStrokeId.idString -> updateLineStroke(item as GenericPickerItem<NumericType>)
+            ItemId.ConnectionLineStrokeId.idString -> updateLineStroke(item as GenericPickerItem<NumericType>)
             ItemId.TextSizeId.idString -> updateTextSize(item as GenericPickerItem<NumericType>)
             ItemId.ArrowSize.idString -> updateArrowSize(item as GenericPickerItem<NumericType>)
             else -> throw NotFoundException("Item with id: ${item.id} not found")
@@ -68,7 +68,7 @@ class HandleVisualizationSetUpUpdated @Inject constructor(
 
 
     private fun ReadyState.updateShapeColor(item: GenericPickerItem<ColorType>): State {
-        val newColors = setUp.drawConfig.colors.copy(animShapeColor = item.pickingDataType.value)
+        val newColors = setUp.drawConfig.colors.copy(comparisonShapeColor = item.pickingDataType.value)
         val newDrawConfig = setUp.drawConfig.copy(colors = newColors)
         val newSetUp = setUp.copy(drawConfig = newDrawConfig)
 
@@ -77,7 +77,7 @@ class HandleVisualizationSetUpUpdated @Inject constructor(
     }
 
     private fun ReadyState.updateLineColor(item: GenericPickerItem<ColorType>): State {
-        val newColors = setUp.drawConfig.colors.copy(elementLineColor = item.pickingDataType.value)
+        val newColors = setUp.drawConfig.colors.copy(elementShapeColor = item.pickingDataType.value)
         val newDrawConfig = setUp.drawConfig.copy(colors = newColors)
         val newSetUp = setUp.copy(drawConfig = newDrawConfig)
 
