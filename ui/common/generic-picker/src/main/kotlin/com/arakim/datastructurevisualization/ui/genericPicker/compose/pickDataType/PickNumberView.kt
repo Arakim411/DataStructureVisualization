@@ -20,40 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.arakim.datastructurevisualization.ui.common.genericpicker.R.string
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.NumericInputTextField
-
-@Composable
-fun NumericPickerView(
-    number: Number,
-    unit: String,
-    title: String,
-    onNewNumberPicked: (newNumber: Float) -> Unit,
-) {
-
-    val isNumberPickerVisible = remember { mutableStateOf(false) }
-
-    if (isNumberPickerVisible.value) {
-        PickNumberDialog(
-            currentNumber = number,
-            unit = unit,
-            onNumberPicked = onNewNumberPicked,
-            title = title,
-            onCancel = {
-                isNumberPickerVisible.value = false
-            }
-        )
-    }
-
-    DropDownBox(
-        text = number.toString().plus(" $unit"),
-        onClick = {
-            isNumberPickerVisible.value = true
-        },
-    )
-}
+import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.AcceptCancelButtons
 
 
 @Composable
-private fun PickNumberDialog(
+internal fun PickNumberView(
     currentNumber: Number,
     unit: String,
     onNumberPicked: (number: Float) -> Unit,

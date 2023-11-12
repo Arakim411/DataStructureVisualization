@@ -1,7 +1,6 @@
 package com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,56 +21,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.arakim.datastructurevisualization.ui.common.genericpicker.R.string
-import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.ColorType
+import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.AcceptCancelButtons
 import com.godaddy.android.colorpicker.ClassicColorPicker
 import com.godaddy.android.colorpicker.HsvColor
 
 @Composable
-fun ColorPickerView(
-    type: ColorType,
-    onNewColorPicked: (Color) -> Unit
-) {
-
-    val isColorPickerVisible = remember { mutableStateOf(false) }
-
-    if (isColorPickerVisible.value) {
-        PickColorDialog(
-            color = type.value,
-            onNewColorPicked = onNewColorPicked,
-            onCancel = {
-                isColorPickerVisible.value = false
-            }
-        )
-    }
-
-    ColorView(
-        color = type.value,
-        onClick = {
-            isColorPickerVisible.value = true
-        },
-    )
-}
-
-@Composable
-private fun ColorView(
+internal fun PickColorView(
     color: Color,
-    onClick: () -> Unit,
-) {
-    Box(
-        modifier = Modifier
-            .width(Dimens.TypeViewHeight)
-            .height(Dimens.TypeViewHeight)
-            .background(color, CircleShape)
-            .clickable {
-                onClick()
-            },
-        contentAlignment = Alignment.CenterEnd,
-    ) {}
-}
-
-@Composable
-private fun PickColorDialog(
-    color: Color,
+    title: String,
     onNewColorPicked: (Color) -> Unit,
     onCancel: () -> Unit
 ) {
@@ -89,7 +46,7 @@ private fun PickColorDialog(
 
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = stringResource(string.pick_color_title),
+                text = title,
                 style = MaterialTheme.typography.titleMedium,
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -113,4 +70,18 @@ private fun PickColorDialog(
             )
         }
     }
+}
+
+@Composable
+internal fun ColorView(
+    modifier: Modifier = Modifier,
+    color: Color,
+) {
+    Box(
+        modifier = modifier
+            .width(Dimens.TypeViewHeight)
+            .height(Dimens.TypeViewHeight)
+            .background(color, CircleShape),
+        contentAlignment = Alignment.CenterEnd,
+    ) {}
 }
