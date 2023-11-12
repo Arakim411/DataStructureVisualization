@@ -3,8 +3,8 @@ package com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.
 import androidx.compose.ui.unit.DpOffset
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.RelativePositionDistance
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.VertexPosition
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.Vertex
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.graph.VertexId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.graph.Vertex
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.graph.VertexId
 
 fun VertexPosition.toDpOffset(
     getVertex: (VertexId) -> Vertex,

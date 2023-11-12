@@ -13,7 +13,7 @@ android {
 
 dependencies {
 
-    api(project(":ui:visualization-builder:visualization-engine"))
+    api(project(":ui:visualization-builder:visualization-core"))
     implementation(project(":ui:util"))
     implementation(project(":ui:visualization-builder:set-up-picker"))
 
