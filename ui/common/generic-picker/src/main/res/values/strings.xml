@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="numberOfSeconds">
+    <item quantity="one">%d second</item>
+    <item quantity="other">%d seconds</item>
+    </plurals>
+
+    <string name="pick_duration_value_is_not_numeric_error_message">Provides numeric value</string>
+    <string name="pick_duration_title">Change duration</string>
+    <string name="pick_color_title">Change color</string>
+
+    <string name="picker_accept_title">accept</string>
+    <string name="picker_cancel_title">cancel</string>
+
+    <string name="milliseconds">milliseconds</string>
+
+    <string name="change">Change %s</string>
+
+</resources>

@@ -16,6 +16,7 @@ navigationCompose = "2.7.2"
 hilt = "2.44"
 hiltNavigationCompose = "1.0.0"
 coroutinesVersion = "1.7.3"
+colorPicker = "0.7.0"
 
 # Android config
 compileSdk = "34"
@@ -58,6 +59,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
+
+colorpicker = {group = "com.godaddy.android.colorpicker", name = "compose-color-picker-android", version.ref = "colorPicker"}
 
 [bundles]
 
