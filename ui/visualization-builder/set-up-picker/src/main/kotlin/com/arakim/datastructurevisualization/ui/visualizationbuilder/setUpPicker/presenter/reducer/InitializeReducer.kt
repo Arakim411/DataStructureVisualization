@@ -65,21 +65,20 @@ private fun VisualizationSetUp.genericPickerTransitionItems(
     GenericPickerItem(
         id = VertexTimeId.idString,
         title = StringResources(R.string.vertex_transition_time),
-        iconResId = 0,
+        iconResId = R.drawable.ic_transition_time,
         pickingDataType = DurationType(vertexTransitionTime),
         group = group,
     ),
     GenericPickerItem(
         id = ComparisonTimeId.idString,
         title = StringResources(R.string.comparison_transition_time),
-        iconResId = 0,
+        iconResId = R.drawable.ic_comparison_time,
         pickingDataType = DurationType(comparisonTransitionTime),
         group = group,
     )
 )
 
-//TODO use correct icon„
-val testIcon = R.drawable.test_icon
+//TODO better icons, this are not clear
 private fun DrawColors.genericPickerColorItems(
     group: StringWrapper
 ) = immutableListOf(
@@ -87,42 +86,42 @@ private fun DrawColors.genericPickerColorItems(
     GenericPickerItem(
         id = BackgroundColorId.idString,
         title = StringResources(R.string.set_up_picker_title_element_background_color),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_background_color,
         pickingDataType = ColorType(elementBackground),
         group = group,
     ),
     GenericPickerItem(
         id = ShapeColorId.idString,
         title = StringResources(R.string.set_up_picker_title_element_shape_color),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_comparison_color,
         pickingDataType = ColorType(animShapeColor),
         group = group,
     ),
     GenericPickerItem(
         id = LineColorId.idString,
         title = StringResources(R.string.set_up_picker_title_element_line_color),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_line_shape_color,
         pickingDataType = ColorType(elementLineColor),
         group = group,
     ),
     GenericPickerItem(
         id = ConnectionLineColorId.idString,
         title = StringResources(R.string.set_up_picker_title_connection_line_color),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_connection_line_color,
         pickingDataType = ColorType(connectionLineColor),
         group = group,
     ),
     GenericPickerItem(
         id = ArrowColorId.idString,
         title = StringResources(R.string.set_up_picker_title_arrow_color),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_arrow,
         pickingDataType = ColorType(connectionArrowColor),
         group = group,
     ),
     GenericPickerItem(
         id = TextColorId.idString,
         title = StringResources(R.string.set_up_picker_title_text_color),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_text_color,
         pickingDataType = ColorType(textColor),
         group = group,
     )
@@ -134,42 +133,42 @@ private fun DrawSizes.genericPickerSizesItems(
     GenericPickerItem(
         id = CircleRadiusId.idString,
         title = StringResources(R.string.set_up_picker_title_circle_radius),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_circle_radius,
         pickingDataType = NumericType(circleRadius.value, Units.Dp),
         group = group,
     ),
     GenericPickerItem(
         id = SquareEdgeId.idString,
         title = StringResources(R.string.set_up_picker_title_square_edge),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_squre_edge_size,
         pickingDataType = NumericType(squareEdgeSize.value, Units.Dp),
         group = group,
     ),
     GenericPickerItem(
         id = ElementStrokeId.idString,
         title = StringResources(R.string.set_up_picker_title_element_stroke),
-        iconResId = testIcon,
+        iconResId = R.drawable.element_stroke_size,
         pickingDataType = NumericType(elementStroke.value, Units.Dp),
         group = group,
     ),
     GenericPickerItem(
         id = LineStrokeId.idString,
         title = StringResources(R.string.set_up_picker_title_line_stroke),
-        iconResId = testIcon,
+        iconResId = R.drawable.element_stroke_size,
         pickingDataType = NumericType(lineStroke.value, Units.Dp),
         group = group,
     ),
     GenericPickerItem(
         id = TextSizeId.idString,
         title = StringResources(R.string.set_up_picker_title_text_size),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_text_size,
         pickingDataType = NumericType(textSize.value, Units.Sp),
         group = group,
     ),
     GenericPickerItem(
         id = ArrowSize.idString,
         title = StringResources(R.string.set_up_picker_title_arrow_size),
-        iconResId = testIcon,
+        iconResId = R.drawable.ic_arrow,
         pickingDataType = NumericType(arrowSize.value, Units.Dp),
         group = group,
     ),

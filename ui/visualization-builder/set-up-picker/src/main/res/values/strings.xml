@@ -11,7 +11,7 @@
 
     //colors
     <string name="set_up_picker_title_element_background_color">Element color</string>
-    <string name="set_up_picker_title_element_shape_color">Shape color</string>
+    <string name="set_up_picker_title_element_shape_color">Comparison color</string>
     <string name="set_up_picker_title_element_line_color">Element line color</string>
     <string name="set_up_picker_title_connection_line_color">Connection color</string>
     <string name="set_up_picker_title_arrow_color">Arrow color</string>
