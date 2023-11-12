@@ -1,20 +1,20 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.compose
 
-import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,16 +29,12 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.InsertAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreePresenter
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.IdleState
 import com.arakim.datastructurevisualization.ui.screens.binarysearchtree.R
 import com.arakim.datastructurevisualization.ui.screens.binarysearchtree.R.string
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.compose.VisualizationBuilder
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.compose.VisualizationBuilderView
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.random.Random
-import kotlin.random.Random.Default
 
 @Composable
 fun BinarySearchTreeView(
@@ -47,16 +43,6 @@ fun BinarySearchTreeView(
 ) {
     val state = presenter.stateFlow.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        presenter.treeVisualizationBuilder.insert(-200)
-
-        val values = mutableListOf<Int>()
-        for(i in 0 until 5){
-            val random = Random.nextInt(from = -200, until = 200)
-            values.add(random)
-            presenter.treeVisualizationBuilder.insert(random)
-        }
-    }
 
     Crossfade(
         targetState = state.value,
@@ -68,6 +54,8 @@ fun BinarySearchTreeView(
                 navigationUiControllerState = navigationUiControllerState,
                 onAction = presenter::onAction,
             )
+
+            IdleState -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
         }
     }
 }
@@ -92,6 +80,7 @@ private fun ReadyState(
                 )
             },
             onDismissRequest = { isBottomSheetVisible = false },
+            label = stringResource(id = R.string.bottom_sheet_node_value),
         )
     }
 
@@ -122,7 +111,7 @@ private fun ReadyState(
                 .fillMaxSize()
                 .padding(contentPadding)
         ) {
-            VisualizationBuilder(visualizationPresenter = visualizationBuilder)
+            VisualizationBuilderView(visualizationPresenter = visualizationBuilder)
         }
     }
 }

@@ -34,7 +34,7 @@ class CreateMoveTextTransitionHelper @Inject constructor() {
                 )
                 anim.animateTo(
                     targetValue = toPosition,
-                    tween(durationMillis = setUp.vertexTransitionTime.inWholeMilliseconds.toInt())
+                    tween(durationMillis = setUpState.value!!.vertexTransitionTime.inWholeMilliseconds.toInt())
                 )
                 changeTitle(to, text)
                 textTransitionState.value = IdleState

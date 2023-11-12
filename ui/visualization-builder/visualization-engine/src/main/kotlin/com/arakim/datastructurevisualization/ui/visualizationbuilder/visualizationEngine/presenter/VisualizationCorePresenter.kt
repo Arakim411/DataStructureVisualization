@@ -24,14 +24,17 @@ class VisualizationCorePresenter @Inject constructor(
     //it's okay until we remember to clear it when composition is finished
     internal var composeCoroutineScope: CoroutineScope? = null
 
-    lateinit var setUp: VisualizationSetUp
+    val setUpState = mutableStateOf<VisualizationSetUp?>(null)
 
-    fun initialize(setUp: VisualizationSetUp) {
-        this.setUp = setUp
-
+    init {
         transitionQueueHelper.initialize(
             handleTransition = { with(transitionHandlerHelper) { handleTransition(it) } }
         )
+    }
+
+    fun setVisualizationSetUp(setUp: VisualizationSetUp) {
+        setUpState.value = setUp
+        with(transitionQueueHelper) { tryEmptyTransitionQueue() }
     }
 
     fun onViewReady(composeCoroutineScope: CoroutineScope) {

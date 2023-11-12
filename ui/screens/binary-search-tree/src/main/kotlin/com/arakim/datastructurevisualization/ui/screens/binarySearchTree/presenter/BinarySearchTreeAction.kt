@@ -2,6 +2,8 @@ package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presen
 
 sealed interface BinarySearchTreeAction {
 
+    object InitializeAction : BinarySearchTreeAction
+
     sealed interface UpdateTreeAction : BinarySearchTreeAction {
         data class InsertAction(val value: Number) : UpdateTreeAction
         data class DeleteAction(val value: Number) : UpdateTreeAction

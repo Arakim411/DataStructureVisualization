@@ -56,8 +56,8 @@ private fun VisualizationCoreView(
     val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
 
-    val drawConfig = remember(presenter.setUp.drawConfig) {
-        presenter.setUp.drawConfig.toUiModel(density)
+    val drawConfig = remember(presenter.setUpState.value?.drawConfig) {
+        presenter.setUpState.value!!.drawConfig.toUiModel(density)
     }
 
     DisposableEffect(Unit) {

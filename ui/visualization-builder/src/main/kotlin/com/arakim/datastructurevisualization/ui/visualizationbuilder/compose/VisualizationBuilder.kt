@@ -2,14 +2,18 @@ package com.arakim.datastructurevisualization.ui.visualizationbuilder.compose
 
 import androidx.compose.runtime.Composable
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.compose.VisualizationSetUpPickerView
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.compose.VisualizationCore
 
 @Composable
-fun VisualizationBuilder(
+fun VisualizationBuilderView(
     visualizationPresenter: VisualizationBuilder,
 ) {
 
-    VisualizationCore(
-        presenter = visualizationPresenter.visualizationCore,
-    )
+    VisualizationSetUpPickerView(presenter = visualizationPresenter.setUpPickerPresenter) {
+
+        VisualizationCore(
+            presenter = visualizationPresenter.visualizationCore,
+        )
+    }
 }

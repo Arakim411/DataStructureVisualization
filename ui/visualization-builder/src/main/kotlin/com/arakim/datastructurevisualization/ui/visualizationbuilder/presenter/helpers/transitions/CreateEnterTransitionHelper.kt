@@ -32,7 +32,7 @@ class CreateEnterTransitionHelper @Inject constructor(
                 vertex.element.apply {
                     showIncomingConnections = false
                     isVisible = true
-                    position.snapTo(setUp.enterTransStartPosition)
+                    position.snapTo(setUpState.value!!.enterTransStartPosition)
 
                     with(handleComparisons) {
                         invoke(comparisonsPositions, shape)
@@ -40,7 +40,7 @@ class CreateEnterTransitionHelper @Inject constructor(
 
                     position.animateTo(
                         finalPosition,
-                        tween(setUp.vertexTransitionTime.inWholeMilliseconds.toInt())
+                        tween(setUpState.value!!.vertexTransitionTime.inWholeMilliseconds.toInt())
                     )
 
                     updateIncomingConnectionsVisibility(vertexId, true)

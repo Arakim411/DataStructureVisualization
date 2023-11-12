@@ -29,11 +29,7 @@ internal fun rememberVisualizationEngineState() = remember {
 @Preview(showBackground = true, showSystemUi = false)
 @Composable
 private fun VisualizationEnginePreview() {
-    val state = rememberVisualizationEngineState().apply {
-        initialize(
-            setUp = DefaultVisualizationSetUp,
-        )
-    }
+    val state = rememberVisualizationEngineState()
 
     VisualizationCore(
         presenter = state,
