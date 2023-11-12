@@ -5,7 +5,7 @@ import kotlin.reflect.KClass
 abstract class ReducerPresenter<State, Action>(initialState: State) :
     Presenter<State, Action>(initialState) where State : Any, Action : Any {
 
-    private val reducers = mutableMapOf<KClass<out Action>, StateReducer<State, Action, out Action>>()
+    internal val reducers = mutableMapOf<KClass<out Action>, StateReducer<State, Action, out Action>>()
 
     override fun onInitialized() {
         super.onInitialized()
