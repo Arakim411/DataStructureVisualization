@@ -1,6 +1,5 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.reducers
 
-import android.util.Log
 import com.arakim.datastructurevisualization.ui.mvi.StateReducer
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.Action
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction
@@ -18,22 +17,15 @@ class UpdateTreeReducer @Inject constructor(
 
     override fun State.reduce(action: UpdateTreeAction): State = when (this) {
         is ReadyState -> reduceUpdateTreeAction(action)
+        else -> logInvalidState()
     }
 
     private fun ReadyState.reduceUpdateTreeAction(action: UpdateTreeAction): State {
         when (action) {
             is DeleteAction -> visualizationBuilder.delete(action.value)
             is FindAction -> Unit
-            is InsertAction ->  visualizationBuilder.insert(action.value)
+            is InsertAction -> visualizationBuilder.insert(action.value)
         }
         return this
     }
 }
-
-// delete 35, 36 - zle przesuniecie
-
-// delete 54 - zle przesuniecie
-
-// delte 50 - zle dopasowanie
-
-// add 37, delete 29, 34, 35

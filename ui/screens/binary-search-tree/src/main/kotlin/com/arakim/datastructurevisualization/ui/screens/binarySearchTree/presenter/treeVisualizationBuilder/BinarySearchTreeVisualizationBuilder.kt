@@ -1,6 +1,5 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder
 
-import android.util.Log
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.VisualizeNodeDeletedHelper
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.VisualizeNodeInsertedHelper
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.align.TreeAlignHelper
@@ -9,7 +8,7 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationEngine.presenter.model.VisualizationSetUp
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -25,27 +24,42 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
 
     private lateinit var setUp: VisualizationSetUp
 
+    init {
+        visualizationBuilder.setOnVisualizationSetUpChanged {
+            setUp = it
+        }
+    }
+
     private val elementVerticalDistance by lazy { (setUp.drawConfig.sizes.circleRadius * 3f) }
     private val elementHorizontalDistance by lazy { (setUp.drawConfig.sizes.circleRadius * 3f) }
 
-    fun initialize(setUp: VisualizationSetUp) {
-        this.setUp = setUp
-        visualizationBuilder.initialize(setUp)
-        treeAlignHelper.initialize(
-            binarySearchTree = this,
-            horizontalAlignDistance = elementHorizontalDistance,
+    fun initialize(
+        coroutineScope: CoroutineScope,
+        onInitialized: () -> Unit,
+    ) {
+
+        visualizationBuilder.initialize(
+            coroutineScope,
+            onInitialized = {
+                treeAlignHelper.initialize(
+                    binarySearchTree = this,
+                    horizontalAlignDistance = elementHorizontalDistance,
+                )
+                visualizeNodeInsertedHelper.initialize(
+                    elementHorizontalDistance = elementHorizontalDistance,
+                    elementVerticalDistance = elementVerticalDistance,
+                )
+                visualizeNodeDeletedHelper.initialize(
+                    binarySearchTree = this,
+                    elementHorizontalDistance = elementHorizontalDistance,
+                    elementVerticalDistance = elementVerticalDistance,
+                )
+                addListener(visualizeNodeInsertedHelper)
+                addListener(visualizeNodeDeletedHelper)
+                onInitialized()
+            },
         )
-        visualizeNodeInsertedHelper.initialize(
-            elementHorizontalDistance = elementHorizontalDistance,
-            elementVerticalDistance = elementVerticalDistance,
-        )
-        visualizeNodeDeletedHelper.initialize(
-            binarySearchTree = this,
-            elementHorizontalDistance = elementHorizontalDistance,
-            elementVerticalDistance = elementVerticalDistance,
-        )
-        addListener(visualizeNodeInsertedHelper)
-        addListener(visualizeNodeDeletedHelper)
+
     }
 
     override fun insert(number: Number) {

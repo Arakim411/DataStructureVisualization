@@ -22,7 +22,7 @@ class HandleComparisonsHelper @Inject constructor() {
             comparisons.drop(1).forEach { position ->
                 anim.animateTo(
                     position,
-                    tween(durationMillis = setUp.comparisonTransitionTime.inWholeMilliseconds.toInt())
+                    tween(durationMillis = setUpState.value!!.comparisonTransitionTime.inWholeMilliseconds.toInt())
                 )
             }
             comparisonState.value = ComparisonState.IdleState

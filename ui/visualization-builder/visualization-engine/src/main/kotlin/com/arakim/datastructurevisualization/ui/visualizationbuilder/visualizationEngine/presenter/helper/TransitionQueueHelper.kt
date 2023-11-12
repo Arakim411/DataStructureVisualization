@@ -26,7 +26,7 @@ class TransitionQueueHelper @Inject constructor() {
     }
 
     fun VisualizationCorePresenter.tryEmptyTransitionQueue() {
-        if (!shouldEmptyTransitionQueue()) return
+        if (!shouldEmptyTransitionQueue() ) return
 
         transitionJob = composeCoroutineScope?.launch {
             emptyTransitionQueue()

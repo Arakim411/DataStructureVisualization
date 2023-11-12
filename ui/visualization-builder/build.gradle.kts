@@ -13,8 +13,10 @@ android {
 
 dependencies {
 
-    implementation(project(":ui:util"))
     api(project(":ui:visualization-builder:visualization-engine"))
+    implementation(project(":ui:util"))
+    implementation(project(":ui:visualization-builder:set-up-picker"))
+
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
