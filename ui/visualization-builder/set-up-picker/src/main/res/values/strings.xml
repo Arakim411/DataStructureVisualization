@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //groups
+    <string name="set_up_picker_group_transition">Transition</string>
+    <string name="set_up_picker_group_color">Color</string>
+    <string name="set_up_picker_group_sizes">Size</string>
+
+    //transitions
+    <string name="vertex_transition_time">Transition time</string>
+    <string name="comparison_transition_time">Comparison time</string>
+
+    //colors
+    <string name="set_up_picker_title_element_background_color">Element color</string>
+    <string name="set_up_picker_title_element_shape_color">Shape color</string>
+    <string name="set_up_picker_title_element_line_color">Element line color</string>
+    <string name="set_up_picker_title_connection_line_color">Connection color</string>
+    <string name="set_up_picker_title_arrow_color">Arrow color</string>
+    <string name="set_up_picker_title_text_color">Text color</string>
+
+    //sizes
+    <string name="set_up_picker_title_circle_radius">Circle radius</string>
+    <string name="set_up_picker_title_square_edge">Square edge size</string>
+    <string name="set_up_picker_title_element_stroke">Element stroke</string>
+    <string name="set_up_picker_title_line_stroke">Line stroke</string>
+    <string name="set_up_picker_title_text_size">Text size</string>
+    <string name="set_up_picker_title_arrow_size">Arrow size</string>
+
+</resources>
