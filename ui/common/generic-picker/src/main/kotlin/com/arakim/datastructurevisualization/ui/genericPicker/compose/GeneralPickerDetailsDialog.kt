@@ -1,6 +1,7 @@
 package com.arakim.datastructurevisualization.ui.genericPicker.compose
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -17,21 +18,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.ColorPickerView
+import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.ColorView
 import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.Dimens
-import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.DurationPickerView
-import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.NumericPickerView
+import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.DropDownBox
+import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.PickDataTypeDialog
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerAction.NewDataPickedAction
-import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerAction.NewDataPickedAction.ColorPickedAction
-import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerAction.NewDataPickedAction.DurationPickedAction
-import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerAction.NewDataPickedAction.NumberPickedAction
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.GenericPickerItem
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.ColorType
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.DurationType
@@ -116,6 +117,17 @@ private fun PickerItemView(
     item: GenericPickerItem<*>,
     onAction: (NewDataPickedAction) -> Unit
 ) {
+    var currentlyPickingItem: GenericPickerItem<*>? by remember { mutableStateOf(null) }
+
+    currentlyPickingItem?.also {
+        PickDataTypeDialog(
+            item = it,
+            onAction = onAction,
+            onDismissRequest = { currentlyPickingItem = null },
+        )
+    }
+
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -127,39 +139,36 @@ private fun PickerItemView(
             text = item.title.getString(),
             style = MaterialTheme.typography.bodyMedium,
         )
-        DataTypeView(item, onAction)
+        DataTypeView(
+            modifier = Modifier.clickable {
+                currentlyPickingItem = item
+            },
+            item = item,
+        )
     }
 }
 
 
 @Composable
 private fun RowScope.DataTypeView(
+    modifier: Modifier,
     item: GenericPickerItem<*>,
-    onAction: (NewDataPickedAction) -> Unit,
 ) {
 
     when (val dataType = item.pickingDataType) {
-        is ColorType -> ColorPickerView(
-            type = dataType,
-            onNewColorPicked = { color ->
-                onAction(ColorPickedAction(item.id, color))
-            }
+        is ColorType -> ColorView(
+            modifier = modifier,
+            color = dataType.value,
         )
 
-        is DurationType -> DurationPickerView(
-            durationType = dataType,
-            onNewDurationPicked = { duration ->
-                onAction(DurationPickedAction(item.id, duration))
-            }
+        is DurationType -> DropDownBox(
+            modifier = modifier,
+            text = dataType.value.toString(),
         )
 
-        is NumericType -> NumericPickerView(
-            number = dataType.value,
-            unit = dataType.unit,
-            title = item.title.getString(),
-            onNewNumberPicked = { newNumber ->
-                onAction(NumberPickedAction(item.id, newNumber))
-            }
+        is NumericType -> DropDownBox(
+            modifier = modifier,
+            text = dataType.value.toString().plus(" ${dataType.unit}"),
         )
     }
 }

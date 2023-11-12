@@ -3,7 +3,6 @@ package com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataT
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,38 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.arakim.datastructurevisualization.ui.common.genericpicker.R
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.NumericInputTextField
+import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.AcceptCancelButtons
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.DurationType
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
-fun RowScope.DurationPickerView(
-    durationType: DurationType,
-    onNewDurationPicked: (newDuration: Duration) -> Unit,
-) {
-    val isDurationPickerVisible = remember { mutableStateOf(false) }
-
-    if (isDurationPickerVisible.value) {
-        PickDurationDialog(
-            durationType = durationType,
-            onDurationPicked = { duration ->
-                onNewDurationPicked(duration)
-            },
-            onCancel = {
-                isDurationPickerVisible.value = false
-            }
-        )
-    }
-
-    DropDownBox(
-        text = durationType.value.toString(),
-        onClick = { isDurationPickerVisible.value = true },
-    )
-}
-
-@Composable
-private fun PickDurationDialog(
+internal fun PickDurationView(
     durationType: DurationType,
     onDurationPicked: (duration: Duration) -> Unit,
     onCancel: () -> Unit,
@@ -88,6 +63,7 @@ private fun PickDurationDialog(
                     onCancel = onCancel,
                     accept = {
                         onDurationPicked(durationMillis!!.toLong().milliseconds)
+                        onCancel()
                     },
                     isAcceptEnabled = durationMillis != null,
                 )

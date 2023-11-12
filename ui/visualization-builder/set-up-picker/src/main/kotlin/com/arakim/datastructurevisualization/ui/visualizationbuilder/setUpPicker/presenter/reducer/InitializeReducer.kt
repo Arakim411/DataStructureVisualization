@@ -50,7 +50,7 @@ class InitializeReducer @Inject constructor() : StateReducer<State, Action, Init
         genericPickerPresenter.onAction(
             InitializedAction(
                 allItems = genericPickerItems,
-                floatingModalItems = immutableListOf(),
+                floatingModalItems = immutableListOf(genericPickerItems),
             )
         )
 

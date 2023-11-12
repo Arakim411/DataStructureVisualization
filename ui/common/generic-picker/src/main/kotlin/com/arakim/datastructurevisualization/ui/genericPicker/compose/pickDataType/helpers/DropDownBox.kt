@@ -1,4 +1,4 @@
-package com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType
+package com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,22 +18,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.arakim.datastructurevisualization.ui.common.genericpicker.R.drawable
+import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.Dimens
 
 @Composable
 fun DropDownBox(
+    modifier: Modifier = Modifier,
     text: String,
-    onClick: () -> Unit,
 ) {
 
     Box(
-        modifier = Modifier.background(
+        modifier = modifier.background(
             MaterialTheme.colorScheme.inverseOnSurface,
             MaterialTheme.shapes.small
         ),
     ) {
         Row(
             modifier = Modifier
-                .clickable { onClick() }
                 .padding(horizontal = 8.dp)
                 .width(Dimens.TypeViewWidth)
                 .height(Dimens.TypeViewHeight),

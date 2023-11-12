@@ -1,4 +1,4 @@
-package com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType
+package com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
