@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="value_is_grater_than_max_value">value can\'t be grater than %s</string>
+    <string name="value_is_smaller_than_min_value">value must be grater than %s</string>
+</resources>
