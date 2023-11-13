@@ -7,6 +7,8 @@
     <string name="destination_name_queue">Queue</string>
     <string name="destination_name_linked_list">LinkedList</string>
     <string name="destination_name_hash_table">Hash table</string>
+
+    <string name="destination_name_data_structure">Data structure</string>
     <string name="destination_name_favorite">Favorite</string>
     <string name="destination_name_delete">Delete</string>
 
