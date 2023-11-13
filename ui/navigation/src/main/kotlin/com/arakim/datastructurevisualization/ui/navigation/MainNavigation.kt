@@ -16,6 +16,7 @@ import com.arakim.datastructurevisualization.ui.navigation.MainNavDestinations.C
 import com.arakim.datastructurevisualization.ui.navigation.MainNavDestinations.DeletedDestination
 import com.arakim.datastructurevisualization.ui.navigation.MainNavDestinations.FavoritesDestination
 import com.arakim.datastructurevisualization.ui.navigation.R.drawable
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.ChooseDataStructureScreen
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
@@ -37,7 +38,7 @@ fun MainNavigation() {
     ) {
         NavHost(
             navController = navController,
-            startDestination = MainNavDestinations.ChooseDataStructureDestination.route
+            startDestination = ChooseDataStructureDestination.route
         ) {
             MainNavDestinations.values().forEach { destination ->
                 composable(destination.route) {
@@ -57,7 +58,7 @@ fun Screen(
     navUiController: NavigationUiControllerState,
 ) {
     when (destination) {
-        ChooseDataStructureDestination -> TODO()
+        ChooseDataStructureDestination -> ChooseDataStructureScreen(navUiController)
         FavoritesDestination -> TODO()
         DeletedDestination -> TODO()
     }
