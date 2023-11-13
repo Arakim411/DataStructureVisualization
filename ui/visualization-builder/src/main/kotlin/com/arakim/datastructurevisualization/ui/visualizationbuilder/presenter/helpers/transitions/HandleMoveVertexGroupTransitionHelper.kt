@@ -30,7 +30,7 @@ private suspend fun VisualizationCorePresenter.goToFinalPosition(
         isVisible = true
         position.animateTo(
             finalPosition,
-            tween(setUpState.value!!.comparisonTransitionTime.inWholeMilliseconds.toInt())
+            tween(setUpState.value!!.vertexTransitionTime.inWholeMilliseconds.toInt())
         )
     }
 }
