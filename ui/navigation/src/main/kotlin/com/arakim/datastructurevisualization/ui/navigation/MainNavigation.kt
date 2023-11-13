@@ -12,7 +12,10 @@ import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationU
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerGroup
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerItem
 import com.arakim.datastructurevisualization.navigation.uicontroller.rememberNavUiControllerState
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.compose.BinarySearchTreeScreen
+import com.arakim.datastructurevisualization.ui.navigation.MainNavDestinations.ChooseDataStructureDestination
+import com.arakim.datastructurevisualization.ui.navigation.MainNavDestinations.DeletedDestination
+import com.arakim.datastructurevisualization.ui.navigation.MainNavDestinations.FavoritesDestination
+import com.arakim.datastructurevisualization.ui.navigation.R.drawable
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
@@ -34,7 +37,7 @@ fun MainNavigation() {
     ) {
         NavHost(
             navController = navController,
-            startDestination = MainNavDestinations.BinarySearchTree.route
+            startDestination = MainNavDestinations.ChooseDataStructureDestination.route
         ) {
             MainNavDestinations.values().forEach { destination ->
                 composable(destination.route) {
@@ -54,13 +57,9 @@ fun Screen(
     navUiController: NavigationUiControllerState,
 ) {
     when (destination) {
-        MainNavDestinations.BinarySearchTree -> BinarySearchTreeScreen(navUiController)
-        MainNavDestinations.Stack -> Unit
-        MainNavDestinations.Queue -> Unit
-        MainNavDestinations.LinkedList -> Unit
-        MainNavDestinations.HashTable -> Unit
-        MainNavDestinations.Favorite -> Unit
-        MainNavDestinations.Delete -> Unit
+        ChooseDataStructureDestination -> TODO()
+        FavoritesDestination -> TODO()
+        DeletedDestination -> TODO()
     }
 }
 
@@ -76,11 +75,7 @@ private fun getNavigationGroups(): ImmutableList<NavUiControllerGroup> = immutab
 private fun getDataStructuresGroup(): NavUiControllerGroup = NavUiControllerGroup(
     name = stringResource(id = R.string.group_name_data_structure),
     items = immutableListOf(
-        MainNavDestinations.BinarySearchTree.toNavItem(),
-        MainNavDestinations.Stack.toNavItem(),
-        MainNavDestinations.Queue.toNavItem(),
-        MainNavDestinations.LinkedList.toNavItem(),
-        MainNavDestinations.HashTable.toNavItem(),
+        ChooseDataStructureDestination.toNavItem(),
     ),
 )
 
@@ -89,8 +84,8 @@ private fun getDataStructuresGroup(): NavUiControllerGroup = NavUiControllerGrou
 private fun getOtherGroup(): NavUiControllerGroup = NavUiControllerGroup(
     name = stringResource(id = R.string.group_name_other),
     items = immutableListOf(
-        MainNavDestinations.Favorite.toNavItem(),
-        MainNavDestinations.Delete.toNavItem(),
+        FavoritesDestination.toNavItem(),
+        DeletedDestination.toNavItem(),
     ),
 )
 
@@ -98,46 +93,23 @@ private fun getOtherGroup(): NavUiControllerGroup = NavUiControllerGroup(
 @Composable
 @Stable
 private fun MainNavDestinations.toNavItem(): NavUiControllerItem = when (this) {
-    MainNavDestinations.BinarySearchTree -> NavUiControllerItem(
+
+    FavoritesDestination -> NavUiControllerItem(
         title = toStringResources(),
         route = route,
-        iconId = R.drawable.ic_tree,
+        iconId = drawable.ic_favorite,
     )
 
-    MainNavDestinations.Stack -> NavUiControllerItem(
+    DeletedDestination -> NavUiControllerItem(
         title = toStringResources(),
         route = route,
-        iconId = R.drawable.ic_stack,
+        iconId = drawable.ic_delete,
     )
 
-    MainNavDestinations.Queue -> NavUiControllerItem(
+    ChooseDataStructureDestination -> NavUiControllerItem(
         title = toStringResources(),
         route = route,
-        iconId = R.drawable.ic_queue,
-    )
-
-    MainNavDestinations.LinkedList -> NavUiControllerItem(
-        title = toStringResources(),
-        route = route,
-        iconId = R.drawable.ic_linked_list,
-    )
-
-    MainNavDestinations.HashTable -> NavUiControllerItem(
-        title = toStringResources(),
-        route = route,
-        iconId = R.drawable.ic_hash_table,
-    )
-
-    MainNavDestinations.Favorite -> NavUiControllerItem(
-        title = toStringResources(),
-        route = route,
-        iconId = R.drawable.ic_favorite,
-    )
-
-    MainNavDestinations.Delete -> NavUiControllerItem(
-        title = toStringResources(),
-        route = route,
-        iconId = R.drawable.ic_delete,
+        iconId = drawable.ic_delete,
     )
 }
 
