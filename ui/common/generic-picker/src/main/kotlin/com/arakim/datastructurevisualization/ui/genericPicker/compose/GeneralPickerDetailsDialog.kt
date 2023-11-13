@@ -3,10 +3,10 @@ package com.arakim.datastructurevisualization.ui.genericPicker.compose
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -23,15 +23,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.ColorView
 import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.Dimens
 import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.DropDownBox
 import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.PickDataTypeDialog
+import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.TextDropDownBox
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerAction.NewDataPickedAction
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.GenericPickerItem
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.ColorType
@@ -57,7 +62,7 @@ fun GenericPickerDetailsDialog(
     Dialog(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
-                .width(270.dp)
+                .width(400.dp)
                 .background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.medium)
                 .padding(horizontal = Dimens.PickerContainerPadding)
                 .verticalScroll(scrollState)
@@ -133,40 +138,66 @@ private fun PickerItemView(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Icon(painter = painterResource(id = item.iconResId), contentDescription = null)
+        Box(
+            modifier = Modifier.weight(0.5f),
+            contentAlignment = CenterStart,
+        ) {
+            Icon(
+                painter = painterResource(id = item.iconResId),
+                contentDescription = null,
+            )
+        }
+
+        Spacer(modifier = Modifier.weight(0.4f))
 
         Text(
+            modifier = Modifier.weight(4f),
             text = item.title.getString(),
+            textAlign = TextAlign.Left,
             style = MaterialTheme.typography.bodyMedium,
         )
-        DataTypeView(
-            modifier = Modifier.clickable {
-                currentlyPickingItem = item
-            },
-            item = item,
-        )
+
+        Spacer(modifier = Modifier.weight(0.2f))
+
+        Box(
+            modifier = Modifier.weight(2f),
+            contentAlignment = Center,
+        ) {
+            DataTypeView(
+                modifier = Modifier
+                    .clickable {
+                        currentlyPickingItem = item
+                    },
+                item = item,
+            )
+        }
     }
 }
 
 
 @Composable
-private fun RowScope.DataTypeView(
+private fun DataTypeView(
     modifier: Modifier,
     item: GenericPickerItem<*>,
 ) {
 
     when (val dataType = item.pickingDataType) {
-        is ColorType -> ColorView(
+        is ColorType -> DropDownBox(
             modifier = modifier,
-            color = dataType.value,
-        )
+            contentAlignment = Center,
+        ) {
+            ColorView(
+                modifier = modifier,
+                color = dataType.value,
+            )
+        }
 
-        is DurationType -> DropDownBox(
+        is DurationType -> TextDropDownBox(
             modifier = modifier,
             text = dataType.value.toString(),
         )
 
-        is NumericType -> DropDownBox(
+        is NumericType -> TextDropDownBox(
             modifier = modifier,
             text = dataType.value.toString().plus(" ${dataType.unit}"),
         )
