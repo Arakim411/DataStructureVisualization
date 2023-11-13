@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
+    id(libs.plugins.hilt.get().pluginId)
 }
 
 android {
@@ -10,12 +12,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":ui:common"))
+    implementation(project(":ui:mvi"))
     implementation(project(":ui:util"))
-    implementation(project(":ui:navigation:ui-controller"))
-    implementation(project(":ui:screens:binary-search-tree"))
-    implementation(project(":ui:screens:choose-data-structure"))
 
-    implementation(libs.androidx.navigation.compose)
+    kapt(libs.google.hilt.compiler)
+    implementation(libs.google.hilt)
+
     implementation(libs.bundles.compose)
     implementation(libs.bundles.composeDebug)
     implementation(platform(libs.androidx.compose.bom))
