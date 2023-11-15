@@ -9,9 +9,6 @@
     <string name="pick_duration_title">Change %s duration</string>
     <string name="pick_color_title">Change: %s</string>
 
-    <string name="picker_accept_title">accept</string>
-    <string name="picker_cancel_title">cancel</string>
-
     <string name="milliseconds">milliseconds</string>
 
     <string name="change">Change %s</string>

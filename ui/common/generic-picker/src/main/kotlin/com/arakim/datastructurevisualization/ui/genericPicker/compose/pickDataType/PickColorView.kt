@@ -17,11 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.arakim.datastructurevisualization.ui.common.genericpicker.R.string
-import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.AcceptCancelButtons
+import com.arakim.datastructurevisualization.ui.common.dialogs.DialogBottomTextButtons
 import com.godaddy.android.colorpicker.ClassicColorPicker
 import com.godaddy.android.colorpicker.HsvColor
 
@@ -60,9 +58,9 @@ internal fun PickColorView(
             )
 
             Spacer(modifier = Modifier.height(8.dp))
-            AcceptCancelButtons(
+            DialogBottomTextButtons(
                 onCancel = onCancel,
-                accept = {
+                onAccept = {
                     onNewColorPicked(currentColor.value.toColor())
                     onCancel()
                 },
