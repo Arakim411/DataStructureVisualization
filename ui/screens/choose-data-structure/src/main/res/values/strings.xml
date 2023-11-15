@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_data_structure_screen_title">Choose data structure</string>
+    <string name="create_data_structure_choose_type_title">Choose data structure</string>
+    <string name="create_data_structure_choose_name_title">Enter Name</string>
+
+    <string name="back">back</string>
 </resources>

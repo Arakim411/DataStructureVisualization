@@ -30,3 +30,14 @@ inline fun <T, R> ImmutableList<T>.map(transform: (T) -> R): ImmutableList<R> {
 inline fun <T, R> Iterable<T>.mapToImmutable(transform: (T) -> R): ImmutableList<R> {
     return ImmutableList(this.map { transform(it) })
 }
+
+inline fun <T> ImmutableList<T>.getWithNewItem(newItem: T): ImmutableList<T> {
+    return ImmutableList(value + newItem)
+}
+
+inline fun <T> ImmutableList<T>.getWithNewItems(newItems: List<T>): ImmutableList<T> {
+    val newList = value.toMutableList().apply {
+        addAll(newItems)
+    }
+    return ImmutableList(newList)
+}

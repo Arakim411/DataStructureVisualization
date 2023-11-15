@@ -6,5 +6,5 @@ import androidx.compose.runtime.Immutable
 data class DataStructureUiModel(
     val id: String,
     val customName: String,
-    val dataStructureType: DataStructureType,
+    val dataStructureType: DataStructureTypeUiModel,
 )
