@@ -47,6 +47,7 @@ import com.arakim.datastructurevisualization.ui.util.StringWrapper
 import com.arakim.datastructurevisualization.ui.util.getString
 import com.arakim.datastructurevisualization.ui.util.mapToImmutable
 
+//TODO stick m3 rules and make full screen
 @Composable
 fun GenericPickerDetailsDialog(
     items: ImmutableList<GenericPickerItem<*>>,

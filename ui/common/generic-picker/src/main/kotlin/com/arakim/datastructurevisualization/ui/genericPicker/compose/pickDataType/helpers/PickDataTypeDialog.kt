@@ -17,6 +17,7 @@ import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.Pi
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.NumericType
 import com.arakim.datastructurevisualization.ui.util.getString
 
+//TODO stick m3 rules
 @Composable
 fun PickDataTypeDialog(
     item: GenericPickerItem<*>,

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.arakim.datastructurevisualization.ui.common.genericpicker.R
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.NumericInputTextField
-import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.AcceptCancelButtons
+import com.arakim.datastructurevisualization.ui.common.dialogs.DialogBottomTextButtons
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.DurationType
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -60,9 +60,9 @@ internal fun PickDurationView(
                         Text(text = stringResource(id = R.string.milliseconds))
                     }
                 )
-                AcceptCancelButtons(
+                DialogBottomTextButtons(
                     onCancel = onCancel,
-                    accept = {
+                    onAccept = {
                         onDurationPicked(durationMillis!!.toLong().milliseconds)
                         onCancel()
                     },

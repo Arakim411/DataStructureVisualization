@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.arakim.datastructurevisualization.ui.common.genericpicker.R.string
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.NumericInputTextField
-import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.AcceptCancelButtons
+import com.arakim.datastructurevisualization.ui.common.dialogs.DialogBottomTextButtons
 
 
 @Composable
@@ -57,9 +57,9 @@ internal fun PickNumberView(
                         Text(text = unit)
                     }
                 )
-                AcceptCancelButtons(
+                DialogBottomTextButtons(
                     onCancel = onCancel,
-                    accept = {
+                    onAccept = {
                         onNumberPicked(number!!.toFloat())
                         onCancel()
                     },
