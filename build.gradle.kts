@@ -17,6 +17,7 @@ allprojects {
             setUpAndroid(project.getNameSpace())
         }
         tasks.withType(KotlinCompile::class.java).configureEach {
+            println("setUp: ${this.name}")
             setUpKotlin()
         }
     }
@@ -47,14 +48,14 @@ fun CommonExtension<*, *, *, *, *>.setUpAndroid(nameSpace: String) {
     }
 
     compileOptions.apply {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
 fun KotlinCompile.setUpKotlin() {
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }
 
