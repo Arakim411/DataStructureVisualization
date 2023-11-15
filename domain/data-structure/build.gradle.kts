@@ -2,6 +2,6 @@ plugins {
     kotlin("jvm")
 }
 
-dependencies{
+dependencies {
     implementation(libs.google.dagger)
 }
