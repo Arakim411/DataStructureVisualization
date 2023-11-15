@@ -1,0 +1,45 @@
+package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView
+
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.arakim.datastructurevisualization.ui.common.dialogs.DialogBottomTextButtons
+import com.arakim.datastructurevisualization.ui.common.dialogs.DialogDimens
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.CreationStage.ChooseNameState
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
+import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
+
+@Composable
+internal fun ColumnScope.ChooseStructureNameView(
+    stage: ChooseNameState,
+    onNameChosen: (DataStructureTypeUiModel, name: String) -> Unit,
+    onBack: () -> Unit,
+) {
+    var name by remember { mutableStateOf("") }
+
+    OutlinedTextField(
+        value = name,
+        onValueChange = {
+            name = it
+        },
+    )
+
+    Spacer(modifier = Modifier.height(DialogDimens.BodyActionsPadding))
+
+    DialogBottomTextButtons(
+        onCancel = onBack,
+        onAccept = {
+            onNameChosen(stage.type,name)
+        },
+        isAcceptEnabled = name.isNotEmpty(),
+        overrideCancelText = stringResource(id = R.string.back)
+    )
+}
