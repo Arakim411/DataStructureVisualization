@@ -16,6 +16,10 @@ dependencyResolutionManagement {
 rootProject.name = "DataStructureVisualization"
 
 include(":app")
+include(":data")
+include(":data:data-source")
+include(":data:repository")
+include(":data:repository:data-structure")
 include(":domain")
 include(":domain:data-structure")
 include(":ui")

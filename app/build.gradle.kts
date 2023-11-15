@@ -53,8 +53,9 @@ ktlint {
 
 dependencies {
 
-    implementation(project(":ui:util"))
+    implementation(project(":data:repository:data-structure"))
     implementation(project(":ui:navigation"))
+    implementation(project(":ui:util"))
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

@@ -12,6 +12,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain:data-structure"))
     implementation(project(":ui:common"))
     implementation(project(":ui:mvi"))
     implementation(project(":ui:util"))
