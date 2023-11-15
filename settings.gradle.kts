@@ -16,6 +16,8 @@ dependencyResolutionManagement {
 rootProject.name = "DataStructureVisualization"
 
 include(":app")
+include(":domain")
+include(":domain:data-structure")
 include(":ui")
 include(":ui:common")
 include(":ui:common:generic-picker")
