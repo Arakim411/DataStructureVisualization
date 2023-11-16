@@ -4,5 +4,8 @@
     <string name="create_data_structure_choose_type_title">Choose data structure</string>
     <string name="create_data_structure_choose_name_title">Enter Name</string>
 
+    <string name="failed_to_get_data_structures_message">Failed to load data structures</string>
+    <string name="failed_to_create_data_structures_message">Failed to create data structure</string>
+
     <string name="back">back</string>
 </resources>

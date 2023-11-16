@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
@@ -23,11 +25,16 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compo
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.CreateDataStructureAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.InitializationAction.InitializeAction
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToCreateDataStructures
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToGetDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ReadyState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R.drawable
+import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R.string
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun ChooseDataStructureScreen(
@@ -38,10 +45,26 @@ fun ChooseDataStructureScreen(
     val state = viewModel.presenter.stateFlow.collectAsStateWithLifecycle().value
 
     val isCreatingDataStructure = remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(Unit) {
-        viewModel.presenter.onAction(InitializeAction)
+    suspend fun showSnackBar(text: String) {
+        snackbarHostState.showSnackbar(text)
     }
+
+    val failedToGetMessage = stringResource(id = string.failed_to_get_data_structures_message)
+    val failedToCreateMessage = stringResource(id = string.failed_to_create_data_structures_message)
+    LaunchedEffect(Unit) {
+
+        viewModel.presenter.onAction(InitializeAction)
+        viewModel.presenter.sideEffectFlow.onEach {
+            when (it) {
+                FailedToGetDataStructures -> showSnackBar(failedToGetMessage)
+                FailedToCreateDataStructures -> showSnackBar(failedToCreateMessage)
+            }
+        }.launchIn(this)
+    }
+
+
 
     @Stable
     fun onAction(action: ChooseDataStructureAction) {
@@ -61,6 +84,7 @@ fun ChooseDataStructureScreen(
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CommonTopAppBar(
                 title = stringResource(id = R.string.choose_data_structure_screen_title),

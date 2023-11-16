@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":ui:common"))
     implementation(project(":ui:mvi"))
     implementation(project(":ui:util"))
+    implementation(project(":android-util"))
 
     kapt(libs.google.hilt.compiler)
     implementation(libs.google.hilt)

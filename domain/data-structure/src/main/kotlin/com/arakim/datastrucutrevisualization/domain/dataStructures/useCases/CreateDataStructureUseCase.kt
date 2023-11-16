@@ -7,5 +7,8 @@ import javax.inject.Inject
 class CreateDataStructureUseCase @Inject constructor(
     private val repository: DataStructureRepository
 ) {
-    operator fun invoke(name: String, type: DataStructureType) = repository.create(name, type)
+    suspend operator fun invoke(
+        name: String,
+        type: DataStructureType
+    ) = repository.createDataStructure(name, type)
 }
