@@ -1,4 +1,7 @@
 package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter
 
-class ChooseDataStructureSideEffect {
+sealed interface ChooseDataStructureSideEffect {
+
+    object FailedToGetDataStructures : ChooseDataStructureSideEffect
+    object FailedToCreateDataStructures: ChooseDataStructureSideEffect
 }
