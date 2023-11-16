@@ -17,6 +17,7 @@ hilt = "2.44"
 hiltNavigationCompose = "1.0.0"
 coroutinesVersion = "1.7.3"
 colorPicker = "0.7.0"
+roomVersion = "2.6.0"
 
 # Android config
 compileSdk = "34"
@@ -50,6 +51,10 @@ androix-lifecycle-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-v
 google-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 google-dagger = { module = "com.google.dagger:dagger", version.ref = "hilt" }
 google-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
 

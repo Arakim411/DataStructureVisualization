@@ -1,15 +1,28 @@
 package com.arakim.datastructurevisualization.data.repository.dataStructure
 
-import com.arakim.datastructurevisualization.data.repository.dataStructure.localDataSource.LocalDataStructureSource
+import com.arakim.datastructurevisualization.kotlinutil.CommonError
+import com.arakim.datastructurevisualization.kotlinutil.TypedResult
+import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.DataStructureLocalDataSource
 import com.arakim.datastrucutrevisualization.domain.dataStructures.DataStructureRepository
+import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructure
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class DataStructureRepositoryImpl @Inject constructor(
-    private val localDataStructureSource: LocalDataStructureSource,
+    private val localDataSource: DataStructureLocalDataSource,
 ) : DataStructureRepository {
 
-    override fun create(name: String, type: DataStructureType) {
-        localDataStructureSource.create(name, type)
-    }
+    override suspend fun createDataStructure(
+        name: String,
+        type: DataStructureType,
+    ): TypedResult<Unit, CommonError> = localDataSource.createDataStructure(
+        name = name,
+        dataSourceType = type,
+    )
+
+
+    override fun listenForDataStructuresUpdate(
+    ): Flow<TypedResult<List<DataStructure>, CommonError>> = localDataSource.listenForDataStructuresUpdate()
+
 }

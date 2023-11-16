@@ -15,14 +15,15 @@ dependencyResolutionManagement {
 
 rootProject.name = "DataStructureVisualization"
 
+include(":android-util")
 include(":app")
 include(":data")
-include(":data:data-source")
 include(":data:repository")
 include(":data:repository:data-structure")
+include(":data:repository:data-structure:local-data-source")
 include(":domain")
 include(":domain:data-structure")
-include(":domain:util")
+include(":kotlin-util")
 include(":ui")
 include(":ui:common")
 include(":ui:common:generic-picker")
