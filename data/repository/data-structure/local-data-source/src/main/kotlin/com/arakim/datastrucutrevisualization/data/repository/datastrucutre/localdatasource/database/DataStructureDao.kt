@@ -13,6 +13,9 @@ interface DataStructureDao {
     @Insert
     suspend fun createDataStructure(dataStructureEntity: DataStructureDto)
 
-    @Query("Select * from ${Const.DataStructureEntityName}")
+    @Query("SELECT * FROM ${Const.DataStructureEntityName}")
     fun listenForDataStructuresUpdate(): Flow<List<DataStructureDto>>
+
+    @Query("DELETE FROM ${Const.DataStructureEntityName} WHERE id = :id")
+    fun deleteDataStructure(id: Int)
 }
