@@ -8,14 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiController
-import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerGroup
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerItem
 import com.arakim.datastructurevisualization.navigation.uicontroller.rememberNavUiControllerState
-import com.arakim.datastructurevisualization.ui.navigation.MainNavDestinations.ChooseDataStructureDestination
-import com.arakim.datastructurevisualization.ui.navigation.MainNavDestinations.DeletedDestination
-import com.arakim.datastructurevisualization.ui.navigation.MainNavDestinations.FavoritesDestination
 import com.arakim.datastructurevisualization.ui.navigation.R.drawable
+import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination
+import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.ChooseDataStructureDestination
+import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.DeletedDataStructuresDestination
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.ChooseDataStructureScreen
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
@@ -38,31 +37,20 @@ fun MainNavigation() {
     ) {
         NavHost(
             navController = navController,
-            startDestination = ChooseDataStructureDestination.route
+            startDestination = ChooseDataStructureDestination.Route
         ) {
-            MainNavDestinations.values().forEach { destination ->
-                composable(destination.route) {
-                    Screen(
-                        destination = destination,
-                        navUiController = navUiController,
-                    )
-                }
+
+            composable(ChooseDataStructureDestination.Route) {
+                ChooseDataStructureScreen(navUiControllerState = navUiController)
+            }
+
+            composable(DeletedDataStructuresDestination.Route) {
+                TODO()
             }
         }
     }
 }
 
-@Composable
-fun Screen(
-    destination: MainNavDestinations,
-    navUiController: NavigationUiControllerState,
-) {
-    when (destination) {
-        ChooseDataStructureDestination -> ChooseDataStructureScreen(navUiController)
-        FavoritesDestination -> TODO()
-        DeletedDestination -> TODO()
-    }
-}
 
 @Composable
 @Stable
@@ -85,33 +73,33 @@ private fun getDataStructuresGroup(): NavUiControllerGroup = NavUiControllerGrou
 private fun getOtherGroup(): NavUiControllerGroup = NavUiControllerGroup(
     name = stringResource(id = R.string.group_name_other),
     items = immutableListOf(
-        FavoritesDestination.toNavItem(),
-        DeletedDestination.toNavItem(),
+        DeletedDataStructuresDestination.toNavItem(),
     ),
 )
 
 //TODO correct icons
 @Composable
 @Stable
-private fun MainNavDestinations.toNavItem(): NavUiControllerItem = when (this) {
+private fun MainDestination.toNavItem(): NavUiControllerItem = when (this) {
 
-    FavoritesDestination -> NavUiControllerItem(
-        title = toStringResources(),
-        route = route,
-        iconId = drawable.ic_favorite,
-    )
 
-    DeletedDestination -> NavUiControllerItem(
+    DeletedDataStructuresDestination -> NavUiControllerItem(
         title = toStringResources(),
-        route = route,
+        route = DeletedDataStructuresDestination.Route,
         iconId = drawable.ic_delete,
     )
 
     ChooseDataStructureDestination -> NavUiControllerItem(
         title = toStringResources(),
-        route = route,
-        iconId = drawable.ic_delete,
+        route = ChooseDataStructureDestination.Route,
+        iconId = drawable.ic_stack,
     )
+}
+
+@Composable
+private fun MainDestination.toStringResources(): String = when (this) {
+    DeletedDataStructuresDestination -> stringResource(id = R.string.destination_name_delete)
+    ChooseDataStructureDestination -> stringResource(id = R.string.destination_name_data_structure)
 }
 
 
