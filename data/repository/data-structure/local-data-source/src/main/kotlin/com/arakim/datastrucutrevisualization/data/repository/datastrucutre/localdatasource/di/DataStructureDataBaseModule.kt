@@ -2,8 +2,11 @@ package com.arakim.datastrucutrevisualization.data.repository.datastrucutre.loca
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.Const
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.database.DataStructureDataBase
+import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.database.Migration_1_2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,8 +25,13 @@ internal class DataStructureDataBaseModule {
     ): DataStructureDataBase = Room.databaseBuilder(
         context,
         DataStructureDataBase::class.java,
-        Const.DataStructureDataBaseName
-    ).build()
+        Const.DataStructureDataBaseName,
+    )
+        .fallbackToDestructiveMigration()
+        .addMigrations(
+           Migration_1_2,
+        )
+        .build()
 
     @Provides
     @Singleton
