@@ -1,5 +1,6 @@
 package com.arakim.datastructurevisualization.domain.util
 
+import android.util.Log
 import com.arakim.datastructurevisualization.kotlinutil.CommonError
 import com.arakim.datastructurevisualization.kotlinutil.TypedResult
 import kotlin.coroutines.cancellation.CancellationException
@@ -12,6 +13,8 @@ suspend inline fun <T> executeCommonIoAction(
 } catch (e: CancellationException) {
     throw e
 } catch (t: Throwable) {
+    Log.e(LogTag, "$t")
     TypedResult.failure(CommonError)
 }
 
+const val LogTag = "CommonIoAction"
