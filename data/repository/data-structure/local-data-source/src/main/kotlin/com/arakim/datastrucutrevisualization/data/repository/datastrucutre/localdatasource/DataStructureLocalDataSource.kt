@@ -9,8 +9,10 @@ import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.local
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.model.toDto
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructure
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DataStructureLocalDataSource @Inject constructor(
@@ -29,6 +31,14 @@ class DataStructureLocalDataSource @Inject constructor(
 
                 ),
         )
+    }
+
+    suspend fun deleteDataStructure(
+        id: Int,
+    ): TypedResult<Unit, CommonError> = executeCommonIoAction {
+        withContext(Dispatchers.IO) {
+            dao.deleteDataStructure(id)
+        }
     }
 
     fun listenForDataStructuresUpdate(): Flow<TypedResult<List<DataStructure>, CommonError>> =

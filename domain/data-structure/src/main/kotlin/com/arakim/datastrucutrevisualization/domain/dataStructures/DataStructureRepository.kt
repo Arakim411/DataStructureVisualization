@@ -9,5 +9,6 @@ import kotlinx.coroutines.flow.Flow
 interface DataStructureRepository {
 
     suspend fun createDataStructure(name: String, type: DataStructureType): TypedResult<Unit, CommonError>
+    suspend fun deleteDataStructure(id: Int): TypedResult<Unit, CommonError>
     fun listenForDataStructuresUpdate(): Flow<TypedResult<List<DataStructure>, CommonError>>
 }
