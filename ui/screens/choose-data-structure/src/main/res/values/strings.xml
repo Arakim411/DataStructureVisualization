@@ -7,5 +7,8 @@
     <string name="failed_to_get_data_structures_message">Failed to load data structures</string>
     <string name="failed_to_create_data_structures_message">Failed to create data structure</string>
 
+    <string name="create_data_structure_button">Create</string>
+    <string name="no_created_data_structure_message">No created data structures</string>
+
     <string name="back">back</string>
 </resources>

@@ -9,9 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructurePresenter
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ErrorState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.IdleState
@@ -23,7 +21,8 @@ import com.arakim.datastructurevisualization.ui.util.ImmutableList
 @Composable
 internal fun StateView(
     state: ChooseDataStructureState,
-    onAction: (ChooseDataStructureAction) -> Unit,
+    onAddDataStructure: () -> Unit,
+    onDeleteDataStructure: (id: Int) -> Unit,
 ) {
 
     Crossfade(
@@ -34,7 +33,11 @@ internal fun StateView(
             ErrorState -> ErrorStateView()
             IdleState -> Unit
             InitializingState -> LoadingView()
-            is ReadyState -> ReadyStateView(dataStructures = stateValue.dataStructures)
+            is ReadyState ->  StateReadyView(
+                dataStructures = stateValue.dataStructures,
+                onAddDataStructure = onAddDataStructure,
+                onDeleteDataStructure = onDeleteDataStructure,
+            )
         }
     }
 }
@@ -52,16 +55,10 @@ private fun ErrorStateView() {
 
 @Composable
 private fun LoadingView() {
-    //add common loading view
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Companion.Center,
     ) {
         CircularProgressIndicator()
     }
-}
-
-@Composable
-private fun ReadyStateView(dataStructures: ImmutableList<DataStructureUiModel>) {
-    StateReadyView(dataStructures = dataStructures)
 }

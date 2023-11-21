@@ -1,17 +1,42 @@
 package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model
 
-import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.BinarySearchTree
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.LinkedList
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
+import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType
 
+//TODO correct icons
 @Immutable
-enum class DataStructureTypeUiModel(name: String, @DrawableRes iconResId: Int) {
+sealed interface DataStructureTypeUiModel {
+    val name: String
+    val iconResId: Int
 
-    BinarySearchTree("Binary Search Tree", R.drawable.ic_binary_search_tree),
-    HashMap("HashMap", R.drawable.ic_binary_search_tree),
-    LinkedList("Linked List", R.drawable.ic_binary_search_tree),
+    @Immutable
+    object BinarySearchTree : DataStructureTypeUiModel {
+        override val name: String = "Binary Search Tree"
+        override val iconResId: Int = R.drawable.ic_binary_search_tree
+    }
+
+    @Immutable
+    object HashMap : DataStructureTypeUiModel {
+        override val name: String = "Hash Map"
+        override val iconResId: Int = R.drawable.ic_hash_map
+    }
+
+    @Immutable
+    object LinkedList : DataStructureTypeUiModel {
+        override val name: String = "Linked List"
+        override val iconResId: Int = R.drawable.ic_linked_list
+    }
 }
+
+val allDataStructuresTypeUiModels = immutableListOf(
+    BinarySearchTree,
+    DataStructureTypeUiModel.HashMap,
+    LinkedList
+)
 
 internal fun DataStructureType.toUiModel(): DataStructureTypeUiModel = when (this) {
     DataStructureType.BinarySearchTree -> DataStructureTypeUiModel.BinarySearchTree
