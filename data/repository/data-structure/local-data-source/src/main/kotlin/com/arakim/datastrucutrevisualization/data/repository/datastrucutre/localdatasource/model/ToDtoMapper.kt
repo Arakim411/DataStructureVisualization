@@ -11,7 +11,7 @@ internal fun DataStructure.toDto() = DataStructureDto(
     name = name,
     dataSourceType = type.toDto(),
     dataStructureJson = dataStructureJson,
-    isFavorite = false,
+    isFavorite = isFavorite,
 
     )
 

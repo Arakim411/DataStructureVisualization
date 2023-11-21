@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ internal fun StateReadyView(
     dataStructures: ImmutableList<DataStructureUiModel>,
     onAddDataStructure: () -> Unit,
     onDeleteDataStructure: (id: Int) -> Unit,
+    onUpdateIsFavorite: (id: Int, isFavorite: Boolean) -> Unit,
 ) {
 
     if (dataStructures.isEmpty()) {
@@ -35,6 +37,7 @@ internal fun StateReadyView(
         DataStructuresListView(
             dataStructures = dataStructures,
             onDeleteDataStructure = onDeleteDataStructure,
+            onUpdateIsFavorite = onUpdateIsFavorite,
         )
     }
 }
@@ -70,7 +73,8 @@ private fun DataStructuresEmptyView(
 @Composable
 private fun DataStructuresListView(
     dataStructures: ImmutableList<DataStructureUiModel>,
-    onDeleteDataStructure: (id: Int) -> Unit
+    onDeleteDataStructure: (id: Int) -> Unit,
+    onUpdateIsFavorite: (id: Int, isFavorite: Boolean) -> Unit,
 ) {
 
     LazyColumn {
@@ -84,7 +88,8 @@ private fun DataStructuresListView(
             ) {
                 DataStructureListItem(
                     modifier = Modifier.animateItemPlacement(),
-                    item = dataStructure
+                    item = dataStructure,
+                    onUpdateIsFavorite = onUpdateIsFavorite,
                 )
             }
             Divider()
@@ -97,12 +102,22 @@ private fun DataStructuresListView(
 private fun DataStructureListItem(
     modifier: Modifier,
     item: DataStructureUiModel,
+    onUpdateIsFavorite: (id: Int, isFavorite: Boolean) -> Unit,
 ) {
+    val trailingIcon = if (item.isFavorite) {
+        R.drawable.baseline_favorite_24
+    } else {
+        R.drawable.baseline_not_favorite_24
+    }
+
     CommonListItem(
         modifier = modifier,
         headLine = item.customName,
         leadingIcon = item.dataStructureType.iconResId,
         supportingText = item.dataStructureType.name,
-        trailingIcon = R.drawable.baseline_favorite_border_24, // TODO handle favorites
+        trailingIcon = trailingIcon,
+        onTrailingIconClick = {
+            onUpdateIsFavorite(item.id, !item.isFavorite)
+        }
     )
 }

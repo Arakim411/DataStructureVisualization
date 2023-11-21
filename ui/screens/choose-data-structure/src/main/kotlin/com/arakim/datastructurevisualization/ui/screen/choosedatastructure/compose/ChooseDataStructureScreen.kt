@@ -26,15 +26,14 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.prese
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.CreateDataStructureAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.DeleteDataStructureAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.InitializationAction.InitializeAction
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.UpdateDataStructureIsFavoriteAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToCreateDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToGetDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ReadyState
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.allDataStructuresTypeUiModels
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R.drawable
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R.string
-import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -122,7 +121,10 @@ fun ChooseDataStructureScreen(
                 },
                 onDeleteDataStructure = { dataStructureId ->
                     onAction(DeleteDataStructureAction(dataStructureId))
-                }
+                },
+                onUpdateIsFavorite = { dataStructureId, isFavorite ->
+                    onAction(UpdateDataStructureIsFavoriteAction(dataStructureId, isFavorite))
+                },
             )
         }
     }

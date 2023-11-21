@@ -10,6 +10,7 @@ data class DataStructureUiModel(
     val id: Int,
     val customName: String,
     val dataStructureType: DataStructureTypeUiModel,
+    val isFavorite: Boolean,
 )
 
 internal fun List<DataStructure>.toUiModel(
@@ -19,6 +20,7 @@ internal fun List<DataStructure>.toUiModel(
 internal fun DataStructure.toUiModel(): DataStructureUiModel = DataStructureUiModel(
     id = id,
     customName = name,
-    dataStructureType = type.toUiModel()
+    dataStructureType = type.toUiModel(),
+    isFavorite = isFavorite,
 )
 
