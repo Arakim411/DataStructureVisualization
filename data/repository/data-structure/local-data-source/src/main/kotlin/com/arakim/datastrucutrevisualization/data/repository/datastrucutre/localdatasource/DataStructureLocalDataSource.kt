@@ -41,7 +41,10 @@ class DataStructureLocalDataSource @Inject constructor(
     suspend fun updateDataStructure(
         dataStructure: DataStructure,
     ): TypedResult<Unit, CommonError> = executeCommonIoAction {
-        dao.updateDataStructure(dataStructure.toDto())
+        withContext(Dispatchers.IO) {
+            val dto = dataStructure.toDto()
+            dao.updateDataStructure(dto)
+        }
     }
 
     suspend fun deleteDataStructure(

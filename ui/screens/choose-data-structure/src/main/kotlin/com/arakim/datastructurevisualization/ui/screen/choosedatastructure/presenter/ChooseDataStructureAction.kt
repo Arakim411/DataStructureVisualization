@@ -23,4 +23,9 @@ sealed interface ChooseDataStructureAction {
     data class DeleteDataStructureAction(
         val id: Int,
     ) : ChooseDataStructureAction
+
+    data class UpdateDataStructureIsFavoriteAction(
+        val id: Int,
+        val isFavorite: Boolean,
+    ) : ChooseDataStructureAction
 }
