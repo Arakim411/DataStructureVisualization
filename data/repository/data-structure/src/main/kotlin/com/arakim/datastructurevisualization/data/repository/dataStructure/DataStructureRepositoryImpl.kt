@@ -21,6 +21,13 @@ internal class DataStructureRepositoryImpl @Inject constructor(
         dataSourceType = type,
     )
 
+    override suspend fun updateDataStructure(dataStructure: DataStructure): TypedResult<Unit, CommonError> =
+        localDataSource.updateDataStructure(dataStructure)
+
+
+    override suspend fun getDataStructure(id: Int): TypedResult<DataStructure, CommonError> =
+        localDataSource.getDataStructure(id)
+
     override suspend fun deleteDataStructure(id: Int): TypedResult<Unit, CommonError> {
         // TODO not delete instantly, but mark as deleted and delete after some time, to allows revert it
         return localDataSource.deleteDataStructure(id)

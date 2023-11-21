@@ -10,5 +10,6 @@ data class DataStructure(
     val id: Int,
     val name: String,
     val type: DataStructureType,
-    val dataStructureJson: String
+    val dataStructureJson: String,
+    val isFavorite: Boolean
 )

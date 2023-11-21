@@ -29,8 +29,19 @@ class DataStructureLocalDataSource @Inject constructor(
                 dataSourceType = dataSourceType.toDto(),
                 dataStructureJson = "",
                 isFavorite = false,
-                ),
+            ),
         )
+    }
+
+    suspend fun getDataStructure(id: Int): TypedResult<DataStructure, CommonError> = executeCommonIoAction {
+        requireNotNull(dao.getDataStructure(id)?.toDomain())
+    }
+
+
+    suspend fun updateDataStructure(
+        dataStructure: DataStructure,
+    ): TypedResult<Unit, CommonError> = executeCommonIoAction {
+        dao.updateDataStructure(dataStructure.toDto())
     }
 
     suspend fun deleteDataStructure(
@@ -40,6 +51,7 @@ class DataStructureLocalDataSource @Inject constructor(
             dao.deleteDataStructure(id)
         }
     }
+
 
     fun listenForDataStructuresUpdate(): Flow<TypedResult<List<DataStructure>, CommonError>> =
         dao.listenForDataStructuresUpdate().map {
