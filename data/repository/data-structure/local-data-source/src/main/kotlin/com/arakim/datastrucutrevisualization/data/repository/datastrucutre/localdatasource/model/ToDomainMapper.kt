@@ -13,24 +13,5 @@ internal fun DataStructureDto.toDomain(): DataStructure = DataStructure(
     name = name,
     type = dataSourceType.toDataStructureType(),
     dataStructureJson = dataStructureJson,
+    isFavorite = isFavorite,
 )
-
-internal fun DataStructureType.toDto(): String = when (this) {
-    BinarySearchTree -> DataStructuresKey.BinarySearchTree
-    HashMap -> DataStructuresKey.HashMap
-    LinkedList -> DataStructuresKey.LinkedList
-}
-
-internal fun String.toDataStructureType(): DataStructureType = when (this) {
-    DataStructuresKey.BinarySearchTree -> BinarySearchTree
-    DataStructuresKey.HashMap -> HashMap
-    DataStructuresKey.LinkedList -> LinkedList
-    else -> throw IllegalArgumentException("Unknown data structure type: $this")
-
-}
-
-internal object DataStructuresKey {
-    const val BinarySearchTree = "BinarySearchTreeKey"
-    const val HashMap = "HashMapKey"
-    const val LinkedList = "LinkedListKey"
-}
