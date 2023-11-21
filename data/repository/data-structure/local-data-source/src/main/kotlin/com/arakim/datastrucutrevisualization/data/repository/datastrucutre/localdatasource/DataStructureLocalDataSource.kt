@@ -28,7 +28,7 @@ class DataStructureLocalDataSource @Inject constructor(
                 name = name,
                 dataSourceType = dataSourceType.toDto(),
                 dataStructureJson = "",
-
+                isFavorite = false,
                 ),
         )
     }
