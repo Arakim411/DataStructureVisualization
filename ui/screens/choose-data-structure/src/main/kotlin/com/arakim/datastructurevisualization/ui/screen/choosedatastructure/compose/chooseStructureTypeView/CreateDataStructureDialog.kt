@@ -45,7 +45,7 @@ fun CreateDataStructureDialog(
 }
 
 @Composable
-private fun ColumnScope.StageView(
+private fun StageView(
     stage: MutableState<CreationStage>,
     onCreate: (name: String, DataStructureTypeUiModel) -> Unit,
     availableTypes: ImmutableList<DataStructureTypeUiModel>,

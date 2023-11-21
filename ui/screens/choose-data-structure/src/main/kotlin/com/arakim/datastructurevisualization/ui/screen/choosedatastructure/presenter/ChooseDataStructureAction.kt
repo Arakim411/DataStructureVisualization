@@ -19,4 +19,8 @@ sealed interface ChooseDataStructureAction {
         val name: String,
         val type: DataStructureTypeUiModel,
     ) : ChooseDataStructureAction
+
+    data class DeleteDataStructureAction(
+        val id: Int,
+    ) : ChooseDataStructureAction
 }

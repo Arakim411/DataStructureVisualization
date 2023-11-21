@@ -66,7 +66,8 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
 
-colorpicker = {group = "com.godaddy.android.colorpicker", name = "compose-color-picker-android", version.ref = "colorPicker"}
+colorpicker = { group = "com.godaddy.android.colorpicker", name = "compose-color-picker-android", version.ref = "colorPicker" }
+compose-swipe = { module = "me.saket.swipe:swipe", version = "1.2.0" }
 
 [bundles]
 

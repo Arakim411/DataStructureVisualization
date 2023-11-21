@@ -24,11 +24,13 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.Choos
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.CreateDataStructureDialog
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.CreateDataStructureAction
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.DeleteDataStructureAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.InitializationAction.InitializeAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToCreateDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToGetDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ReadyState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.allDataStructuresTypeUiModels
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R.drawable
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R.string
@@ -73,7 +75,7 @@ fun ChooseDataStructureScreen(
 
     if (isCreatingDataStructure.value) {
         CreateDataStructureDialog(
-            availableTypes = remember { immutableListOf(DataStructureTypeUiModel.values().toList()) },
+            availableTypes = remember { allDataStructuresTypeUiModels },
             onCreate = { name, type ->
                 onAction(CreateDataStructureAction(name, type))
             },
@@ -115,9 +117,13 @@ fun ChooseDataStructureScreen(
         ) {
             StateView(
                 state = state,
-                onAction = ::onAction,
+                onAddDataStructure = {
+                    isCreatingDataStructure.value = true
+                },
+                onDeleteDataStructure = { dataStructureId ->
+                    onAction(DeleteDataStructureAction(dataStructureId))
+                }
             )
         }
     }
-
 }
