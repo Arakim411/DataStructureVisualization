@@ -1,13 +1,15 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree
 
+import com.arakim.datastructurevisualization.kotlinutil.DataStructureSerializer
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.helpers.BinarySearchTreeSerializer
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.helpers.HandleTreeNodeDeletionHelper
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.Node
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.model.NodeId
 
 //TODO increase cohesion
 abstract class BinarySearchTree constructor(
-    private val handleNodeDeletion: HandleTreeNodeDeletionHelper
-) {
+    private val handleNodeDeletion: HandleTreeNodeDeletionHelper,
+)  {
     private val listeners = mutableSetOf<BinarySearchTreeListener>()
 
     var root: Node? = null

@@ -12,5 +12,8 @@ sealed interface BinarySearchTreeState {
     object ErrorState: BinarySearchTreeState
 
     @Immutable
-    data class ReadyState(val customName: String): BinarySearchTreeState
+    data class ReadyState(
+        val id: Int,
+        val customName: String
+    ): BinarySearchTreeState
 }

@@ -2,7 +2,6 @@ package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.compos
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.BinarySearchTreeViewModel
