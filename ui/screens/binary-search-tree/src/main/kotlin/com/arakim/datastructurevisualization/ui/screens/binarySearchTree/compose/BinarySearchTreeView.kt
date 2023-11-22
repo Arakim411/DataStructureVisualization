@@ -107,7 +107,7 @@ private fun ReadyState(
                 )
             },
             onDismissRequest = { isBottomSheetVisible = false },
-            label = stringResource(id = R.string.bottom_sheet_node_value),
+            label = stringResource(id = string.bottom_sheet_node_value),
         )
     }
 

@@ -2,7 +2,8 @@ package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presen
 
 import com.arakim.datastructurevisualization.kotlinutil.DataStructureSerializer
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.BinarySearchTreeVisualizationBuilder
-import org.json.JSONObject
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.getAllValuesPreOrder
+import com.google.gson.Gson
 import javax.inject.Inject
 
 class BinarySearchTreeSerializer @Inject constructor() : DataStructureSerializer {
@@ -14,13 +15,17 @@ class BinarySearchTreeSerializer @Inject constructor() : DataStructureSerializer
     }
 
     override fun serializeToJson(): String {
-        val map = mapOf<String,String>()
-        JSONObject(map)
+        val values = visualizationBuilder.root?.getAllValuesPreOrder() ?: return ""
 
-        return ""
+        return Gson().toJson(values)
     }
 
     override fun createFromJson(json: String) {
-      //  TODO("Not yet implemented")
+        val values = Gson().fromJson(json, Array<Number>::class.java)
+        values.forEach {
+            visualizationBuilder.insert(it)
+        }
     }
 }
+
+

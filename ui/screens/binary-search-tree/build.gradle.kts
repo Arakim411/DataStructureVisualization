@@ -20,6 +20,8 @@ dependencies {
     implementation(project(":ui:util"))
     implementation(project(":ui:visualization-builder"))
 
+    implementation(libs.gson)
+
     kapt(libs.google.hilt.compiler)
     implementation(libs.google.hilt)
 

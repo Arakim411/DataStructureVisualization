@@ -64,7 +64,7 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
                 onInitialized()
             },
         )
-        if (binarySearchTreeJson != null) {
+        if (!binarySearchTreeJson.isNullOrEmpty()) {
             createFromJson(binarySearchTreeJson)
         }
 

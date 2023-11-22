@@ -15,28 +15,6 @@ internal fun Node.find(number: Number, traveledNode: MutableSet<NodeId>): Node? 
 }
 
 
-fun Node.getAllNodesUntil(number: Number): Set<Node> {
-    val set = mutableSetOf(this)
-    right?.getAllNodesUntilRecursive(number, set)
-    left?.getAllNodesUntilRecursive(number, set)
-
-    return set
-}
-
-private fun Node.getAllNodesUntilRecursive(
-    number: Number,
-    allAbove: MutableSet<Node>
-) {
-    when {
-        value == number -> Unit
-        else -> {
-            allAbove.add(this)
-            left?.getAllNodesUntilRecursive(number, allAbove)
-            right?.getAllNodesUntilRecursive(number, allAbove)
-        }
-    }
-}
-
 internal fun Node.getWithAllChildNodes(): Set<Node> {
     val set = mutableSetOf<Node>(this)
 
@@ -57,16 +35,6 @@ internal fun Node.getNodeWithLowestValue(traveledNodes: MutableSet<NodeId>): Nod
     return left?.getNodeWithLowestValue(traveledNodes) ?: this
 }
 
-fun Node.getLeftNodesCount(): Int = left?.getLeftNodesCountRecursive(0) ?: 0
-
-private fun Node.getLeftNodesCountRecursive(count: Int): Int =
-    left?.getLeftNodesCountRecursive(count + 1) ?: (count + 1)
-
-fun Node.getRightNodesCount(): Int = right?.getRightNodesCountRecursive(0) ?: 0
-
-private fun Node.getRightNodesCountRecursive(count: Int): Int =
-    right?.getLeftNodesCountRecursive(count + 1) ?: (count + 1)
-
 fun Node.firstAboveInsertedOnRight(): Node? =
     when (insertSide) {
         Right -> this
@@ -81,14 +49,14 @@ fun Node.firstAboveInsertedOnLeft(): Node? =
         null -> null
     }
 
-fun Node.firstWithInsertedOnLeft(node: Node): Node? = when {
-    node.value isLessThen value -> this
-    else -> right?.firstWithInsertedOnLeft(node)
+fun Node.getAllValuesPreOrder(): List<Number> {
+    val list = mutableListOf<Number>()
+    getAllPreOrderRecursive(list)
+    return list
 }
 
-fun Node.firstWithInsertedOnRight(node: Node): Node? {
-    return when {
-        node.value isGreaterOrEquals value && node.id != id -> this
-        else -> left?.firstWithInsertedOnRight(node)
-    }
+private fun Node.getAllPreOrderRecursive(list: MutableList<Number>) {
+    list.add(value)
+    left?.getAllPreOrderRecursive(list)
+    right?.getAllPreOrderRecursive(list)
 }
