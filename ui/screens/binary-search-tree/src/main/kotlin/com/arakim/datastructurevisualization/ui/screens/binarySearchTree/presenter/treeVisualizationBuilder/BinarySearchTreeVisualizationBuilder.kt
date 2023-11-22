@@ -1,10 +1,11 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder
 
-import android.util.Log
+import com.arakim.datastructurevisualization.kotlinutil.DataStructureSerializer
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.VisualizeNodeDeletedHelper
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.VisualizeNodeInsertedHelper
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.align.TreeAlignHelper
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.BinarySearchTree
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.helpers.BinarySearchTreeSerializer
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.helpers.TreeHelpers
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.VisualizationSetUp
@@ -18,10 +19,11 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
     private val treeAlignHelper: TreeAlignHelper,
     private val visualizeNodeInsertedHelper: VisualizeNodeInsertedHelper,
     private val visualizeNodeDeletedHelper: VisualizeNodeDeletedHelper,
+    private val binarySearchTreeSerializer: BinarySearchTreeSerializer,
     treeHelpers: TreeHelpers,
 ) : BinarySearchTree(
-    handleNodeDeletion = treeHelpers.handleTreeNodeDeletionHelper
-) {
+    handleNodeDeletion = treeHelpers.handleTreeNodeDeletionHelper,
+), DataStructureSerializer by binarySearchTreeSerializer {
 
     private lateinit var setUp: VisualizationSetUp
 
@@ -29,6 +31,7 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
         visualizationBuilder.setOnVisualizationSetUpChanged {
             setUp = it
         }
+        binarySearchTreeSerializer.initialize(this)
     }
 
     private val elementVerticalDistance by lazy { (setUp.drawConfig.sizes.circleRadius * 3f) }
@@ -41,7 +44,7 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
     ) {
         // TODO handle binarySearchTreeJson
         visualizationBuilder.initialize(
-            coroutineScope,
+            coroutineScope = coroutineScope,
             onInitialized = {
                 treeAlignHelper.initialize(
                     binarySearchTree = this,
@@ -61,6 +64,9 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
                 onInitialized()
             },
         )
+        if (binarySearchTreeJson != null) {
+            createFromJson(binarySearchTreeJson)
+        }
 
     }
 

@@ -44,7 +44,11 @@ class InitializeReducer @Inject constructor(
     }
 
     private fun State.reduceInitializedSuccessAction(action: InitializedSuccessAction): State = when (this) {
-        InitializingState -> ReadyState(action.customName)
+        InitializingState -> ReadyState(
+            id = action.id,
+            customName = action.customName,
+        )
+
         else -> logInvalidState()
     }
 
@@ -60,7 +64,8 @@ class InitializeReducer @Inject constructor(
             onInitialized = {
                 onAction(
                     InitializedSuccessAction(
-                        customName = dataStructure.name
+                        customName = dataStructure.name,
+                        id = id,
                     )
                 )
             },
