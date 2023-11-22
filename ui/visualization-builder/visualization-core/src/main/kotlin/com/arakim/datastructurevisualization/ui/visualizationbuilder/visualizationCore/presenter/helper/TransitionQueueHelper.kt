@@ -15,6 +15,8 @@ class TransitionQueueHelper @Inject constructor() {
     private val transitionQueue: Queue<TransitionGroup> = LinkedList()
     private var transitionJob: Job? = null
 
+    val hasQueuedTransitions get() =  transitionQueue.isNotEmpty().let { it }
+
     fun initialize(
         handleTransition: suspend VisualizationCorePresenter.(TransitionGroup) -> Unit
     ) {

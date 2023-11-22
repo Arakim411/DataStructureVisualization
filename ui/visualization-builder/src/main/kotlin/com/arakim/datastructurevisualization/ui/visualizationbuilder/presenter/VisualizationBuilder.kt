@@ -1,6 +1,6 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter
 
-import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.helpers.GetVertexInfoHelper
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.helpers.transitions.AddTransitionHelper
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.VertexPosition
@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@Immutable
+@Stable
 @ViewModelScoped
 class VisualizationBuilder @Inject constructor(
     val visualizationCore: VisualizationCorePresenter,
@@ -34,8 +34,8 @@ class VisualizationBuilder @Inject constructor(
         setUpPickerPresenter.initialize(coroutineScope)
         setUpPickerPresenter.onAction(InitializeAction)
 
-        coroutineScope.launch { listenForVisualizationSetUpUpdates(onInitialized) }
         addTransitionHelper.initialize(visualizationCore::addTransitionToQueue)
+        coroutineScope.launch { listenForVisualizationSetUpUpdates(onInitialized) }
     }
 
     fun setOnVisualizationSetUpChanged(unit: (VisualizationSetUp) -> Unit) {

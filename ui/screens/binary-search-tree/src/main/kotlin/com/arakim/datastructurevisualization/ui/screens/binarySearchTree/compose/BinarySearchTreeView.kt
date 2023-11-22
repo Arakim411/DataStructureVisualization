@@ -72,16 +72,15 @@ fun BinarySearchTreeView(
         label = "",
     ) { stateValue ->
         when (stateValue) {
+            IdleState -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
+            ErrorState -> CommonErrorView()
+            InitializingState -> CommonLoaderView()
             is ReadyState -> ReadyState(
                 state = stateValue,
                 visualizationBuilder = presenter.treeVisualizationBuilder.visualizationBuilder,
                 navigationUiControllerState = navigationUiControllerState,
                 onAction = presenter::onAction,
             )
-
-            IdleState -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
-            ErrorState -> CommonErrorView()
-            InitializingState -> CommonLoaderView()
         }
     }
 }
@@ -147,5 +146,9 @@ private fun ReadyState(
         ) {
             VisualizationBuilderView(visualizationPresenter = visualizationBuilder)
         }
+    }
+
+    if (!state.isTreeCreated.value) {
+        CommonLoaderView()
     }
 }

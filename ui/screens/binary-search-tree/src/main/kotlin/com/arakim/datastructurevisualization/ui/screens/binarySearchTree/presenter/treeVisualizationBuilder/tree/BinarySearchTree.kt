@@ -49,7 +49,6 @@ abstract class BinarySearchTree constructor(
                     it.onRootInserted(root)
                 }
             }
-
         }
     }
 

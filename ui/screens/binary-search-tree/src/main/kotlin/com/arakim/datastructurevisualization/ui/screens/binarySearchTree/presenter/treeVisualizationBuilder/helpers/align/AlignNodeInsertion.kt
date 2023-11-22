@@ -12,7 +12,6 @@ class AlignNodeInsertion @Inject constructor(
     visualizationBuilder: VisualizationBuilder,
 ) : TreeMoveHelper(visualizationBuilder) {
 
-
     fun alignTreeAfterInsertion(insertedNode: Node, rootInsertSide: InsertSide) {
         val distance = if (rootInsertSide == Left) -horizontalAlignDistance else horizontalAlignDistance
         alignTreeHorizontally(

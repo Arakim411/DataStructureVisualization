@@ -1,5 +1,7 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.reducers
 
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import com.arakim.datastructurevisualization.domain.util.yielded
 import com.arakim.datastructurevisualization.kotlinutil.getOrNull
 import com.arakim.datastructurevisualization.ui.mvi.StateReducer
@@ -8,6 +10,7 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.InitializationAction.InitializeAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.InitializationAction.InitializedFailedAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.InitializationAction.InitializedSuccessAction
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.InitializationAction.TreeCreatedAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.ErrorState
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.IdleState
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.InitializingState
@@ -27,6 +30,7 @@ class InitializeReducer @Inject constructor(
         is InitializeAction -> reduceInitializeAction(action)
         InitializedFailedAction -> reduceInitializedFailedAction()
         is InitializedSuccessAction -> reduceInitializedSuccessAction(action)
+        TreeCreatedAction -> reduceTreeCreatedAction()
     }
 
     private fun State.reduceInitializeAction(action: InitializeAction): State = when (this) {
@@ -47,8 +51,17 @@ class InitializeReducer @Inject constructor(
         InitializingState -> ReadyState(
             id = action.id,
             customName = action.customName,
+            isTreeCreated = mutableStateOf(false),
         )
 
+        else -> logInvalidState()
+    }
+
+    private fun State.reduceTreeCreatedAction(): State = when(this){
+        is ReadyState -> {
+            isTreeCreated.value = true
+            this
+        }
         else -> logInvalidState()
     }
 
@@ -69,6 +82,9 @@ class InitializeReducer @Inject constructor(
                     )
                 )
             },
+            onTreeCreated = {
+                onAction(TreeCreatedAction)
+            }
         )
     }
 }

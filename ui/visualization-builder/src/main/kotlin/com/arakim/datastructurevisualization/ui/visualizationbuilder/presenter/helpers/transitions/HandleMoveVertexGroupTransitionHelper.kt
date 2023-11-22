@@ -28,10 +28,15 @@ private suspend fun VisualizationCorePresenter.goToFinalPosition(
 ) {
     requireNotNull(vertexStateMap[vertexId]).element.apply {
         isVisible = true
-        position.animateTo(
-            finalPosition,
-            tween(setUpState.value!!.vertexTransitionTime.inWholeMilliseconds.toInt())
-        )
+        if (disableAnimations) {
+            position.snapTo(finalPosition)
+        } else {
+            position.animateTo(
+                finalPosition,
+                tween(setUpState.value!!.vertexTransitionTime.inWholeMilliseconds.toInt())
+            )
+        }
+
     }
 }
 

@@ -6,9 +6,10 @@ sealed interface BinarySearchTreeAction {
         data class InitializeAction(val id: Int) : InitializationAction
         data class InitializedSuccessAction(
             val id: Int,
-            val customName: String
+            val customName: String,
         ) : InitializationAction
         object InitializedFailedAction : InitializationAction
+        object TreeCreatedAction : InitializationAction
     }
 
     object SaveAction : BinarySearchTreeAction

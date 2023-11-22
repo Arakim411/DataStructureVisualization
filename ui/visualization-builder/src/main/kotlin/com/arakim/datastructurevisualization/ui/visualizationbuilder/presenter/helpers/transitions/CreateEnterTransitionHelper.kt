@@ -34,15 +34,21 @@ class CreateEnterTransitionHelper @Inject constructor(
                     isVisible = true
                     position.snapTo(setUpState.value!!.enterTransStartPosition)
 
-                    with(handleComparisons) {
-                        invoke(comparisonsPositions, shape)
+                    if (!disableAnimations) {
+                        with(handleComparisons) {
+                            invoke(comparisonsPositions, shape)
+                        }
                     }
 
-                    position.animateTo(
-                        finalPosition,
-                        tween(setUpState.value!!.vertexTransitionTime.inWholeMilliseconds.toInt())
-                    )
+                    if (disableAnimations) {
+                        position.snapTo(finalPosition)
 
+                    } else {
+                        position.animateTo(
+                            finalPosition,
+                            tween(setUpState.value!!.vertexTransitionTime.inWholeMilliseconds.toInt())
+                        )
+                    }
                     updateIncomingConnectionsVisibility(vertexId, true)
                 }
             }
