@@ -1,5 +1,6 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.graph.DirectionalVisualizationGraph
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.helper.TransitionHandlerHelper
@@ -13,6 +14,7 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
+@Stable
 class VisualizationCorePresenter @Inject constructor(
     private val transitionQueueHelper: TransitionQueueHelper,
     private val transitionHandlerHelper: TransitionHandlerHelper,
@@ -24,7 +26,11 @@ class VisualizationCorePresenter @Inject constructor(
     //it's okay until we remember to clear it when composition is finished
     internal var composeCoroutineScope: CoroutineScope? = null
 
+    var disableAnimations = false
+
     val setUpState = mutableStateOf<VisualizationSetUp?>(null)
+
+    val hasQueuedTransitions get() = transitionQueueHelper.hasQueuedTransitions
 
     init {
         transitionQueueHelper.initialize(

@@ -22,8 +22,10 @@ class BinarySearchTreeSerializer @Inject constructor() : DataStructureSerializer
 
     override fun createFromJson(json: String) {
         val values = Gson().fromJson(json, Array<Number>::class.java)
-        values.forEach {
-            visualizationBuilder.insert(it)
+        values.forEachIndexed { index, number ->
+            visualizationBuilder.insert(
+                number = number,
+            )
         }
     }
 }

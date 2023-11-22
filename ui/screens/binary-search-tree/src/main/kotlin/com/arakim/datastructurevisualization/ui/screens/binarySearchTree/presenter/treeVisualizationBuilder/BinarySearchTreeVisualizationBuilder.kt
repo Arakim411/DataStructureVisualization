@@ -1,5 +1,7 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder
 
+import android.util.Log
+import com.arakim.datastructurevisualization.domain.util.yielded
 import com.arakim.datastructurevisualization.kotlinutil.DataStructureSerializer
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.VisualizeNodeDeletedHelper
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.VisualizeNodeInsertedHelper
@@ -11,6 +13,8 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.V
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.VisualizationSetUp
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -41,6 +45,7 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
         binarySearchTreeJson: String? = null,
         coroutineScope: CoroutineScope,
         onInitialized: () -> Unit,
+        onTreeCreated: () -> Unit,
     ) {
         // TODO handle binarySearchTreeJson
         visualizationBuilder.initialize(
@@ -61,13 +66,23 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
                 )
                 addListener(visualizeNodeInsertedHelper)
                 addListener(visualizeNodeDeletedHelper)
+
+                visualizationBuilder.visualizationCore.disableAnimations = true
+                if (!binarySearchTreeJson.isNullOrEmpty()) {
+                    createFromJson(
+                        json = binarySearchTreeJson,
+                    )
+                }
                 onInitialized()
+
+                coroutineScope.yielded {
+                    waitUntilTreeIsCreated {
+                        visualizationBuilder.visualizationCore.disableAnimations = false
+                        onTreeCreated()
+                    }
+                }
             },
         )
-        if (!binarySearchTreeJson.isNullOrEmpty()) {
-            createFromJson(binarySearchTreeJson)
-        }
-
     }
 
     override fun insert(number: Number) {
@@ -80,5 +95,15 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
         visualizationBuilder.addTransitionHelper.addActionTransition {
             super.delete(number)
         }
+    }
+
+    private suspend fun waitUntilTreeIsCreated(onCreated: () -> Unit) {
+        // TODO this is hack and later should be implemented correctly
+        visualizationBuilder.visualizationCore.apply {
+            while (hasQueuedTransitions) {
+                delay(500)
+            }
+        }
+        onCreated()
     }
 }
