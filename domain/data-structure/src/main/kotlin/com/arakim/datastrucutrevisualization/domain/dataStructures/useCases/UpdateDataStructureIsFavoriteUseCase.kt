@@ -9,6 +9,6 @@ class UpdateDataStructureIsFavoriteUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(id: Int, isFavorite: Boolean) {
         val dataStructure = repository.getDataStructure(id).getOrNull() ?: return
-        val result = repository.updateDataStructure(dataStructure.copy(isFavorite = isFavorite))
+        repository.updateDataStructure(dataStructure.copy(isFavorite = isFavorite))
     }
 }

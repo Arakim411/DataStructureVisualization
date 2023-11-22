@@ -1,5 +1,6 @@
 package com.arakim.datastructurevisualization.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.res.stringResource
@@ -12,10 +13,13 @@ import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUi
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerItem
 import com.arakim.datastructurevisualization.navigation.uicontroller.rememberNavUiControllerState
 import com.arakim.datastructurevisualization.ui.navigation.R.drawable
+import com.arakim.datastructurevisualization.ui.navigation.R.string
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination
+import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.BinarySearchTreeDestination
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.ChooseDataStructureDestination
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.DeletedDataStructuresDestination
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.ChooseDataStructureScreen
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.compose.BinarySearchTreeScreen
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
@@ -26,6 +30,10 @@ fun MainNavigation() {
 
     val navController = rememberNavController()
     val navUiController = rememberNavUiControllerState()
+
+    fun navigate(destination: MainDestination){
+        navController.navigate(destination.navigateRoute)
+    }
 
     NavigationUiController(
         navigationUiControllerState = navUiController,
@@ -41,7 +49,18 @@ fun MainNavigation() {
         ) {
 
             composable(ChooseDataStructureDestination.Route) {
-                ChooseDataStructureScreen(navUiControllerState = navUiController)
+                ChooseDataStructureScreen(
+                    navUiControllerState = navUiController,
+                    navigate = ::navigate
+                )
+            }
+
+            composable(BinarySearchTreeDestination.Route) {
+                val id = it.arguments!!.getString(BinarySearchTreeDestination.Arguments.Id)!!
+                BinarySearchTreeScreen(
+                    id = id.toInt(),
+                    navigationUiControllerState = navUiController
+                )
             }
 
             composable(DeletedDataStructuresDestination.Route) {
@@ -64,7 +83,11 @@ private fun getNavigationGroups(): ImmutableList<NavUiControllerGroup> = immutab
 private fun getDataStructuresGroup(): NavUiControllerGroup = NavUiControllerGroup(
     name = stringResource(id = R.string.group_name_data_structure),
     items = immutableListOf(
-        ChooseDataStructureDestination.toNavItem(),
+        NavUiControllerItem(
+            title = ChooseDataStructureDestination.toStringResources(),
+            route = ChooseDataStructureDestination.Route,
+            iconId = drawable.ic_stack,
+        )
     ),
 )
 
@@ -73,33 +96,20 @@ private fun getDataStructuresGroup(): NavUiControllerGroup = NavUiControllerGrou
 private fun getOtherGroup(): NavUiControllerGroup = NavUiControllerGroup(
     name = stringResource(id = R.string.group_name_other),
     items = immutableListOf(
-        DeletedDataStructuresDestination.toNavItem(),
+        NavUiControllerItem(
+            title = DeletedDataStructuresDestination.toStringResources(),
+            route = DeletedDataStructuresDestination.Route,
+            iconId = drawable.ic_delete,
+        ),
     ),
 )
 
-//TODO correct icons
-@Composable
-@Stable
-private fun MainDestination.toNavItem(): NavUiControllerItem = when (this) {
-
-
-    DeletedDataStructuresDestination -> NavUiControllerItem(
-        title = toStringResources(),
-        route = DeletedDataStructuresDestination.Route,
-        iconId = drawable.ic_delete,
-    )
-
-    ChooseDataStructureDestination -> NavUiControllerItem(
-        title = toStringResources(),
-        route = ChooseDataStructureDestination.Route,
-        iconId = drawable.ic_stack,
-    )
-}
 
 @Composable
 private fun MainDestination.toStringResources(): String = when (this) {
-    DeletedDataStructuresDestination -> stringResource(id = R.string.destination_name_delete)
-    ChooseDataStructureDestination -> stringResource(id = R.string.destination_name_data_structure)
+    DeletedDataStructuresDestination -> stringResource(id = string.destination_name_delete)
+    ChooseDataStructureDestination -> stringResource(id = string.destination_name_data_structure)
+    is BinarySearchTreeDestination -> stringResource(id = string.destination_name_binary_search_tree)
 }
 
 

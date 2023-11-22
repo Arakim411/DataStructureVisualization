@@ -2,7 +2,7 @@ package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presen
 
 import androidx.compose.runtime.Stable
 import com.arakim.datastructurevisualization.ui.mvi.ReducerPresenter
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.InitializeAction
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.InitializationAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.IdleState
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.reducers.InitializeReducer
@@ -22,17 +22,7 @@ class BinarySearchTreePresenter @Inject constructor(
 
     init {
         registerReducer<UpdateTreeAction>(updateTreeReducer)
-        registerReducer<InitializeAction>(initializeReducer)
-    }
-
-    override fun onInitialized() {
-        super.onInitialized()
-        treeVisualizationBuilder.initialize(
-            coroutineScope = coroutineScope,
-            onInitialized = {
-                onAction(InitializeAction)
-            },
-        )
+        registerReducer<InitializationAction>(initializeReducer)
     }
 
 }

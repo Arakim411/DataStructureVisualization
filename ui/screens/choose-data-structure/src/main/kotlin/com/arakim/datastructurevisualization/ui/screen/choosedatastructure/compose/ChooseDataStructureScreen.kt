@@ -1,5 +1,6 @@
 package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,6 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
 import com.arakim.datastructurevisualization.ui.common.CommonTopAppBar
+import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination
+import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.BinarySearchTreeDestination
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.ChooseDataStructureViewModel
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.CreateDataStructureDialog
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction
@@ -30,6 +33,10 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.prese
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToCreateDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToGetDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ReadyState
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.BinarySearchTree
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.HashMap
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.LinkedList
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.allDataStructuresTypeUiModels
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R.drawable
@@ -39,7 +46,8 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun ChooseDataStructureScreen(
-    navUiControllerState: NavigationUiControllerState
+    navUiControllerState: NavigationUiControllerState,
+    navigate: (MainDestination) -> Unit,
 ) {
 
     val viewModel = hiltViewModel<ChooseDataStructureViewModel>()
@@ -116,6 +124,13 @@ fun ChooseDataStructureScreen(
         ) {
             StateView(
                 state = state,
+                onDataStructureClick = { dataStructure ->
+                    when (dataStructure.dataStructureType) {
+                        BinarySearchTree -> navigate(BinarySearchTreeDestination(dataStructure.id))
+                        HashMap -> TODO()
+                        LinkedList -> TODO()
+                    }
+                },
                 onAddDataStructure = {
                     isCreatingDataStructure.value = true
                 },

@@ -20,6 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
+import com.arakim.datastructurevisualization.ui.common.CommonErrorView
+import com.arakim.datastructurevisualization.ui.common.CommonLoaderView
 import com.arakim.datastructurevisualization.ui.common.CommonTopAppBar
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.InputModalAction
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.InputModalBottomSheet
@@ -28,8 +30,10 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.FindAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.InsertAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreePresenter
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.ErrorState
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.IdleState
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.InitializingState
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.ReadyState
 import com.arakim.datastructurevisualization.ui.screens.binarysearchtree.R
 import com.arakim.datastructurevisualization.ui.screens.binarysearchtree.R.string
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
@@ -43,19 +47,20 @@ fun BinarySearchTreeView(
 ) {
     val state = presenter.stateFlow.collectAsStateWithLifecycle()
 
-
     Crossfade(
         targetState = state.value,
         label = "",
     ) { stateValue ->
         when (stateValue) {
-            BinarySearchTreeState.ReadyState -> ReadyState(
+            is ReadyState -> ReadyState(
                 visualizationBuilder = presenter.treeVisualizationBuilder.visualizationBuilder,
                 navigationUiControllerState = navigationUiControllerState,
                 onAction = presenter::onAction,
             )
 
             IdleState -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
+            ErrorState -> CommonErrorView()
+            InitializingState -> CommonLoaderView()
         }
     }
 }

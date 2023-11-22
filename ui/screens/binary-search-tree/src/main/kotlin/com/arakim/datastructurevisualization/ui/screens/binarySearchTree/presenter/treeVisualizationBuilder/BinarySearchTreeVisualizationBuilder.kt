@@ -1,5 +1,6 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder
 
+import android.util.Log
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.VisualizeNodeDeletedHelper
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.VisualizeNodeInsertedHelper
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.align.TreeAlignHelper
@@ -34,10 +35,11 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
     private val elementHorizontalDistance by lazy { (setUp.drawConfig.sizes.circleRadius * 3f) }
 
     fun initialize(
+        binarySearchTreeJson: String? = null,
         coroutineScope: CoroutineScope,
         onInitialized: () -> Unit,
     ) {
-
+        // TODO handle binarySearchTreeJson
         visualizationBuilder.initialize(
             coroutineScope,
             onInitialized = {
