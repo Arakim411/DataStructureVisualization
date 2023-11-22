@@ -7,6 +7,10 @@ sealed interface BinarySearchTreeState {
 
     object IdleState: BinarySearchTreeState
 
+    object InitializingState: BinarySearchTreeState
+
+    object ErrorState: BinarySearchTreeState
+
     @Immutable
-    object ReadyState: BinarySearchTreeState
+    data class ReadyState(val customName: String): BinarySearchTreeState
 }

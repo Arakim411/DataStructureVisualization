@@ -7,4 +7,6 @@
     <string name="dialog_cancel_title">cancel</string>
     
     <string name="swap_to_delete_message">delete</string>
+
+    <string name="common_error_view_title">Something went wrong</string>
 </resources>

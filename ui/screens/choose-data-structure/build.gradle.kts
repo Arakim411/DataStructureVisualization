@@ -17,6 +17,7 @@ dependencies {
     implementation(project(":ui:mvi"))
     implementation(project(":ui:util"))
     implementation(project(":android-util"))
+    implementation(project(":ui:navigation:destination"))
 
     kapt(libs.google.hilt.compiler)
     implementation(libs.google.hilt)

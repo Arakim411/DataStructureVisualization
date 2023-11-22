@@ -13,10 +13,12 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.prese
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.IdleState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.InitializingState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ReadyState
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureUiModel
 
 @Composable
 internal fun StateView(
     state: ChooseDataStructureState,
+    onDataStructureClick: (dataStructure: DataStructureUiModel) -> Unit,
     onAddDataStructure: () -> Unit,
     onDeleteDataStructure: (id: Int) -> Unit,
     onUpdateIsFavorite: (id: Int, isFavorite: Boolean) -> Unit,
@@ -27,6 +29,7 @@ internal fun StateView(
             InitializingState -> LoadingView()
             is ReadyState ->  StateReadyView(
                 dataStructures = state.dataStructures,
+                onDataStructureClick = onDataStructureClick,
                 onAddDataStructure = onAddDataStructure,
                 onDeleteDataStructure = onDeleteDataStructure,
                 onUpdateIsFavorite = onUpdateIsFavorite,

@@ -1,6 +1,7 @@
 package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +26,7 @@ import com.arakim.datastructurevisualization.ui.util.ImmutableList
 @Composable
 internal fun StateReadyView(
     dataStructures: ImmutableList<DataStructureUiModel>,
+    onDataStructureClick: (dataStructure: DataStructureUiModel) -> Unit,
     onAddDataStructure: () -> Unit,
     onDeleteDataStructure: (id: Int) -> Unit,
     onUpdateIsFavorite: (id: Int, isFavorite: Boolean) -> Unit,
@@ -36,6 +37,7 @@ internal fun StateReadyView(
     } else {
         DataStructuresListView(
             dataStructures = dataStructures,
+            onDataStructureClick = onDataStructureClick,
             onDeleteDataStructure = onDeleteDataStructure,
             onUpdateIsFavorite = onUpdateIsFavorite,
         )
@@ -73,6 +75,7 @@ private fun DataStructuresEmptyView(
 @Composable
 private fun DataStructuresListView(
     dataStructures: ImmutableList<DataStructureUiModel>,
+    onDataStructureClick: (dataStructure: DataStructureUiModel) -> Unit,
     onDeleteDataStructure: (id: Int) -> Unit,
     onUpdateIsFavorite: (id: Int, isFavorite: Boolean) -> Unit,
 ) {
@@ -87,7 +90,11 @@ private fun DataStructuresListView(
                 },
             ) {
                 DataStructureListItem(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier
+                        .animateItemPlacement()
+                        .clickable {
+                            onDataStructureClick(dataStructure)
+                        },
                     item = dataStructure,
                     onUpdateIsFavorite = onUpdateIsFavorite,
                 )
