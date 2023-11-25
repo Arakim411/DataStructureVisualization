@@ -1,17 +1,18 @@
-package com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.database
+package com.arakim.datastructurevisaulization.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.Const
+import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.DataStructureDao
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.model.DataStructureDto
 
 @Database(
     entities = [DataStructureDto::class],
     version = 2,
 )
-internal abstract class DataStructureDataBase : RoomDatabase() {
+internal abstract class AppDatabase : RoomDatabase() {
 
     abstract fun dataStructureDao(): DataStructureDao
 

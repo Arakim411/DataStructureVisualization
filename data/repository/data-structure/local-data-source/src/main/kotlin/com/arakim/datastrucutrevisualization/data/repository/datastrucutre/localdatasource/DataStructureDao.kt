@@ -1,4 +1,4 @@
-package com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.database
+package com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource
 
 import androidx.room.Dao
 import androidx.room.Insert

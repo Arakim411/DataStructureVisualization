@@ -1,12 +1,8 @@
-package com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.di
+package com.arakim.datastructurevisaulization.data.database
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.Const
-import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.database.DataStructureDataBase
-import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.database.Migration_1_2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,27 +12,27 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal class DataStructureDataBaseModule {
+internal class AppDatabaseModule {
 
     @Provides
     @Singleton
-    fun providesDataStructureDataBase(
+    fun providesAppDatabase(
         @ApplicationContext context: Context,
-    ): DataStructureDataBase = Room.databaseBuilder(
+    ): AppDatabase = Room.databaseBuilder(
         context,
-        DataStructureDataBase::class.java,
+        AppDatabase::class.java,
         Const.DataStructureDataBaseName,
     )
         .fallbackToDestructiveMigration()
         .addMigrations(
-           Migration_1_2,
+            Migration_1_2,
         )
         .build()
 
     @Provides
     @Singleton
     fun providesDataStructureDao(
-        dataStructureDataBase: DataStructureDataBase,
+        dataStructureDataBase: AppDatabase,
     ) = dataStructureDataBase.dataStructureDao()
 
 }

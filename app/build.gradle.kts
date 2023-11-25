@@ -53,6 +53,7 @@ ktlint {
 
 dependencies {
 
+    implementation(project(":data:database"))
     implementation(project(":data:repository:data-structure"))
     implementation(project(":ui:navigation"))
     implementation(project(":ui:util"))
