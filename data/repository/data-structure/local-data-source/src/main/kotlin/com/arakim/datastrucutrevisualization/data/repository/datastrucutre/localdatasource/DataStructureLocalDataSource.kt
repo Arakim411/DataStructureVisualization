@@ -3,9 +3,10 @@ package com.arakim.datastrucutrevisualization.data.repository.datastrucutre.loca
 import com.arakim.datastructurevisualization.domain.util.executeCommonIoAction
 import com.arakim.datastructurevisualization.kotlinutil.CommonError
 import com.arakim.datastructurevisualization.kotlinutil.TypedResult
-import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.model.DataStructureDto
+import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.model.DataStructureEntity
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.model.toDomain
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.model.toDto
+import com.arakim.datastrucutrevisualization.domain.dataStructures.DataStructureId
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructure
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType
 import kotlinx.coroutines.Dispatchers
@@ -21,15 +22,16 @@ class DataStructureLocalDataSource @Inject constructor(
     suspend fun createDataStructure(
         name: String,
         dataSourceType: DataStructureType,
-    ): TypedResult<Unit, CommonError> = executeCommonIoAction {
-        dao.createDataStructure(
-            DataStructureDto(
+    ): TypedResult<DataStructureId, CommonError> = executeCommonIoAction {
+        val id = dao.createDataStructure(
+            DataStructureEntity(
                 name = name,
                 dataSourceType = dataSourceType.toDto(),
                 dataStructureJson = "",
                 isFavorite = false,
             ),
         )
+        id.toInt()
     }
 
     suspend fun getDataStructure(id: Int): TypedResult<DataStructure, CommonError> = executeCommonIoAction {

@@ -6,7 +6,7 @@ import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStr
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType.HashMap
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType.LinkedList
 
-internal fun DataStructure.toDto() = DataStructureDto(
+internal fun DataStructure.toDto() = DataStructureEntity(
     id = id,
     name = name,
     dataSourceType = type.toDto(),

@@ -3,6 +3,7 @@ package com.arakim.datastructurevisualization.data.repository.dataStructure
 import com.arakim.datastructurevisualization.kotlinutil.CommonError
 import com.arakim.datastructurevisualization.kotlinutil.TypedResult
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.DataStructureLocalDataSource
+import com.arakim.datastrucutrevisualization.domain.dataStructures.DataStructureId
 import com.arakim.datastrucutrevisualization.domain.dataStructures.DataStructureRepository
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructure
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType
@@ -16,7 +17,7 @@ internal class DataStructureRepositoryImpl @Inject constructor(
     override suspend fun createDataStructure(
         name: String,
         type: DataStructureType,
-    ): TypedResult<Unit, CommonError> = localDataSource.createDataStructure(
+    ): TypedResult<DataStructureId, CommonError> = localDataSource.createDataStructure(
         name = name,
         dataSourceType = type,
     )

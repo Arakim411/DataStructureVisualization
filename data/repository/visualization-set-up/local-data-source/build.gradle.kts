@@ -7,12 +7,13 @@ plugins {
 
 dependencies {
 
-    implementation(project(":data:repository:data-structure:local-data-source"))
-    implementation(project(":data:repository:visualization-set-up:local-data-source"))
+    api(project(":android-util"))
+    implementation(project(":domain:visualization-set-up"))
 
     kapt(libs.google.hilt.compiler)
     implementation(libs.google.hilt)
 
+    implementation(libs.gson)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     annotationProcessor(libs.androidx.room.compiler)

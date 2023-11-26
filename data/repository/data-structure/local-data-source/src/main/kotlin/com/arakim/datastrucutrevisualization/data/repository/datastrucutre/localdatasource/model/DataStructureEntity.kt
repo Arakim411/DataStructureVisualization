@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.Const
 
 @Entity(tableName = Const.DataStructureEntityName)
-data class DataStructureDto(
+data class DataStructureEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "data_source_type") val dataSourceType: String,

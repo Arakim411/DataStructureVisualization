@@ -2,7 +2,6 @@ package com.arakim.datastructurevisaulization.data.database
 
 import android.content.Context
 import androidx.room.Room
-import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.Const
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,13 +20,11 @@ internal class AppDatabaseModule {
     ): AppDatabase = Room.databaseBuilder(
         context,
         AppDatabase::class.java,
-        Const.DataStructureDataBaseName,
-    )
-        .fallbackToDestructiveMigration()
+        DataBaseName,
+    ).fallbackToDestructiveMigration()
         .addMigrations(
             Migration_1_2,
-        )
-        .build()
+        ).build()
 
     @Provides
     @Singleton
@@ -35,4 +32,11 @@ internal class AppDatabaseModule {
         dataStructureDataBase: AppDatabase,
     ) = dataStructureDataBase.dataStructureDao()
 
+    @Provides
+    @Singleton
+    fun providesVisualizationSetUpDao(
+        dataStructureDataBase: AppDatabase,
+    ) = dataStructureDataBase.visualizationSetUpDao()
 }
+
+private const val DataBaseName = "app_database"
