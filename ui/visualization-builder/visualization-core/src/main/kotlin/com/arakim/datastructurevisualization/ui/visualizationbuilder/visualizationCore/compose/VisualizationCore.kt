@@ -16,11 +16,11 @@ import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.LifecycleEventObserver
 import com.arakim.datastructurevisualization.ui.util.views.TransformableBox
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.model.toDrawSizesPx
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.compose.helper.drawConnection
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.compose.helper.drawElementTitle
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.compose.helper.drawVisualizationElement
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.compose.helper.toOffset
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.compose.model.toUiModel
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.VisualizationCorePresenter
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.ComparisonState.ComparingState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.TextTransitionState.MovingState
@@ -56,9 +56,10 @@ private fun VisualizationCoreView(
     val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
 
-    val drawConfig = remember(presenter.setUpState.value?.drawConfig) {
-        presenter.setUpState.value!!.drawConfig.toUiModel(density)
+    val drawConfig = remember(presenter.setUpState.value!!.drawConfig) {
+        presenter.setUpState.value!!.drawConfig
     }
+    val drawSizesPx = remember(drawConfig) { drawConfig.sizes.toDrawSizesPx(density) }
 
     DisposableEffect(Unit) {
         val lifecycleObserver = LifecycleEventObserver { _, event ->
@@ -80,30 +81,39 @@ private fun VisualizationCoreView(
     Canvas(
         modifier = Modifier.fillMaxSize(),
         onDraw = {
-            presenter.vertexStateMap.forEach vertexForEach@ { (id, vertex) ->
+            presenter.vertexStateMap.forEach vertexForEach@{ (id, vertex) ->
                 if (!vertex.element.isVisible && !vertex.element.position.isRunning) return@vertexForEach
 
                 val connections = presenter.vertexConnectionsState[id]
                 val vertexPosition = vertex.element.position.value.toOffset(density)
 
-                connections?.forEach connectionsForEach@ { idOfConnection ->
+                connections?.forEach connectionsForEach@{ idOfConnection ->
                     val vertexToConnect = presenter.vertexStateMap[idOfConnection]
-                    if(vertexToConnect?.element?.showIncomingConnections == false) return@connectionsForEach
+                    if (vertexToConnect?.element?.showIncomingConnections == false) return@connectionsForEach
                     if (vertexToConnect?.element?.isVisible == false && !vertexToConnect.element.position.isRunning) return@connectionsForEach
                     val toPosition =
-                        vertexToConnect?.element?.position?.value?.toOffset(density) ?: return@connectionsForEach
+                        vertexToConnect?.element?.position?.value?.toOffset(density)
+                            ?: return@connectionsForEach
 
                     drawConnection(
                         from = vertexPosition,
                         to = toPosition,
                         drawConfig = drawConfig,
+                        circleRadius = drawSizesPx.circleRadius,
+                        lineStroke = drawSizesPx.lineStroke,
+                        arrowSize = drawSizesPx.arrowSize,
                     )
                 }
                 drawVisualizationElement(
                     element = vertex.element,
                     textMeasurer = textMeasurer,
                     center = vertexPosition,
-                    drawConfig = drawConfig,
+                    colors = drawConfig.colors,
+                    circleRadius = drawSizesPx.circleRadius,
+                    elementStroke = drawSizesPx.elementStroke,
+                    squareEdgeSize = drawSizesPx.squareEdgeSize,
+                    fontSize = drawSizesPx.textSize,
+
                 )
             }
         },
@@ -114,7 +124,8 @@ private fun VisualizationCoreView(
                 drawElementTitle(
                     title = stateValue.text,
                     center = stateValue.position.value.toOffset(density),
-                    drawConfig = drawConfig,
+                    colors = drawConfig.colors,
+                    fontSize = drawSizesPx.textSize,
                     textMeasurer = textMeasurer,
                 )
             }
@@ -126,9 +137,9 @@ private fun VisualizationCoreView(
             Canvas(modifier = Modifier.fillMaxSize()) {
                 drawCircle(
                     color = drawConfig.colors.comparisonShapeColor,
-                    radius = drawConfig.sizes.circleRadius,
+                    radius = drawSizesPx.circleRadius,
                     center = stateValue.position.value.toOffset(density),
-                    style = Stroke(drawConfig.sizes.elementStroke),
+                    style = Stroke(drawSizesPx.elementStroke),
                 )
             }
         }

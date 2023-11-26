@@ -13,10 +13,10 @@ android {
 
 dependencies {
 
-    implementation(project(":ui:common:generic-picker"))
     api(project(":ui:mvi"))
+    implementation(project(":domain:visualization-set-up"))
+    implementation(project(":ui:common:generic-picker"))
     implementation(project(":ui:util"))
-    implementation(project(":ui:visualization-builder:visualization-core"))
 
     kapt(libs.google.hilt.compiler)
     implementation(libs.google.hilt)

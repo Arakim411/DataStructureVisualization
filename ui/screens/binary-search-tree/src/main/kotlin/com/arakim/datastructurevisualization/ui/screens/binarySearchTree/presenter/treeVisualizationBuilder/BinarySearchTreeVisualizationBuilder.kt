@@ -1,6 +1,5 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder
 
-import android.util.Log
 import com.arakim.datastructurevisualization.domain.util.yielded
 import com.arakim.datastructurevisualization.kotlinutil.DataStructureSerializer
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.helpers.VisualizeNodeDeletedHelper
@@ -10,11 +9,10 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.helpers.BinarySearchTreeSerializer
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.treeVisualizationBuilder.tree.helpers.TreeHelpers
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.VisualizationSetUp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.model.VisualizationSetUpUiModel
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -29,7 +27,7 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
     handleNodeDeletion = treeHelpers.handleTreeNodeDeletionHelper,
 ), DataStructureSerializer by binarySearchTreeSerializer {
 
-    private lateinit var setUp: VisualizationSetUp
+    private lateinit var setUp: VisualizationSetUpUiModel
 
     init {
         visualizationBuilder.setOnVisualizationSetUpChanged {
@@ -42,6 +40,7 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
     private val elementHorizontalDistance by lazy { (setUp.drawConfig.sizes.circleRadius * 3f) }
 
     fun initialize(
+        dataStructureId: Int,
         binarySearchTreeJson: String? = null,
         coroutineScope: CoroutineScope,
         onInitialized: () -> Unit,
@@ -49,6 +48,7 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
     ) {
         // TODO handle binarySearchTreeJson
         visualizationBuilder.initialize(
+            dataStructureId = dataStructureId,
             coroutineScope = coroutineScope,
             onInitialized = {
                 treeAlignHelper.initialize(

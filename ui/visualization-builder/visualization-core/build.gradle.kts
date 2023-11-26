@@ -13,6 +13,8 @@ android {
 
 dependencies {
 
+    implementation(project(":ui:visualization-builder:set-up-picker"))
+    implementation(project(":domain:visualization-set-up"))
     implementation(project(":ui:util"))
 
     kapt(libs.google.hilt.compiler)
