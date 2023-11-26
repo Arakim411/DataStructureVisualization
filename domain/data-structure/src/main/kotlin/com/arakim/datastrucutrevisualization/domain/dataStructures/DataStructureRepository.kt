@@ -6,9 +6,15 @@ import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStr
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType
 import kotlinx.coroutines.flow.Flow
 
+typealias DataStructureId = Int
+
 interface DataStructureRepository {
 
-    suspend fun createDataStructure(name: String, type: DataStructureType): TypedResult<Unit, CommonError>
+    suspend fun createDataStructure(
+        name: String,
+        type: DataStructureType
+    ): TypedResult<DataStructureId, CommonError>
+
     suspend fun updateDataStructure(dataStructure: DataStructure): TypedResult<Unit, CommonError>
     suspend fun getDataStructure(id: Int): TypedResult<DataStructure, CommonError>
 

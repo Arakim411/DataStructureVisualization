@@ -55,6 +55,7 @@ dependencies {
 
     implementation(project(":data:database"))
     implementation(project(":data:repository:data-structure"))
+    implementation(project(":data:repository:visualization-set-up"))
     implementation(project(":ui:navigation"))
     implementation(project(":ui:util"))
 
