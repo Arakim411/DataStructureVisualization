@@ -2,13 +2,13 @@ package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizat
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.model.VisualizationSetUpUiModel
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.graph.DirectionalVisualizationGraph
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.helper.TransitionHandlerHelper
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.helper.TransitionQueueHelper
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.ComparisonState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.ComparisonState.IdleState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.TextTransitionState
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.VisualizationSetUp
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.vertex.TransitionGroup
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.vertex.VertexTransition
 import kotlinx.coroutines.CoroutineScope
@@ -28,7 +28,7 @@ class VisualizationCorePresenter @Inject constructor(
 
     var disableAnimations = false
 
-    val setUpState = mutableStateOf<VisualizationSetUp?>(null)
+    val setUpState = mutableStateOf<VisualizationSetUpUiModel?>(null)
 
     val hasQueuedTransitions get() = transitionQueueHelper.hasQueuedTransitions
 
@@ -38,7 +38,7 @@ class VisualizationCorePresenter @Inject constructor(
         )
     }
 
-    fun setVisualizationSetUp(setUp: VisualizationSetUp) {
+    fun setVisualizationSetUp(setUp: VisualizationSetUpUiModel) {
         setUpState.value = setUp
         with(transitionQueueHelper) { tryEmptyTransitionQueue() }
     }

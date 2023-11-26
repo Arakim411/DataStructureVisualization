@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":ui:mvi"))
     implementation(project(":ui:util"))
     implementation(project(":ui:visualization-builder"))
+    implementation(project(":ui:visualization-builder:set-up-picker"))
 
     implementation(libs.gson)
 

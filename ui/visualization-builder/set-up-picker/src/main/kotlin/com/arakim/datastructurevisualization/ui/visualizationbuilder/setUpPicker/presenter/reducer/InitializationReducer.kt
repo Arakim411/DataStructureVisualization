@@ -1,6 +1,11 @@
 package com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer
 
-import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerAction.InitializedAction
+import com.arakim.datastructurevisualization.domain.visualizationSetUp.useCases.CreateDefaultVisualizationSetUpUseCase
+import com.arakim.datastructurevisualization.domain.visualizationSetUp.useCases.GetVisualizationSetUpUseCase
+import com.arakim.datastructurevisualization.domain.visualizationSetUp.useCases.ListenForVisualizationSetUpUpdatesUseCase
+import com.arakim.datastructurevisualization.kotlinutil.getOrNull
+import com.arakim.datastructurevisualization.kotlinutil.onSuccess
+import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerAction
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerPresenter
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.GenericPickerItem
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.ColorType
@@ -13,53 +18,105 @@ import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.mapToImmutable
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.Action
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.State
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.VisualizationSetUpPickerAction.InitializeAction
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.VisualizationSetUpPickerAction.InitializationAction
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.VisualizationSetUpPickerAction.InitializationAction.InitializeAction
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.VisualizationSetUpPickerAction.InitializationAction.SetUpUpdatedAction
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.VisualizationSetUpPickerState.InitializingState
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.VisualizationSetUpPickerState.ReadyState
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.*
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.model.DrawColorsUiModel
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.model.DrawSizesUiModelDp
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.model.VisualizationSetUpUiModel
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.model.toUiModel
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.ArrowColorId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.ArrowSize
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.BackgroundColorId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.CircleRadiusId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.ComparisonShapeColorId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.ComparisonTimeId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.ConnectionLineColorId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.ConnectionLineStrokeId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.ElementShapeColorId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.ElementStrokeId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.SquareEdgeId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.TextColorId
+import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.TextSizeId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.reducer.VisualizationSetUpItemId.VertexTimeId
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setuppicker.R
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.DefaultVisualizationSetUp
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.DrawColors
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.DrawSizes
-import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.VisualizationSetUp
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class InitializeReducer @Inject constructor() : StateReducer<State, Action, InitializeAction>() {
+class InitializationReducer @Inject constructor(
+    private val listenForSetUpUpdates: ListenForVisualizationSetUpUpdatesUseCase,
+    private val getSetUp: GetVisualizationSetUpUseCase,
+    private val createDefaultSetUp: CreateDefaultVisualizationSetUpUseCase,
+) : StateReducer<State, Action, InitializationAction>() {
 
     private lateinit var genericPickerPresenter: GenericPickerPresenter
+
+    private var listenForUpdatesJob: Job? = null
 
     fun setGenericPickerPresenter(genericPickerPresenter: GenericPickerPresenter) {
         this.genericPickerPresenter = genericPickerPresenter
     }
 
-    override fun State.reduce(action: InitializeAction): State {
+    override fun State.reduce(action: InitializationAction): State = when (action) {
+        is InitializeAction -> reduceInitializeAction(action)
+        is SetUpUpdatedAction -> reduceSetUpUpdatedAction(action)
+    }
 
+    private fun State.reduceInitializeAction(action: InitializeAction): State {
+
+        listenForVisualizationSetUpUpdates(action.id)
+
+        return InitializingState
+    }
+
+    private fun listenForVisualizationSetUpUpdates(id: Int) {
+        listenForUpdatesJob?.cancel()
+        listenForUpdatesJob = coroutineScope.launch {
+            createDefaultSetUpIfNotExists(id)
+            listenForSetUpUpdates(id).collectLatest {
+                it.onSuccess { setUp ->
+                    onAction(SetUpUpdatedAction(setUp.toUiModel()))
+                }
+            }
+        }
+    }
+
+    private suspend fun createDefaultSetUpIfNotExists(id: Int) {
+        val setUp = getSetUp(id).getOrNull()
+        if (setUp == null) {
+            createDefaultSetUp(id)
+        }
+    }
+
+    private fun State.reduceSetUpUpdatedAction(action: SetUpUpdatedAction): State {
+        val setUp = action.setUp
         val transitionGroup = StringResources(R.string.set_up_picker_group_transition)
         val sizeGroup = StringResources(R.string.set_up_picker_group_sizes)
         val colorGroup = StringResources(R.string.set_up_picker_group_color)
 
-        val defaultSetUp = DefaultVisualizationSetUp
 
         val genericPickerItems = mutableListOf<GenericPickerItem<*>>().apply {
-            addAll(defaultSetUp.genericPickerTransitionItems(transitionGroup))
-            addAll(defaultSetUp.drawConfig.sizes.genericPickerSizesItems(sizeGroup))
-            addAll(defaultSetUp.drawConfig.colors.genericPickerColorItems(colorGroup))
+            addAll(setUp.genericPickerTransitionItems(transitionGroup))
+            addAll(setUp.drawConfig.sizes.genericPickerSizesItems(sizeGroup))
+            addAll(setUp.drawConfig.colors.genericPickerColorItems(colorGroup))
         }.mapToImmutable { it }
 
         genericPickerPresenter.onAction(
-            InitializedAction(
+            GenericPickerAction.InitializedAction(
                 allItems = genericPickerItems,
                 floatingModalItems = immutableListOf(genericPickerItems),
             )
         )
-
-        return ReadyState(defaultSetUp)
+        return ReadyState(setUp)
     }
 
 }
 
-private fun VisualizationSetUp.genericPickerTransitionItems(
+private fun VisualizationSetUpUiModel.genericPickerTransitionItems(
     group: StringWrapper,
 ) = immutableListOf(
     GenericPickerItem(
@@ -79,7 +136,7 @@ private fun VisualizationSetUp.genericPickerTransitionItems(
 )
 
 //TODO better icons, this are not clear
-private fun DrawColors.genericPickerColorItems(
+private fun DrawColorsUiModel.genericPickerColorItems(
     group: StringWrapper
 ) = immutableListOf(
 
@@ -127,7 +184,7 @@ private fun DrawColors.genericPickerColorItems(
     )
 )
 
-private fun DrawSizes.genericPickerSizesItems(
+private fun DrawSizesUiModelDp.genericPickerSizesItems(
     group: StringWrapper,
 ) = immutableListOf(
     GenericPickerItem(

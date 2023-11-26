@@ -72,6 +72,7 @@ class InitializeReducer @Inject constructor(
         }
 
         treeVisualizationBuilder.initialize(
+            dataStructureId = id,
             binarySearchTreeJson = dataStructure.dataStructureJson,
             coroutineScope = coroutineScope,
             onInitialized = {
