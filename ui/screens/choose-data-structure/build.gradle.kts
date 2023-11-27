@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("kotlin-parcelize")
     id(libs.plugins.hilt.get().pluginId)
 }
 

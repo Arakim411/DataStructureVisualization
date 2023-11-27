@@ -1,18 +1,18 @@
 package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import com.arakim.datastructurevisualization.ui.common.dialogs.CommonDialogContainer
 import com.arakim.datastructurevisualization.ui.common.dialogs.DialogDivider
 import com.arakim.datastructurevisualization.ui.common.dialogs.DialogHeadline
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.CreationStage.ChooseNameState
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.CreationStage.ChooseTypeStage
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.creationStage.CreationStage
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.creationStage.CreationStage.ChooseNameState
+import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.creationStage.CreationStage.ChooseTypeStage
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
@@ -24,7 +24,7 @@ fun CreateDataStructureDialog(
     onCreate: (name: String, DataStructureTypeUiModel) -> Unit,
     onDismissRequest: () -> Unit
 ) {
-    val stage = remember { mutableStateOf<CreationStage>(ChooseTypeStage) }
+    val stage = rememberSaveable(stateSaver = CreationStage.Saver) { mutableStateOf(ChooseTypeStage) }
 
     Dialog(onDismissRequest = onDismissRequest) {
         CommonDialogContainer {
@@ -73,12 +73,6 @@ private fun StageView(
             )
         }
     }
-}
-
-internal sealed interface CreationStage {
-
-    object ChooseTypeStage : CreationStage
-    data class ChooseNameState(val type: DataStructureTypeUiModel) : CreationStage
 }
 
 @Composable
