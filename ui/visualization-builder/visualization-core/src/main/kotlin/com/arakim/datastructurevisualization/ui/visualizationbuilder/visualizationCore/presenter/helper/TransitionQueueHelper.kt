@@ -39,11 +39,12 @@ class TransitionQueueHelper @Inject constructor() {
         (transitionJob?.isActive != true) && composeCoroutineScope != null
 
     private suspend fun VisualizationCorePresenter.emptyTransitionQueue() {
-        var transition = transitionQueue.poll()
+        var transition = transitionQueue.peek()
 
         while (transition != null) {
             handleTransition(transition)
-            transition = transitionQueue.poll()
+            transitionQueue.poll()
+            transition = transitionQueue.peek()
         }
     }
 

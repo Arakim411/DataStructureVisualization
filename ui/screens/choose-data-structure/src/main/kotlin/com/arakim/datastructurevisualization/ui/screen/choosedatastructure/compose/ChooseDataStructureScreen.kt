@@ -1,6 +1,7 @@
 package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose
 
-import android.util.Log
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,7 +35,6 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.prese
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToCreateDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToGetDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ReadyState
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.BinarySearchTree
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.HashMap
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.LinkedList
@@ -43,6 +44,7 @@ import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R.dr
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R.string
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.parcelize.Parcelize
 
 @Composable
 fun ChooseDataStructureScreen(
@@ -53,11 +55,11 @@ fun ChooseDataStructureScreen(
     val viewModel = hiltViewModel<ChooseDataStructureViewModel>()
     val state = viewModel.presenter.stateFlow.collectAsStateWithLifecycle().value
 
-    val isCreatingDataStructure = remember { mutableStateOf(false) }
-    val snackbarHostState = remember { SnackbarHostState() }
+    val isCreatingDataStructure = rememberSaveable { mutableStateOf(false) }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     suspend fun showSnackBar(text: String) {
-        snackbarHostState.showSnackbar(text)
+        snackBarHostState.showSnackbar(text)
     }
 
     val failedToGetMessage = stringResource(id = string.failed_to_get_data_structures_message)
@@ -82,7 +84,7 @@ fun ChooseDataStructureScreen(
 
     if (isCreatingDataStructure.value) {
         CreateDataStructureDialog(
-            availableTypes = remember { allDataStructuresTypeUiModels },
+            availableTypes = allDataStructuresTypeUiModels,
             onCreate = { name, type ->
                 onAction(CreateDataStructureAction(name, type))
             },
@@ -93,7 +95,7 @@ fun ChooseDataStructureScreen(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         topBar = {
             CommonTopAppBar(
                 title = stringResource(id = R.string.choose_data_structure_screen_title),

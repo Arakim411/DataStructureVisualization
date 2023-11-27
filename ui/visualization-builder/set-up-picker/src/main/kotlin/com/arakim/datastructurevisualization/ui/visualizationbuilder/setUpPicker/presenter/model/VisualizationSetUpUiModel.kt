@@ -19,7 +19,7 @@ fun VisualizationSetUp.toUiModel(): VisualizationSetUpUiModel {
     return VisualizationSetUpUiModel(
         id = id,
         vertexTransitionTime = vertexTransitionTime,
-        comparisonTransitionTime = vertexTransitionTime,
+        comparisonTransitionTime = comparisonTransitionTime,
         enterTransStartPosition = enterTransStartPositionDp.toDpOffset(),
         drawConfig = drawConfig.toUiModel()
 

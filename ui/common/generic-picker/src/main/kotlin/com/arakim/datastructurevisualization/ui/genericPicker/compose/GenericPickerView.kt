@@ -2,7 +2,7 @@ package com.arakim.datastructurevisualization.ui.genericPicker.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -39,9 +39,9 @@ internal fun GenericPickerReadyView(
 ) {
 
     val density = LocalDensity.current
-    val startModalX = remember { with(density) { 10.dp.toPx().toInt() } }
+    val startModalX = rememberSaveable { with(density) { 10.dp.toPx().toInt() } }
 
-    val isDetailsDialogVisible = remember { mutableStateOf(false) }
+    val isDetailsDialogVisible = rememberSaveable { mutableStateOf(false) }
 
     if (isDetailsDialogVisible.value) {
         GenericPickerDetailsDialog(
