@@ -1,16 +1,22 @@
 package com.arakim.datastructurevisualization.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiController
+import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
+import com.arakim.datastructurevisualization.navigation.uicontroller.ObtainUiControllerState
+import com.arakim.datastructurevisualization.navigation.uicontroller.UiControllerType
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerGroup
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerItem
-import com.arakim.datastructurevisualization.navigation.uicontroller.rememberNavUiControllerState
+import com.arakim.datastructurevisualization.navigation.uicontroller.rememberModalDrawerState
 import com.arakim.datastructurevisualization.ui.navigation.R.drawable
 import com.arakim.datastructurevisualization.ui.navigation.R.string
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination
@@ -27,42 +33,47 @@ import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowS
 fun MainNavigation() {
 
     val navController = rememberNavController()
-    val navUiController = rememberNavUiControllerState()
 
     fun navigate(destination: MainDestination) {
         navController.navigate(destination.navigateRoute)
     }
 
-    NavigationUiController(
-        navigationUiControllerState = navUiController,
-        navUiControllerGroups = immutableListOf(getNavControllerGeneralGroup()),
-        onItemClick = {
-            navController.navigate(it.route)
-        },
-        selectedRoute = navController.currentDestination?.route ?: "",
-    ) {
-        NavHost(
-            navController = navController,
-            startDestination = ChooseDataStructureDestination.Route
+    ObtainUiControllerState { uiControllerState ->
+
+        forceModalUiControllerIfNeeded(navController, uiControllerState)
+
+        NavigationUiController(
+            navigationUiControllerState = uiControllerState,
+            navUiControllerGroups = immutableListOf(getNavControllerGeneralGroup()),
+            onItemClick = {
+                navController.navigate(it.route)
+            },
+            selectedRoute = navController.currentDestination?.route ?: "",
         ) {
 
-            composable(ChooseDataStructureDestination.Route) {
-                ChooseDataStructureScreen(
-                    navUiControllerState = navUiController,
-                    navigate = ::navigate
-                )
-            }
+            NavHost(
+                navController = navController,
+                startDestination = ChooseDataStructureDestination.Route
+            ) {
 
-            composable(BinarySearchTreeDestination.Route) {
-                val id = it.arguments!!.getString(BinarySearchTreeDestination.Arguments.Id)!!
-                BinarySearchTreeScreen(
-                    id = id.toInt(),
-                    navigationUiControllerState = navUiController
-                )
-            }
+                composable(ChooseDataStructureDestination.Route) {
+                    ChooseDataStructureScreen(
+                        navUiControllerState = uiControllerState,
+                        navigate = ::navigate
+                    )
+                }
 
-            composable(DeletedDataStructuresDestination.Route) {
-                TODO()
+                composable(BinarySearchTreeDestination.Route) {
+                    val id = it.arguments!!.getString(BinarySearchTreeDestination.Arguments.Id)!!
+                    BinarySearchTreeScreen(
+                        id = id.toInt(),
+                        navigationUiControllerState = uiControllerState
+                    )
+                }
+
+                composable(DeletedDataStructuresDestination.Route) {
+                    TODO()
+                }
             }
         }
     }
@@ -93,6 +104,33 @@ private fun MainDestination.toStringResources(): String = when (this) {
     is BinarySearchTreeDestination -> stringResource(id = string.destination_name_binary_search_tree)
 }
 
+@Composable
+private fun forceModalUiControllerIfNeeded(
+    navController: NavController,
+    uiControllerState: NavigationUiControllerState,
+) {
+    val modalDrawer = rememberModalDrawerState()
+    var lastControllerType = remember<UiControllerType?> { null }
+
+    LaunchedEffect(Unit) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (shouldForceModalUiController(destination.route)) {
+                lastControllerType = uiControllerState.navigationType.value
+                uiControllerState.forceUiControllerType(modalDrawer)
+            } else {
+                lastControllerType?.let {
+                    uiControllerState.forceUiControllerType(it)
+                }
+            }
+        }
+    }
+}
+
+@Stable
+private fun shouldForceModalUiController(currentRoute: String?): Boolean = when (currentRoute) {
+    BinarySearchTreeDestination.Route -> true
+    else -> false
+}
 
 @Preview
 @Composable

@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationOverlayType
+import com.arakim.datastructurevisualization.navigation.uicontroller.UiControllerType
 import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
 import kotlinx.coroutines.launch
 
@@ -48,7 +48,7 @@ fun CommonTopAppBar(
     val navigationType = navigationUiControllerState.navigationType.collectAsStateWithLifecycle().value
 
     val navAction = remember(navigationType) {
-        (navigationType as? NavigationOverlayType.Modal)?.let {
+        (navigationType as? UiControllerType.ModalDrawer)?.let {
             {
                 coroutineScope.launch {
                     it.drawerState.open()

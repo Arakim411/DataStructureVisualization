@@ -1,10 +1,16 @@
 package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import com.arakim.datastructurevisualization.ui.common.dialogs.CommonDialogContainer
@@ -16,6 +22,11 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compo
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
+import com.arakim.datastructurevisualization.ui.util.windowSizeClass.ImpactProperty.Width
+import com.arakim.datastructurevisualization.ui.util.windowSizeClass.WindowSizeDelimiter
+import com.arakim.datastructurevisualization.ui.util.windowSizeClass.WindowSizeType.Compact
+import com.arakim.datastructurevisualization.ui.util.windowSizeClass.WindowSizeType.Expanded
+import com.arakim.datastructurevisualization.ui.util.windowSizeClass.WindowSizeType.Medium
 
 //TODO extract to common all dialogs to stick m3 rules
 @Composable
@@ -27,18 +38,23 @@ fun CreateDataStructureDialog(
     val stage = rememberSaveable(stateSaver = CreationStage.Saver) { mutableStateOf(ChooseTypeStage) }
 
     Dialog(onDismissRequest = onDismissRequest) {
-        CommonDialogContainer {
-            Column {
-                DialogHeadline(text = stage.value.getTitle())
+        WindowSizeDelimiter(impactedProperty = Width) {
 
-                DialogDivider()
+            CommonDialogContainer {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    DialogHeadline(text = stage.value.getTitle())
 
-                StageView(
-                    stage = stage,
-                    onCreate = onCreate,
-                    availableTypes = availableTypes,
-                    onDismissRequest = onDismissRequest,
-                )
+                    DialogDivider()
+
+                    StageView(
+                        stage = stage,
+                        onCreate = onCreate,
+                        availableTypes = availableTypes,
+                        onDismissRequest = onDismissRequest,
+                    )
+                }
             }
         }
     }

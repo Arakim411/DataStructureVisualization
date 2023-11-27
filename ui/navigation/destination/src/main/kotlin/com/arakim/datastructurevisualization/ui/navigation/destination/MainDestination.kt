@@ -15,6 +15,7 @@ sealed interface MainDestination {
         override val navigateRoute: String = Route
     }
 
+
     class BinarySearchTreeDestination(id: Int) : MainDestination {
         override val navigateRoute: String = "$BaseRoute/$id"
 

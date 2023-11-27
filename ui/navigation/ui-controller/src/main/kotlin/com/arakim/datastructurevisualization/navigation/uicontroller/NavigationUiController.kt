@@ -14,17 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.arakim.datastructurevisualization.navigation.uicontroller.UiControllerType.Drawer
+import com.arakim.datastructurevisualization.navigation.uicontroller.UiControllerType.ModalDrawer
 import com.arakim.datastructurevisualization.navigation.uicontroller.controllers.ModalNavigationDrawer
 import com.arakim.datastructurevisualization.navigation.uicontroller.controllers.NavigationDrawer
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerGroup
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerItem
-import com.arakim.datastructurevisualization.ui.navigation.uicontroller.R
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
-import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
-import com.arakim.datastructurevisualization.ui.util.windowSizeClass.ImpactProperty
-import com.arakim.datastructurevisualization.ui.util.windowSizeClass.WindowSizeDelimiter
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.WindowSizeType
 import kotlinx.coroutines.launch
 
@@ -36,25 +33,25 @@ fun NavigationUiController(
     selectedRoute: String,
     content: @Composable () -> Unit,
 ) {
-    WindowSizeDelimiter(impactedProperty = ImpactProperty.Width) { windowSizeType ->
-        when (windowSizeType) {
-            WindowSizeType.Compact, WindowSizeType.Medium -> ModalNavigationDrawer(
-                navigationUiControllerState = navigationUiControllerState,
-                navigationGroups = navUiControllerGroups,
-                onItemClick = onItemClick,
-                selectedRoute = selectedRoute,
-                content = content,
-            )
 
-            WindowSizeType.Expanded -> NavigationDrawer(
-                navigationUiControllerState = navigationUiControllerState,
-                navigationGroups = navUiControllerGroups,
-                onItemClick = onItemClick,
-                selectedRoute = selectedRoute,
-                content = content,
-            )
-        }
+    when (val navigationType = navigationUiControllerState.navigationType.collectAsState().value) {
+        is ModalDrawer -> ModalNavigationDrawer(
+            uiControllerType = navigationType,
+            navigationGroups = navUiControllerGroups,
+            onItemClick = onItemClick,
+            selectedRoute = selectedRoute,
+            content = content,
+        )
+
+        Drawer -> NavigationDrawer(
+            navigationUiControllerState = navigationUiControllerState,
+            navigationGroups = navUiControllerGroups,
+            onItemClick = onItemClick,
+            selectedRoute = selectedRoute,
+            content = content,
+        )
     }
+
 }
 
 
@@ -91,36 +88,39 @@ private fun NavUiControllerExpandedPreview(
 @Composable
 private fun NavigationUiControllerPreview(navGroups: ImmutableList<NavUiControllerGroup>) {
 
-    val navUiControllerState = rememberNavUiControllerState()
     val selectedRoute = remember { mutableStateOf(navGroups[0].items[0].route) }
 
-    NavigationUiController(
-        navigationUiControllerState = navUiControllerState,
-        navUiControllerGroups = navGroups,
-        selectedRoute = selectedRoute.value,
-        onItemClick = {
-            selectedRoute.value = it.route
-        }
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            val navigationType = navUiControllerState.navigationType.collectAsState().value
-            Column {
-                if (navigationType is NavigationOverlayType.Modal) {
-                    val scope = rememberCoroutineScope()
-                    Button(
-                        onClick = {
-                            scope.launch { navigationType.drawerState.open() }
-                        },
-                    ) {
-                        Text(text = "Open")
-                    }
+    ObtainUiControllerState { uiControllerState ->
+        val navigationType = uiControllerState.navigationType.collectAsState().value
 
+        NavigationUiController(
+            navigationUiControllerState = uiControllerState,
+            navUiControllerGroups = navGroups,
+            selectedRoute = selectedRoute.value,
+            onItemClick = {
+                selectedRoute.value = it.route
+            }
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+
+                Column {
+                    if (navigationType is ModalDrawer) {
+                        val scope = rememberCoroutineScope()
+                        Button(
+                            onClick = {
+                                scope.launch { navigationType.drawerState.open() }
+                            },
+                        ) {
+                            Text(text = "Open")
+                        }
+
+                    }
+                    Text(text = "content: ${selectedRoute.value}")
                 }
-                Text(text = "content: ${selectedRoute.value}")
             }
         }
     }
