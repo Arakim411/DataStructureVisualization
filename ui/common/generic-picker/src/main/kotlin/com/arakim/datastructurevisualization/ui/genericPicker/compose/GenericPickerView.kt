@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.arakim.datastructurevisualization.ui.common.DraggableBox
+import com.arakim.datastructurevisualization.ui.genericPicker.compose.floatingModalItemsView.FloatingModalItemsView
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerAction.NewDataPickedAction
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerPresenter
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerState.IdleState

@@ -26,6 +26,7 @@ internal fun ColumnScope.ChooseStructureNameView(
 ) {
     var name by rememberSaveable { mutableStateOf("") }
 
+
     OutlinedTextField(
         value = name,
         onValueChange = {

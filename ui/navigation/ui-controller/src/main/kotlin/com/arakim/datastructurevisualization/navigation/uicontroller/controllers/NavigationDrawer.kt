@@ -3,7 +3,7 @@ package com.arakim.datastructurevisualization.navigation.uicontroller.controller
 import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationOverlayType
+import com.arakim.datastructurevisualization.navigation.uicontroller.UiControllerType
 import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerGroup
 import com.arakim.datastructurevisualization.navigation.uicontroller.model.NavUiControllerItem
@@ -17,11 +17,6 @@ internal fun NavigationDrawer(
     onItemClick: (NavUiControllerItem) -> Unit,
     content: @Composable () -> Unit,
 ) {
-    LaunchedEffect(Unit) {
-        navigationUiControllerState.setNavigationOverlayType(
-            NavigationOverlayType.None
-        )
-    }
 
     PermanentNavigationDrawer(
         drawerContent = {

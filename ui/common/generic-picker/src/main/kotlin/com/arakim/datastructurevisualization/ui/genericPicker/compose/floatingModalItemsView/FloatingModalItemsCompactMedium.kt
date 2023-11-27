@@ -1,4 +1,4 @@
-package com.arakim.datastructurevisualization.ui.genericPicker.compose
+package com.arakim.datastructurevisualization.ui.genericPicker.compose.floatingModalItemsView
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -15,20 +15,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arakim.datastructurevisualization.ui.common.genericpicker.R
+import com.arakim.datastructurevisualization.ui.common.genericpicker.R.drawable
 import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.ColorView
-import com.arakim.datastructurevisualization.ui.genericPicker.compose.pickDataType.helpers.PickDataTypeDialog
-import com.arakim.datastructurevisualization.ui.genericPicker.presenter.GenericPickerAction.NewDataPickedAction
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.GenericPickerItem
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.ColorType
 import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.PickerDataType.DurationType
@@ -36,23 +31,12 @@ import com.arakim.datastructurevisualization.ui.genericPicker.presenter.model.Pi
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 
 @Composable
-internal fun FloatingModalItemsView(
+internal fun FloatingModalItemsCompactMedium(
     items: ImmutableList<GenericPickerItem<*>>,
-    onAction: (NewDataPickedAction) -> Unit,
     onMoreDetailsClick: () -> Unit,
+    onItemClick: (GenericPickerItem<*>) -> Unit,
+    isExpanded: MutableState<Boolean>,
 ) {
-    val isExpanded = rememberSaveable { mutableStateOf(true) }
-
-    var currentlyPickingItem: GenericPickerItem<*>? by remember { mutableStateOf(null) }
-
-    currentlyPickingItem?.also {
-        PickDataTypeDialog(
-            item = it,
-            onAction = onAction,
-            onDismissRequest = { currentlyPickingItem = null },
-        )
-    }
-
     Column(
         modifier = Modifier
             .width(100.dp)
@@ -74,9 +58,7 @@ internal fun FloatingModalItemsView(
                     ModalItem(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable {
-                                currentlyPickingItem = it
-                            },
+                            .clickable { onItemClick(it) },
                         item = it
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -93,7 +75,7 @@ private fun SettingsView(
     onChangeSizeClicked: () -> Unit,
     isExpanded: Boolean,
 ) {
-    val icon = if (isExpanded) R.drawable.baseline_expand_less_24 else R.drawable.baseline_expand_more_24
+    val icon = if (isExpanded) R.drawable.baseline_expand_less_vertical_24 else R.drawable.baseline_expand_more_vertical_24
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -107,7 +89,7 @@ private fun SettingsView(
 
         Icon(
             modifier = Modifier.clickable { onMoreDetailsClick() },
-            painter = painterResource(id = R.drawable.outline_more_horiz_24),
+            painter = painterResource(id = drawable.outline_more_horiz_24),
             contentDescription = null,
         )
     }
