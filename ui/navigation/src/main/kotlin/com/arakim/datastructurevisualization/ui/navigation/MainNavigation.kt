@@ -1,6 +1,5 @@
 package com.arakim.datastructurevisualization.ui.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.res.stringResource
@@ -20,7 +19,6 @@ import com.arakim.datastructurevisualization.ui.navigation.destination.MainDesti
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.DeletedDataStructuresDestination
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.ChooseDataStructureScreen
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.compose.BinarySearchTreeScreen
-import com.arakim.datastructurevisualization.ui.util.ImmutableList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
 
@@ -31,13 +29,13 @@ fun MainNavigation() {
     val navController = rememberNavController()
     val navUiController = rememberNavUiControllerState()
 
-    fun navigate(destination: MainDestination){
+    fun navigate(destination: MainDestination) {
         navController.navigate(destination.navigateRoute)
     }
 
     NavigationUiController(
         navigationUiControllerState = navUiController,
-        navUiControllerGroups = getNavigationGroups(),
+        navUiControllerGroups = immutableListOf(getNavControllerGeneralGroup()),
         onItemClick = {
             navController.navigate(it.route)
         },
@@ -70,40 +68,23 @@ fun MainNavigation() {
     }
 }
 
-
 @Composable
 @Stable
-private fun getNavigationGroups(): ImmutableList<NavUiControllerGroup> = immutableListOf(
-    getDataStructuresGroup(),
-    getOtherGroup()
-)
-
-@Composable
-@Stable
-private fun getDataStructuresGroup(): NavUiControllerGroup = NavUiControllerGroup(
-    name = stringResource(id = R.string.group_name_data_structure),
+private fun getNavControllerGeneralGroup(): NavUiControllerGroup = NavUiControllerGroup(
+    name = stringResource(id = R.string.destination_group_general),
     items = immutableListOf(
         NavUiControllerItem(
             title = ChooseDataStructureDestination.toStringResources(),
             route = ChooseDataStructureDestination.Route,
             iconId = drawable.ic_stack,
-        )
-    ),
-)
-
-@Composable
-@Stable
-private fun getOtherGroup(): NavUiControllerGroup = NavUiControllerGroup(
-    name = stringResource(id = R.string.group_name_other),
-    items = immutableListOf(
+        ),
         NavUiControllerItem(
             title = DeletedDataStructuresDestination.toStringResources(),
             route = DeletedDataStructuresDestination.Route,
             iconId = drawable.ic_delete,
         ),
-    ),
+    )
 )
-
 
 @Composable
 private fun MainDestination.toStringResources(): String = when (this) {
