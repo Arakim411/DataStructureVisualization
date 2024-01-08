@@ -67,7 +67,6 @@ fun InputModalBottomSheet(
     }
 }
 
-
 @Composable
 private fun ActionButtons(
     actions: ImmutableList<InputModalAction>,

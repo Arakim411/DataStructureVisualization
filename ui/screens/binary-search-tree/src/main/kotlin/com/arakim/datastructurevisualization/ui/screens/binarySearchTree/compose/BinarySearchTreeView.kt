@@ -26,9 +26,10 @@ import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationU
 import com.arakim.datastructurevisualization.ui.common.CommonErrorView
 import com.arakim.datastructurevisualization.ui.common.CommonLoaderView
 import com.arakim.datastructurevisualization.ui.common.CommonTopAppBar
-import com.arakim.datastructurevisualization.ui.common.SaveDataStructureAction
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.InputModalAction
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.InputModalBottomSheet
+import com.arakim.datastructurevisualization.ui.common.topbar.DropDownAction
+import com.arakim.datastructurevisualization.ui.common.topbar.SaveDataStructureAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.SaveAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.DeleteAction
@@ -92,11 +93,17 @@ private fun ReadyState(
     navigationUiControllerState: NavigationUiControllerState,
     onAction: (BinarySearchTreeAction) -> Unit,
 ) {
-    var isBottomSheetVisible by rememberSaveable {
+    val context = LocalContext.current
+
+    var isAddNodeBottomSheetVisible by rememberSaveable {
         mutableStateOf(false)
     }
 
-    if (isBottomSheetVisible) {
+    var isAddRandomNodesDialogVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    if (isAddNodeBottomSheetVisible) {
         InputModalBottomSheet(
             actions = remember {
                 immutableListOf(
@@ -105,8 +112,15 @@ private fun ReadyState(
                     InputModalAction(string.find) { onAction(FindAction(it)) },
                 )
             },
-            onDismissRequest = { isBottomSheetVisible = false },
+            onDismissRequest = { isAddNodeBottomSheetVisible = false },
             label = stringResource(id = string.bottom_sheet_node_value),
+        )
+    }
+
+    if (isAddRandomNodesDialogVisible) {
+        AddRandomNodesDialog(
+            onDismissRequest = { isAddRandomNodesDialogVisible = false },
+            onAction = onAction,
         )
     }
 
@@ -121,13 +135,19 @@ private fun ReadyState(
                             onAction(SaveAction)
                         }
                     )
+                    DropDownAction {
+                        addAction(
+                            text = context.getString(R.string.add_random_nodes_drop_down_item_text),
+                            action = { isAddRandomNodesDialogVisible = true },
+                        )
+                    }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    isBottomSheetVisible = true
+                    isAddNodeBottomSheetVisible = true
                 },
             ) {
                 Icon(

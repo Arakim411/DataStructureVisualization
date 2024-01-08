@@ -18,5 +18,6 @@ sealed interface BinarySearchTreeAction {
         data class InsertAction(val value: Number) : UpdateTreeAction
         data class DeleteAction(val value: Number) : UpdateTreeAction
         data class FindAction(val value: Number) : UpdateTreeAction
+        data class AddRandomNodesAction(val count: Int): UpdateTreeAction
     }
 }
