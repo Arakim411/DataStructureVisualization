@@ -5,6 +5,7 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.DeleteAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.FindAction
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.AddRandomNodesAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.InsertAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeState.ReadyState
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.State
@@ -12,7 +13,7 @@ import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.present
 import javax.inject.Inject
 
 class UpdateTreeReducer @Inject constructor(
-    private val visualizationBuilder: BinarySearchTreeVisualizationBuilder,
+    private val treeVisualizationBuilder: BinarySearchTreeVisualizationBuilder,
 ) : StateReducer<State, Action, UpdateTreeAction>() {
 
     override fun State.reduce(action: UpdateTreeAction): State = when (this) {
@@ -22,10 +23,19 @@ class UpdateTreeReducer @Inject constructor(
 
     private fun ReadyState.reduceUpdateTreeAction(action: UpdateTreeAction): State {
         when (action) {
-            is DeleteAction -> visualizationBuilder.delete(action.value)
+            is DeleteAction -> treeVisualizationBuilder.delete(action.value)
             is FindAction -> Unit
-            is InsertAction -> visualizationBuilder.insert(action.value)
+            is InsertAction -> treeVisualizationBuilder.insert(action.value)
+            is AddRandomNodesAction -> addRandomNodes(action.count)
         }
         return this
     }
+
+    private fun addRandomNodes(nodesCount: Int) {
+        repeat(nodesCount) {
+            val nodeValue = (-100..100).random()
+            treeVisualizationBuilder.insert(nodeValue)
+        }
+    }
+
 }
