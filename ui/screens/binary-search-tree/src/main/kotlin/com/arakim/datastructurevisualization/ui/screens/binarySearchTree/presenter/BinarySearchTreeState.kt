@@ -18,5 +18,6 @@ sealed interface BinarySearchTreeState {
         val id: Int,
         val customName: String,
         val isTreeCreated: MutableState<Boolean>,
+        val actionsInQueue: StateFlow<Int>,
     ): BinarySearchTreeState
 }

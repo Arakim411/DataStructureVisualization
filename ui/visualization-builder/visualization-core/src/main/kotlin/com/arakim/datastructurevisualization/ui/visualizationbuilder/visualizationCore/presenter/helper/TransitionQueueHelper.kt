@@ -3,6 +3,7 @@ package com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizat
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.VisualizationCorePresenter
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.vertex.TransitionGroup
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.util.LinkedList
 import java.util.Queue
@@ -15,7 +16,7 @@ class TransitionQueueHelper @Inject constructor() {
     private val transitionQueue: Queue<TransitionGroup> = LinkedList()
     private var transitionJob: Job? = null
 
-    val hasQueuedTransitions get() =  transitionQueue.isNotEmpty().let { it }
+    val hasQueuedTransitions get() = transitionQueue.isNotEmpty().let { it }
 
     fun initialize(
         handleTransition: suspend VisualizationCorePresenter.(TransitionGroup) -> Unit
@@ -28,7 +29,7 @@ class TransitionQueueHelper @Inject constructor() {
     }
 
     fun VisualizationCorePresenter.tryEmptyTransitionQueue() {
-        if (!shouldEmptyTransitionQueue() ) return
+        if (!shouldEmptyTransitionQueue()) return
 
         transitionJob = composeCoroutineScope?.launch {
             emptyTransitionQueue()
@@ -42,10 +43,12 @@ class TransitionQueueHelper @Inject constructor() {
         var transition = transitionQueue.peek()
 
         while (transition != null) {
+            (actionsInQueue as MutableStateFlow<Int>).value = transitionQueue.size
             handleTransition(transition)
             transitionQueue.poll()
             transition = transitionQueue.peek()
         }
+        (actionsInQueue as MutableStateFlow<Int>).value = transitionQueue.size
     }
 
 }
