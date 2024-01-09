@@ -29,4 +29,19 @@ sealed interface MainDestination {
         }
     }
 
+    class HashMapDestination(id: Int) : MainDestination {
+        override val navigateRoute: String = "$BaseRoute/$id"
+
+        object Arguments {
+            const val Id = "id"
+        }
+
+
+        companion object {
+            private val BaseRoute = "hash_map"
+            val Route = "$BaseRoute/{$Id}"
+        }
+
+    }
+
 }

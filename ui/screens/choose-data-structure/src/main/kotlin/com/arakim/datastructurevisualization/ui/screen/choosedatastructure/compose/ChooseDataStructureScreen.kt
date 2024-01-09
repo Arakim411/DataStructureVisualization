@@ -25,6 +25,7 @@ import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationU
 import com.arakim.datastructurevisualization.ui.common.CommonTopAppBar
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.BinarySearchTreeDestination
+import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.HashMapDestination
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.ChooseDataStructureViewModel
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.CreateDataStructureDialog
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction
@@ -129,7 +130,7 @@ fun ChooseDataStructureScreen(
                 onDataStructureClick = { dataStructure ->
                     when (dataStructure.dataStructureType) {
                         BinarySearchTree -> navigate(BinarySearchTreeDestination(dataStructure.id))
-                        HashMap -> TODO()
+                        HashMap -> navigate(HashMapDestination(dataStructure.id))
                         LinkedList -> TODO()
                     }
                 },
