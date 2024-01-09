@@ -23,10 +23,12 @@ import com.arakim.datastructurevisualization.ui.navigation.destination.MainDesti
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.BinarySearchTreeDestination
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.ChooseDataStructureDestination
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.DeletedDataStructuresDestination
+import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.HashMapDestination
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.ChooseDataStructureScreen
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.compose.BinarySearchTreeScreen
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
+import com.datastructurevisualization.ui.screen.hashmap.compose.HashMapScreen
 
 //TODO add intent filters
 @Composable
@@ -71,6 +73,14 @@ fun MainNavigation() {
                     )
                 }
 
+                composable(HashMapDestination.Route) {
+                    val id = it.arguments!!.getString(HashMapDestination.Arguments.Id)!!
+                    HashMapScreen(
+                        id = id.toInt(),
+                        navigationUiControllerState = uiControllerState
+                    )
+                }
+
                 composable(DeletedDataStructuresDestination.Route) {
                     TODO()
                 }
@@ -102,6 +112,7 @@ private fun MainDestination.toStringResources(): String = when (this) {
     DeletedDataStructuresDestination -> stringResource(id = string.destination_name_delete)
     ChooseDataStructureDestination -> stringResource(id = string.destination_name_data_structure)
     is BinarySearchTreeDestination -> stringResource(id = string.destination_name_binary_search_tree)
+    is HashMapDestination -> stringResource(id = string.destination_name_hash_table)
 }
 
 @Composable

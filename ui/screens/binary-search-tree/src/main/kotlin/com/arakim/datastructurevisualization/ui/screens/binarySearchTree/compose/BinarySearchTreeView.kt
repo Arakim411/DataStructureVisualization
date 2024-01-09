@@ -5,7 +5,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -77,9 +76,8 @@ fun BinarySearchTreeView(
         label = "",
     ) { stateValue ->
         when (stateValue) {
-            IdleState -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
+            IdleState, InitializingState -> CommonLoaderView()
             ErrorState -> CommonErrorView()
-            InitializingState -> CommonLoaderView()
             is ReadyState -> ReadyState(
                 state = stateValue,
                 visualizationBuilder = presenter.treeVisualizationBuilder.visualizationBuilder,
@@ -172,7 +170,9 @@ private fun ReadyState(
             VisualizationBuilderView(visualizationPresenter = visualizationBuilder)
             if (actionsInQueue > 0) {
                 Text(
-                    modifier = Modifier.align(Alignment.BottomStart).padding(bottom = 16.dp, start = 16.dp),
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(bottom = 16.dp, start = 16.dp),
                     text = "Actions in queue: $actionsInQueue",
                     color = Color.Black,
                     fontSize = 12.sp
