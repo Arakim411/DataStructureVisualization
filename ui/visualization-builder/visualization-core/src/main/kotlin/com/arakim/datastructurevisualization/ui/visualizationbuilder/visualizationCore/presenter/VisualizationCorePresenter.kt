@@ -12,6 +12,8 @@ import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizati
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.vertex.TransitionGroup
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.visualizationCore.presenter.model.vertex.VertexTransition
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @Stable
@@ -22,6 +24,7 @@ class VisualizationCorePresenter @Inject constructor(
 
     val comparisonState = mutableStateOf<ComparisonState>(IdleState)
     val textTransitionState = mutableStateOf<TextTransitionState>(TextTransitionState.IdleState)
+    val actionsInQueue: StateFlow<Int> = MutableStateFlow(0)
 
     //it's okay until we remember to clear it when composition is finished
     internal var composeCoroutineScope: CoroutineScope? = null

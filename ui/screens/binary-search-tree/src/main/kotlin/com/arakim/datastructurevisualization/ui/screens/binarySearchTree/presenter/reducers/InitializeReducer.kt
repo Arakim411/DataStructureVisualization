@@ -1,6 +1,5 @@
 package com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.reducers
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.arakim.datastructurevisualization.domain.util.yielded
 import com.arakim.datastructurevisualization.kotlinutil.getOrNull
@@ -52,16 +51,18 @@ class InitializeReducer @Inject constructor(
             id = action.id,
             customName = action.customName,
             isTreeCreated = mutableStateOf(false),
+            actionsInQueue = treeVisualizationBuilder.visualizationBuilder.visualizationCore.actionsInQueue,
         )
 
         else -> logInvalidState()
     }
 
-    private fun State.reduceTreeCreatedAction(): State = when(this){
+    private fun State.reduceTreeCreatedAction(): State = when (this) {
         is ReadyState -> {
             isTreeCreated.value = true
             this
         }
+
         else -> logInvalidState()
     }
 
