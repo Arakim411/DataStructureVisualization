@@ -112,7 +112,6 @@ private fun ReadyState(
                 immutableListOf(
                     InputModalAction(string.insert) { onAction(InsertAction(it)) },
                     InputModalAction(string.delete) { onAction(DeleteAction(it)) },
-                    InputModalAction(string.find) { onAction(FindAction(it)) },
                 )
             },
             onDismissRequest = { isAddNodeBottomSheetVisible = false },
@@ -155,7 +154,7 @@ private fun ReadyState(
             ) {
                 Icon(
                     painter = painterResource(
-                        id = R.drawable.baseline_edit_24,
+                        id = com.arakim.datastructurevisualization.ui.common.R.drawable.baseline_edit_24,
                     ),
                     contentDescription = null
                 )

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert">Insert</string>
+    <string name="delete">Delete</string>
+
+    <string name="bottom_sheet_label">Value</string>
+    <string name="add_random_values_drop_down_item_text">add random values</string>
+</resources>

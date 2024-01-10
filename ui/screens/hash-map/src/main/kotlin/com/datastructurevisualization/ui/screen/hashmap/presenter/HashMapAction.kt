@@ -10,6 +10,15 @@ sealed interface HashMapAction {
         ) : InitializationAction
 
         object InitializedFailedAction : InitializationAction
+        object OnHashMapCreated: InitializationAction
+    }
+
+    object SaveAction : HashMapAction
+
+    sealed interface UpdateAction: HashMapAction {
+        data class InsertAction(val value: Number) : UpdateAction
+        data class DeleteAction(val value: Number) : UpdateAction
+        data class AddRandomValuesAction(val count: Int): UpdateAction
     }
 
 }
