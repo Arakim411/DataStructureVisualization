@@ -17,13 +17,22 @@ class HashMapUpdateReducer @Inject constructor(
 
     override fun State.reduce(action: UpdateAction): State = when (action) {
         is AddRandomValuesAction -> reduceAddRandomValuesAction(action)
-        is DeleteAction -> TODO()
+        is DeleteAction -> reduceDeleteAction(action)
         is InsertAction -> reduceInsertAction(action)
     }
 
     private fun State.reduceAddRandomValuesAction(action: AddRandomValuesAction): State = when (this) {
         is ReadyState -> {
             addRandomValues(action.count)
+            this
+        }
+
+        else -> logInvalidState()
+    }
+
+    private fun State.reduceDeleteAction(action: DeleteAction): State = when (this) {
+        is ReadyState -> {
+            hashMapVisualizationBuilder.deleteValue(action.value.toInt())
             this
         }
 
@@ -39,8 +48,8 @@ class HashMapUpdateReducer @Inject constructor(
         else -> logInvalidState()
     }
 
-    private fun addRandomValues(count: Int){
-        repeat(count){
+    private fun addRandomValues(count: Int) {
+        repeat(count) {
             hashMapVisualizationBuilder.addValue((-100..100).random())
         }
     }
