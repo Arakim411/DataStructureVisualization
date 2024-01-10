@@ -13,6 +13,7 @@ import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction.
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction.InitializationAction.OnHashMapCreated
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapState
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapState.ErrorState
+import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapState.IdleState
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapState.InitializingState
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapState.ReadyState
 import com.datastructurevisualization.ui.screen.hashmap.presenter.State
@@ -37,12 +38,17 @@ class HashMapInitializeReducer @Inject constructor(
         OnHashMapCreated -> reduceHashMapCreatedAction()
     }
 
-    private fun State.reduceInitializeAction(id: Int): State {
-        coroutineScope.yielded {
-            initialize(id)
+    private fun State.reduceInitializeAction(id: Int): State = when (this) {
+        ErrorState, IdleState -> {
+            coroutineScope.yielded {
+                initialize(id)
+            }
+            InitializingState
         }
-        return InitializingState
+
+        else -> logInvalidState()
     }
+
 
     private fun State.reduceHashMapCreatedAction(): State {
         (this as? ReadyState)?.isHashMapCreated?.value = true
