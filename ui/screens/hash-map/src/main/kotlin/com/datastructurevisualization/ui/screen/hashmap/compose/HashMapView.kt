@@ -28,16 +28,19 @@ import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationU
 import com.arakim.datastructurevisualization.ui.common.CommonErrorView
 import com.arakim.datastructurevisualization.ui.common.CommonLoaderView
 import com.arakim.datastructurevisualization.ui.common.CommonTopAppBar
+import com.arakim.datastructurevisualization.ui.common.dialogs.CommonInputDialog
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.InputModalAction
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.InputModalBottomSheet
 import com.arakim.datastructurevisualization.ui.common.topbar.DropDownAction
 import com.arakim.datastructurevisualization.ui.common.topbar.SaveDataStructureAction
-import com.arakim.datastructurevisualization.ui.screens.hashmap.R.*
+import com.arakim.datastructurevisualization.ui.screens.hashmap.R
+import com.arakim.datastructurevisualization.ui.screens.hashmap.R.string
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.compose.VisualizationBuilderView
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction.SaveAction
+import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction.UpdateAction.AddRandomValuesAction
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction.UpdateAction.DeleteAction
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction.UpdateAction.InsertAction
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapPresenter
@@ -99,7 +102,11 @@ private fun ReadyState(
     }
 
     if (isAddRandomValuesDialogVisible) {
-
+        CommonInputDialog(
+            onDismissRequest = { isAddRandomValuesDialogVisible = false },
+            inputLabel = stringResource(id = string.add_random_values_drop_down_item_text),
+            onConfirmed = { onAction(AddRandomValuesAction(it.toInt())) },
+        )
     }
 
     Scaffold(

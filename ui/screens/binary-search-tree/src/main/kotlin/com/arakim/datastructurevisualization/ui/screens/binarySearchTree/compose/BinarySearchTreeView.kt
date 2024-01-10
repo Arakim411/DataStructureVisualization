@@ -29,14 +29,15 @@ import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationU
 import com.arakim.datastructurevisualization.ui.common.CommonErrorView
 import com.arakim.datastructurevisualization.ui.common.CommonLoaderView
 import com.arakim.datastructurevisualization.ui.common.CommonTopAppBar
+import com.arakim.datastructurevisualization.ui.common.dialogs.CommonInputDialog
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.InputModalAction
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.InputModalBottomSheet
 import com.arakim.datastructurevisualization.ui.common.topbar.DropDownAction
 import com.arakim.datastructurevisualization.ui.common.topbar.SaveDataStructureAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.SaveAction
+import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.AddRandomNodesAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.DeleteAction
-import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.FindAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeAction.UpdateTreeAction.InsertAction
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreePresenter
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.presenter.BinarySearchTreeSideEffect.SavedSideEffect
@@ -120,9 +121,10 @@ private fun ReadyState(
     }
 
     if (isAddRandomNodesDialogVisible) {
-        AddRandomNodesDialog(
+        CommonInputDialog(
             onDismissRequest = { isAddRandomNodesDialogVisible = false },
-            onAction = onAction,
+            inputLabel = stringResource(id = R.string.add_random_nodes_input_hint),
+            onConfirmed = { onAction(AddRandomNodesAction(it.toInt())) },
         )
     }
 
