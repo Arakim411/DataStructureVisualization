@@ -39,7 +39,6 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
     private val elementVerticalDistance by lazy { (setUp.drawConfig.sizes.circleRadius * 3f) }
     private val elementHorizontalDistance by lazy { (setUp.drawConfig.sizes.circleRadius * 3f) }
 
-    //TODO remove onTreeCreated and invoke onInitialized after tree is created
     fun initialize(
         dataStructureId: Int,
         binarySearchTreeJson: String? = null,
@@ -47,7 +46,6 @@ class BinarySearchTreeVisualizationBuilder @Inject constructor(
         onInitialized: () -> Unit,
         onTreeCreated: () -> Unit,
     ) {
-        // TODO handle binarySearchTreeJson
         visualizationBuilder.initialize(
             dataStructureId = dataStructureId,
             coroutineScope = coroutineScope,
