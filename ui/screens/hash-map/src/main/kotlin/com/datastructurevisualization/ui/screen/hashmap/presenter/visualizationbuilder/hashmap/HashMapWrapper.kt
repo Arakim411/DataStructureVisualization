@@ -1,6 +1,5 @@
 package com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.hashmap
 
-import android.util.Log
 import java.util.UUID
 import kotlin.math.absoluteValue
 
@@ -25,6 +24,27 @@ abstract class HashMapWrapper {
     open fun addValue(value: Int) {
         val hash = getHash(value)
         addToBucket(bucket = hash, value = value)
+    }
+
+    open fun deleteValue(value: Int) {
+        val hash = getHash(value)
+        val indexToDelete = hashMap[hash]?.indexOfFirst { it.value == value }
+
+        if (indexToDelete == -1 || indexToDelete == null) return
+
+        val valueToDelete = hashMap[hash]!![indexToDelete]
+        val valuesBeforeDeleted = hashMap[hash]?.toList() ?: emptyList()
+
+        _hashMap[hash]?.removeAt(indexToDelete)
+
+        listeners.forEach {
+            it.onValueDeleted(
+                valueToDelete,
+                valuesBeforeDeleted,
+                indexToDelete
+            )
+        }
+
     }
 
     private fun addToBucket(bucket: Int, value: Int) {

@@ -9,6 +9,7 @@ import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationb
 import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.helpers.HashMapSerializer
 import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.helpers.VisualizeBucketsInitializationHelper
 import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.helpers.VisualizeValueAdd
+import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.helpers.VisualizeValueDelete
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -19,6 +20,7 @@ class HashMapVisualizationBuilder @Inject constructor(
     val visualizationBuilder: VisualizationBuilder,
     private val visualizeBucketsInitialization: VisualizeBucketsInitializationHelper,
     private val visualizeValueAdd: VisualizeValueAdd,
+    private val visualizationValueDelete: VisualizeValueDelete,
     private val hashMapSerializer: HashMapSerializer,
 ) : HashMapWrapper(), DataStructureSerializer by hashMapSerializer {
 
@@ -33,6 +35,12 @@ class HashMapVisualizationBuilder @Inject constructor(
     override fun addValue(value: Int) {
         visualizationBuilder.addTransitionHelper.addActionTransition {
             super.addValue(value)
+        }
+    }
+
+    override fun deleteValue(value: Int) {
+        visualizationBuilder.addTransitionHelper.addActionTransition {
+            super.deleteValue(value)
         }
     }
 
@@ -51,6 +59,7 @@ class HashMapVisualizationBuilder @Inject constructor(
             onInitialized = {
                 addListener(visualizeBucketsInitialization)
                 addListener(visualizeValueAdd)
+                addListener(visualizationValueDelete)
 
                 initializeBuckets(buckets)
 
