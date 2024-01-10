@@ -1,10 +1,13 @@
 package com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder
 
+import android.util.Log
 import com.arakim.datastructurevisualization.domain.util.yielded
 import com.arakim.datastructurevisualization.kotlinutil.DataStructureSerializer
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.setUpPicker.presenter.model.VisualizationSetUpUiModel
+import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.hashmap.HashMapWrapper
 import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.helpers.HashMapSerializer
+import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.helpers.VisualizeBucketsInitializationHelper
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -13,8 +16,9 @@ import javax.inject.Inject
 @ViewModelScoped
 class HashMapVisualizationBuilder @Inject constructor(
     val visualizationBuilder: VisualizationBuilder,
+    private val visualizeBucketsInitialization: VisualizeBucketsInitializationHelper,
     private val hashMapSerializer: HashMapSerializer,
-) : DataStructureSerializer by hashMapSerializer {
+): HashMapWrapper(), DataStructureSerializer by hashMapSerializer {
 
     private lateinit var setUp: VisualizationSetUpUiModel
 
@@ -30,12 +34,16 @@ class HashMapVisualizationBuilder @Inject constructor(
         binaryHashMapJson: String? = null,
         onInitialized: () -> Unit,
         onHashMapCreated: () -> Unit,
+        buckets: Int = DefaultBucketCount,
     ) {
         //TODO handle recreating from binaryHashMapJson
         visualizationBuilder.initialize(
             dataStructureId = dataStructureId,
             coroutineScope = coroutineScope,
             onInitialized = {
+                addListener(visualizeBucketsInitialization)
+                initializeBuckets(buckets)
+
                 onInitialized()
                 coroutineScope.yielded {
                     waitUntilHashMapIsCreated(onHashMapCreated)
@@ -54,3 +62,5 @@ class HashMapVisualizationBuilder @Inject constructor(
         onCreated()
     }
 }
+
+private const val DefaultBucketCount = 13
