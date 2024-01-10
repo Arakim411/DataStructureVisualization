@@ -41,7 +41,7 @@ val DefaultDrawColors = DrawColors(
 
 val DefaultDrawSizes = DrawSizes(
     circleRadiusDp = 15f,
-    squareEdgeSizeDp = 30f,
+    squareEdgeSizeDp = 25f,
     elementStrokeDp = 1.5f,
     lineStrokeDp = 1f,
     textSizeDp = 12f,

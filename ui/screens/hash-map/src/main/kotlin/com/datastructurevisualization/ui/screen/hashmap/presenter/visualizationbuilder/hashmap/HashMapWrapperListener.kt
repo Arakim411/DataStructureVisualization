@@ -2,8 +2,8 @@ package com.datastructurevisualization.ui.screen.hashmap.presenter.visualization
 
 interface HashMapWrapperListener {
 
-    fun onValueInserted(value: HashMapValue)
-    fun onValueDeleted(value: HashMapValue)
+    fun onValueAdded(value: HashMapValue, valuesInBucket: List<HashMapValue>) = Unit
+    fun onValueDeleted(value: HashMapValue) = Unit
 
-    fun onBucketsInitialized(bucketsCount: Int)
+    fun onBucketsInitialized(bucketsCount: Int) = Unit
 }

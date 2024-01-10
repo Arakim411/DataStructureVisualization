@@ -1,6 +1,5 @@
 package com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.helpers
 
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.VisualizationBuilder
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.presenter.model.RelativePositionDistance
@@ -12,43 +11,35 @@ import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationb
 import com.datastructurevisualization.ui.screen.hashmap.presenter.visualizationbuilder.toVertexId
 import javax.inject.Inject
 
-class VisualizeBucketsInitializationHelper @Inject constructor(
+class VisualizeValueAdd @Inject constructor(
     private val visualizationBuilder: VisualizationBuilder,
 ) : HashMapWrapperListener {
 
-    override fun onBucketsInitialized(bucketsCount: Int) {
-        addInitialBucket()
-
-        (1..bucketsCount).forEach {
-            addBucket(
-                previousBucketId = it - 1,
-                id = it
-            )
-        }
-    }
-
-    private fun addInitialBucket() {
-        //TODO start position should be take from screen size
-        visualizationBuilder.createVertex(
-            vertexId = 0.toVertexId(),
-            title = "0",
-            position = VertexPosition.CoordinatesPosition(DpOffset(150.dp, 200.dp)),
-            shape = VisualizationElementShape.Square,
-        )
-    }
-
-    private fun addBucket(previousBucketId: Int, id: Int) {
-        visualizationBuilder.createVertex(
-            vertexId = id.toVertexId(),
-            title = id.toString(),
+    override fun onValueAdded(value: HashMapValue, valuesInBucket: List<HashMapValue>) {
+        val previousElementId = getPreviousElementId(value, valuesInBucket)
+        visualizationBuilder.addTransitionHelper.createVertexWithEnterTransition(
+            vertexId = value.id.toVertexId(),
+            title = value.value.toString(),
             position = VertexPosition.RelativePosition(
-                relativeVertexId = previousBucketId.toVertexId(),
+                relativeVertexId = previousElementId,
                 relativePositionDistance = RelativePositionDistance.AboveOnRight(
-                    aboveDistance = 0.dp,
-                    rightDistance = 30.dp,
+                    aboveDistance = 50.dp,
+                    rightDistance = 0.dp,
                 ),
             ),
             shape = VisualizationElementShape.Square,
         )
+
+        visualizationBuilder.createConnection(
+            from = previousElementId,
+            to = value.id.toVertexId(),
+        )
+
+    }
+
+    private fun getPreviousElementId(value: HashMapValue, valuesInBucket: List<HashMapValue>): VertexId {
+        if (valuesInBucket.isEmpty()) return value.bucket.toVertexId()
+        return valuesInBucket.last().id.toVertexId()
     }
 }
+
