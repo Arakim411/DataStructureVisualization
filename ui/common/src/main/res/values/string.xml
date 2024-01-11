@@ -11,4 +11,6 @@
     <string name="swap_to_delete_message">delete</string>
 
     <string name="common_error_view_title">Something went wrong</string>
+
+    <string name="info_data_structure_saved">Saved</string>
 </resources>

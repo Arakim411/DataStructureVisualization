@@ -25,6 +25,8 @@ dependencies {
     kapt(libs.google.hilt.compiler)
     implementation(libs.google.hilt)
 
+    implementation(libs.gson)
+
     implementation(libs.bundles.compose)
     implementation(libs.bundles.composeDebug)
     implementation(platform(libs.androidx.compose.bom))

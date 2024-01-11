@@ -6,7 +6,8 @@ import kotlin.math.absoluteValue
 abstract class HashMapWrapper {
 
     private val listeners = mutableSetOf<HashMapWrapperListener>()
-    private var bucketsCount: Int = -1
+    var bucketsCount: Int = -1
+        private set
 
     private val _hashMap = hashMapOf<Int, MutableList<HashMapValue>>()
     val hashMap get() = _hashMap as Map<Int, List<HashMapValue>>

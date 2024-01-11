@@ -52,7 +52,7 @@ class HashMapVisualizationBuilder @Inject constructor(
         onHashMapCreated: () -> Unit,
         buckets: Int = DefaultBucketCount,
     ) {
-        //TODO handle recreating from binaryHashMapJson
+
         visualizationBuilder.initialize(
             dataStructureId = dataStructureId,
             coroutineScope = coroutineScope,
@@ -61,16 +61,25 @@ class HashMapVisualizationBuilder @Inject constructor(
                 addListener(visualizeValueAdd)
                 addListener(visualizationValueDelete)
 
-                initializeBuckets(buckets)
+                hashMapSerializer.initialize(this@HashMapVisualizationBuilder)
+
+                visualizationBuilder.visualizationCore.disableAnimations = true
+                if (!binaryHashMapJson.isNullOrEmpty()) {
+                    createFromJson(binaryHashMapJson)
+                } else {
+                    initializeBuckets(buckets)
+                }
 
                 onInitialized()
                 coroutineScope.yielded {
+                    //TODO again hack needs to introduce mechanism to wait until all animations are finished
+                    delay(1000)
+                    visualizationBuilder.visualizationCore.disableAnimations = false
                     waitUntilHashMapIsCreated(onHashMapCreated)
                 }
             },
         )
     }
-
 
     private suspend fun waitUntilHashMapIsCreated(onCreated: () -> Unit) {
         // TODO this is hack and later should be implemented correctly
