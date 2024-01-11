@@ -6,7 +6,6 @@
     <string name="find">Find</string>
 
     <string name="bottom_sheet_node_value">Node value</string>
-    <string name="info_data_structure_saved">Saved</string>
 
     <string name="add_random_nodes_drop_down_item_text">add random nodes</string>
     <string name="add_random_nodes_input_hint">nodes count</string>

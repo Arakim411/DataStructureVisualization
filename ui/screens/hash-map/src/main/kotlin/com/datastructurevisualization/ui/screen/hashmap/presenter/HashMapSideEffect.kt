@@ -1,6 +1,6 @@
 package com.datastructurevisualization.ui.screen.hashmap.presenter
 
+sealed interface HashMapSideEffect {
 
-
-class HashMapSideEffect {
+    object SavedSideEffect : HashMapSideEffect
 }

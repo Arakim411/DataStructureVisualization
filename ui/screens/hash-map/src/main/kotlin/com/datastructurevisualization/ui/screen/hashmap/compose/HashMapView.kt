@@ -1,6 +1,6 @@
 package com.datastructurevisualization.ui.screen.hashmap.compose
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +35,6 @@ import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomShe
 import com.arakim.datastructurevisualization.ui.common.inputWithActionsBottomSheet.InputModalBottomSheet
 import com.arakim.datastructurevisualization.ui.common.topbar.DropDownAction
 import com.arakim.datastructurevisualization.ui.common.topbar.SaveDataStructureAction
-import com.arakim.datastructurevisualization.ui.screens.hashmap.R
 import com.arakim.datastructurevisualization.ui.screens.hashmap.R.string
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.visualizationbuilder.compose.VisualizationBuilderView
@@ -45,10 +45,13 @@ import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction.
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction.UpdateAction.DeleteAction
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapAction.UpdateAction.InsertAction
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapPresenter
+import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapSideEffect.SavedSideEffect
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapState.ErrorState
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapState.IdleState
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapState.InitializingState
 import com.datastructurevisualization.ui.screen.hashmap.presenter.HashMapState.ReadyState
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun HashMapView(
@@ -56,6 +59,21 @@ fun HashMapView(
     navigationUiControllerState: NavigationUiControllerState,
 ) {
     val state = presenter.stateFlow.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        presenter.sideEffectFlow.onEach { sideEffect ->
+            when (sideEffect) {
+                SavedSideEffect -> {
+                    Toast.makeText(
+                        context,
+                        com.arakim.datastructurevisualization.ui.common.R.string.info_data_structure_saved,
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+        }.launchIn(this)
+    }
 
     Crossfade(targetState = state.value, label = "") { stateValue ->
         when (stateValue) {

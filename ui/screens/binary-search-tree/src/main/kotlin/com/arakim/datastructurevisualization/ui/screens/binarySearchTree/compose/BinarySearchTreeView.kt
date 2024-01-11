@@ -66,7 +66,11 @@ fun BinarySearchTreeView(
         presenter.sideEffectFlow.onEach { sideEffect ->
             when (sideEffect) {
                 SavedSideEffect -> {
-                    Toast.makeText(context, string.info_data_structure_saved, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        com.arakim.datastructurevisualization.ui.common.R.string.info_data_structure_saved,
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
             }
         }.launchIn(this)
