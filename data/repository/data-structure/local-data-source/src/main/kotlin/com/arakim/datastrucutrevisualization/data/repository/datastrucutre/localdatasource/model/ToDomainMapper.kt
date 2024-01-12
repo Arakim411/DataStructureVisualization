@@ -10,4 +10,5 @@ internal fun DataStructureEntity.toDomain(): DataStructure = DataStructure(
     type = dataSourceType.toDataStructureType(),
     dataStructureJson = dataStructureJson,
     isFavorite = isFavorite,
+    deletionDateUtc = deletionDateUtc,
 )

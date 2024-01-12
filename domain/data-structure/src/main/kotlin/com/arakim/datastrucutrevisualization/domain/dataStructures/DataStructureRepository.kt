@@ -19,5 +19,6 @@ interface DataStructureRepository {
     suspend fun getDataStructure(id: Int): TypedResult<DataStructure, CommonError>
 
     suspend fun deleteDataStructure(id: Int): TypedResult<Unit, CommonError>
+    suspend fun startDataStructureDeletionProcess(id: Int): TypedResult<Unit, CommonError>
     fun listenForDataStructuresUpdate(): Flow<TypedResult<List<DataStructure>, CommonError>>
 }

@@ -17,7 +17,7 @@ import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.local
         DataStructureEntity::class,
         VisualizationSetUpEntity::class,
     ],
-    version = 2,
+    version = 3,
 )
 @TypeConverters(VisualizationSetUpTypeConverter::class)
 internal abstract class AppDatabase : RoomDatabase() {
@@ -30,5 +30,11 @@ internal abstract class AppDatabase : RoomDatabase() {
 internal val Migration_1_2 = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
         db.execSQL("ALTER TABLE ${Const.DataStructureEntityName} ADD COLUMN is_favorite INTEGER DEFAULT 0 NOT NULL")
+    }
+}
+
+internal val Migration_2_3 = object : Migration(2, 3) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE ${Const.DataStructureEntityName} ADD COLUMN deletion_date_utc INTEGER")
     }
 }

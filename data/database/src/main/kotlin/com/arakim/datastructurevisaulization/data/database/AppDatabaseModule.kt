@@ -24,6 +24,7 @@ internal class AppDatabaseModule {
     ).fallbackToDestructiveMigration()
         .addMigrations(
             Migration_1_2,
+            Migration_2_3,
         ).build()
 
     @Provides

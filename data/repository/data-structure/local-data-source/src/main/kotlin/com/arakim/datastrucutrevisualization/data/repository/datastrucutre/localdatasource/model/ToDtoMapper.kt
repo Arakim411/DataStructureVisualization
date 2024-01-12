@@ -12,8 +12,7 @@ internal fun DataStructure.toDto() = DataStructureEntity(
     dataSourceType = type.toDto(),
     dataStructureJson = dataStructureJson,
     isFavorite = isFavorite,
-
-    )
+)
 
 internal fun DataStructureType.toDto(): String = when (this) {
     BinarySearchTree -> DataStructuresKey.BinarySearchTree

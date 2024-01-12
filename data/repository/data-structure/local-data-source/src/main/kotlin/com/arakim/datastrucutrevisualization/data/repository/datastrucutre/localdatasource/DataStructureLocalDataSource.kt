@@ -56,6 +56,13 @@ class DataStructureLocalDataSource @Inject constructor(
         }
     }
 
+    suspend fun setDeletionTime(id: Int, time: Long): TypedResult<Unit, CommonError> = executeCommonIoAction {
+        withContext(Dispatchers.IO) {
+            val entity = dao.getDataStructure(id) ?: throw Exception("Data structure with id $id not found")
+            dao.updateDataStructure(entity.copy(deletionDateUtc = time))
+        }
+    }
+
 
     fun listenForDataStructuresUpdate(): Flow<TypedResult<List<DataStructure>, CommonError>> =
         dao.listenForDataStructuresUpdate().map {

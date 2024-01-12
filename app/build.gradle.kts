@@ -67,7 +67,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     testImplementation(libs.junit)
 
+    implementation(libs.androidx.work.ktx)
+
+    implementation(libs.google.hilt.work)
     kapt(libs.google.hilt.compiler)
+    kapt(libs.google.hilt.work.compiler)
     implementation(libs.google.hilt)
 
     implementation(platform(libs.androidx.compose.bom))

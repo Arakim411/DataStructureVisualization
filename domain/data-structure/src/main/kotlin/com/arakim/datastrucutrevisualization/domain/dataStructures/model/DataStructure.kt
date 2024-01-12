@@ -11,5 +11,6 @@ data class DataStructure(
     val name: String,
     val type: DataStructureType,
     val dataStructureJson: String,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    val deletionDateUtc: Long?
 )
