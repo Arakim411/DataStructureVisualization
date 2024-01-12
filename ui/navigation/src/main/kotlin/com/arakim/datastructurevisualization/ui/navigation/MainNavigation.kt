@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -25,16 +26,20 @@ import com.arakim.datastructurevisualization.ui.navigation.destination.MainDesti
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.DeletedDataStructuresDestination
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.HashMapDestination
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.ChooseDataStructureScreen
+import com.arakim.datastructurevisualization.ui.screen.deleteddatastructures.compose.DeletedDataStructureScreen
 import com.arakim.datastructurevisualization.ui.screens.binarySearchTree.compose.BinarySearchTreeScreen
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastructurevisualization.ui.util.windowSizeClass.FakeWindowSizeType
 import com.datastructurevisualization.ui.screen.hashmap.compose.HashMapScreen
+import kotlinx.coroutines.launch
 
 //TODO add intent filters
 @Composable
 fun MainNavigation() {
 
     val navController = rememberNavController()
+
+    val scope = rememberCoroutineScope()
 
     fun navigate(destination: MainDestination) {
         navController.navigate(destination.navigateRoute)
@@ -49,6 +54,9 @@ fun MainNavigation() {
             navUiControllerGroups = immutableListOf(getNavControllerGeneralGroup()),
             onItemClick = {
                 navController.navigate(it.route)
+                scope.launch {
+                    uiControllerState.close()
+                }
             },
             selectedRoute = navController.currentDestination?.route ?: "",
         ) {
@@ -82,7 +90,7 @@ fun MainNavigation() {
                 }
 
                 composable(DeletedDataStructuresDestination.Route) {
-                    TODO()
+                    DeletedDataStructureScreen(navUiControllerState = uiControllerState)
                 }
             }
         }

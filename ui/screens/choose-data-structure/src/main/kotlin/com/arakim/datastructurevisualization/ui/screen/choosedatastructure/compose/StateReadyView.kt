@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arakim.datastructurevisualization.ui.common.SwappableToDeleteBox
 import com.arakim.datastructurevisualization.ui.common.list.CommonListItem
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureUiModel
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureUiModel
 import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 

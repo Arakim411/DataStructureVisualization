@@ -2,19 +2,17 @@ package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.pres
 
 import com.arakim.datastructurevisualization.domain.util.yielded
 import com.arakim.datastructurevisualization.kotlinutil.onFailure
-import com.arakim.datastructurevisualization.ui.mvi.StateReducer
 import com.arakim.datastructurevisualization.ui.mvi.StateReducerWithSideEffect
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.Action
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.CreateDataStructureAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToCreateDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureSideEffect.FailedToGetDataStructures
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ReadyState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.State
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.BinarySearchTree
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.HashMap
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.LinkedList
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.BinarySearchTree
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.HashMap
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.LinkedList
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType
 import com.arakim.datastrucutrevisualization.domain.dataStructures.useCases.CreateDataStructureUseCase
 import javax.inject.Inject

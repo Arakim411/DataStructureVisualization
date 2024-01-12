@@ -1,15 +1,12 @@
-package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model
+package com.arakim.datastructurevisualization.ui.common.uimodel
 
-import android.os.Parcel
-import android.os.Parcelable
 import androidx.compose.runtime.Immutable
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.BinarySearchTree
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel.LinkedList
-import com.arakim.datastructurevisualization.ui.screens.choosedatastructure.R
+import com.arakim.datastructurevisualization.ui.common.R
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.BinarySearchTree
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.HashMap
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.LinkedList
 import com.arakim.datastructurevisualization.ui.util.immutableListOf
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructureType
-import kotlinx.parcelize.Parceler
-import kotlinx.parcelize.Parcelize
 
 //TODO correct icons
 @Immutable
@@ -39,13 +36,13 @@ sealed interface DataStructureTypeUiModel {
 
 val allDataStructuresTypeUiModels = immutableListOf(
     BinarySearchTree,
-    DataStructureTypeUiModel.HashMap,
+    HashMap,
     LinkedList
 )
 
 internal fun DataStructureType.toUiModel(): DataStructureTypeUiModel = when (this) {
-    DataStructureType.BinarySearchTree -> DataStructureTypeUiModel.BinarySearchTree
-    DataStructureType.HashMap -> DataStructureTypeUiModel.HashMap
-    DataStructureType.LinkedList -> DataStructureTypeUiModel.LinkedList
+    DataStructureType.BinarySearchTree -> com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.BinarySearchTree
+    DataStructureType.HashMap -> com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.HashMap
+    DataStructureType.LinkedList -> com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.LinkedList
 
 }

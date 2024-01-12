@@ -10,7 +10,7 @@
 
     <string name="destination_name_data_structure">Data structure</string>
     <string name="destination_name_favorite">Favorite</string>
-    <string name="destination_name_delete">Delete</string>
+    <string name="destination_name_delete">Deleted</string>
 
    <string name="destination_group_general">General</string>
 </resources>

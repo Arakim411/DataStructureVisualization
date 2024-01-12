@@ -1,4 +1,4 @@
-package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model
+package com.arakim.datastructurevisualization.ui.common.uimodel
 
 import androidx.compose.runtime.Immutable
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
@@ -13,11 +13,11 @@ data class DataStructureUiModel(
     val isFavorite: Boolean,
 )
 
-internal fun List<DataStructure>.toUiModel(
+fun List<DataStructure>.toUiModel(
 
 ): ImmutableList<DataStructureUiModel> = mapToImmutable { it.toUiModel() }
 
-internal fun DataStructure.toUiModel(): DataStructureUiModel = DataStructureUiModel(
+fun DataStructure.toUiModel(): DataStructureUiModel = DataStructureUiModel(
     id = id,
     customName = name,
     dataStructureType = type.toUiModel(),
