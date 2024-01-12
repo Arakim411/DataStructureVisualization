@@ -5,9 +5,9 @@ import com.arakim.datastructurevisualization.kotlinutil.TypedResult
 import com.arakim.datastrucutrevisualization.domain.dataStructures.DataStructureRepository
 import javax.inject.Inject
 
-class DeleteDataStructureUseCase @Inject constructor(
+class StartDataStructureDeletionProcessUseCase @Inject constructor(
     private val dataStructureRepository: DataStructureRepository
 ) {
     suspend operator fun invoke(id: Int): TypedResult<Unit, CommonError> =
-        dataStructureRepository.deleteDataStructure(id)
+        dataStructureRepository.startDataStructureDeletionProcess(id)
 }

@@ -8,20 +8,18 @@ import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStr
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-internal typealias DsResult = TypedResult<List<DataStructure>, CommonError>
-
-class ListenForDataStructuresUpdateUseCase @Inject constructor(
+class ListenForDeletedDataStructureUseCase @Inject constructor(
     private val dataStructureRepository: DataStructureRepository
 ) {
 
     operator fun invoke() = dataStructureRepository
         .listenForDataStructuresUpdate()
         .map { result ->
-            result.filterNotDeleted()
+            result.filterDeleted()
         }
 
-    private fun TypedResult<List<DataStructure>, CommonError>.filterNotDeleted(): DsResult =
+    private fun TypedResult<List<DataStructure>, CommonError>.filterDeleted(): DsResult =
         map { dataStructures ->
-            dataStructures.filter { it.deletionDateUtc == null }
+            dataStructures.filter { it.deletionDateUtc != null }
         }
 }

@@ -12,4 +12,5 @@ data class DataStructureEntity(
     @ColumnInfo(name = "data_source_type") val dataSourceType: String,
     @ColumnInfo(name = "data_structure_Json") val dataStructureJson: String,
     @ColumnInfo(name = "is_favorite") val isFavorite: Boolean,
+    @ColumnInfo(name = "deletion_date_utc", defaultValue = "NULL") val deletionDateUtc: Long? = null,
 )

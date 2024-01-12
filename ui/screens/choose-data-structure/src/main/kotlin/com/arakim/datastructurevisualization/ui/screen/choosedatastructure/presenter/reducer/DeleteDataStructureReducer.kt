@@ -5,11 +5,11 @@ import com.arakim.datastructurevisualization.ui.mvi.StateReducer
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.Action
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureAction.DeleteDataStructureAction
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.State
-import com.arakim.datastrucutrevisualization.domain.dataStructures.useCases.DeleteDataStructureUseCase
+import com.arakim.datastrucutrevisualization.domain.dataStructures.useCases.StartDataStructureDeletionProcessUseCase
 import javax.inject.Inject
 
 class DeleteDataStructureReducer @Inject constructor(
-    private val deleteDataStructure: DeleteDataStructureUseCase,
+    private val deleteDataStructure: StartDataStructureDeletionProcessUseCase,
 ) : StateReducer<State, Action, DeleteDataStructureAction>() {
 
     override fun State.reduce(action: DeleteDataStructureAction): State {
