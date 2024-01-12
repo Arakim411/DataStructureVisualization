@@ -14,6 +14,7 @@ dependencies {
     implementation(project(":ui:navigation:ui-controller"))
     implementation(project(":ui:screens:binary-search-tree"))
     implementation(project(":ui:screens:choose-data-structure"))
+    implementation(project(":ui:screens:deleted-data-structures"))
     implementation(project(":ui:screens:hash-map"))
     implementation(project(":ui:util"))
 

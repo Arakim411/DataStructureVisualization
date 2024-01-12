@@ -10,7 +10,7 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compo
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.creationStage.CreationStage.Companion.StageValueChooseName
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.creationStage.CreationStage.Companion.StageValueChooseType
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose.chooseStructureTypeView.creationStage.CreationStage.Companion.TypeKey
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel
 
 internal sealed interface CreationStage {
 

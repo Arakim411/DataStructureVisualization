@@ -17,7 +17,7 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.prese
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.InitializingState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ReadyState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.State
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.toUiModel
+import com.arakim.datastructurevisualization.ui.common.uimodel.toUiModel
 import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStructure
 import com.arakim.datastrucutrevisualization.domain.dataStructures.useCases.ListenForDataStructuresUpdateUseCase
 import kotlinx.coroutines.Job

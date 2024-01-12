@@ -23,6 +23,13 @@ class NavigationUiControllerState(
         _navigationType.value = uiControllerType
     }
 
+   suspend fun close(){
+        when(uiControllerType){
+            is ModalDrawer -> uiControllerType.drawerState.close()
+            else -> Unit
+        }
+    }
+
 }
 
 @Composable

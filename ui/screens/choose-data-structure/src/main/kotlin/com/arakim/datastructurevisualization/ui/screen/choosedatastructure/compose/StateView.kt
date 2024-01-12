@@ -13,7 +13,7 @@ import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.prese
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.IdleState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.InitializingState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ReadyState
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureUiModel
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureUiModel
 
 @Composable
 internal fun StateView(

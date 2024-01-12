@@ -8,7 +8,7 @@ import com.arakim.datastrucutrevisualization.domain.dataStructures.model.DataStr
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-internal typealias DsResult = TypedResult<List<DataStructure>, CommonError>
+typealias DsResult = TypedResult<List<DataStructure>, CommonError>
 
 class ListenForDataStructuresUpdateUseCase @Inject constructor(
     private val dataStructureRepository: DataStructureRepository

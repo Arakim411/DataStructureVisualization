@@ -9,12 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import com.arakim.datastructurevisualization.ui.common.dialogs.DialogBottomTextButtons
 import com.arakim.datastructurevisualization.ui.common.dialogs.DialogDivider
-import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.model.DataStructureTypeUiModel
+import com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel
 import com.arakim.datastructurevisualization.ui.util.ImmutableList
 
 @Composable

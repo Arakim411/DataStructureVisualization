@@ -12,6 +12,7 @@ android {
 dependencies {
     api(project(":ui:navigation:ui-controller"))
     implementation(project(":ui:util"))
+    implementation(project(":domain:data-structure"))
 
     implementation(libs.compose.swipe)
     implementation(libs.bundles.compose)
