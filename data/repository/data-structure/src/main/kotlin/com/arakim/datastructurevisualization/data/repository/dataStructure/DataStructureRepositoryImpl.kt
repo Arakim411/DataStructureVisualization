@@ -2,10 +2,12 @@ package com.arakim.datastructurevisualization.data.repository.dataStructure
 
 import android.content.Context
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.Operation.State
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.arakim.datastructurevisualization.kotlinutil.CommonError
 import com.arakim.datastructurevisualization.kotlinutil.TypedResult
+import com.arakim.datastructurevisualization.kotlinutil.getOrNull
 import com.arakim.datastructurevisualization.kotlinutil.onSuccess
 import com.arakim.datastrucutrevisualization.data.repository.datastrucutre.localdatasource.DataStructureLocalDataSource
 import com.arakim.datastrucutrevisualization.domain.dataStructures.DataStructureId
@@ -52,6 +54,11 @@ internal class DataStructureRepositoryImpl @Inject constructor(
         return result
     }
 
+    override suspend fun stopDeletionProcess(id: Int): TypedResult<Unit, CommonError> {
+        localDataSource.removeDeletionTime(id).getOrNull() ?: return TypedResult.failure(CommonError)
+        return stopDeletionWork(id)
+    }
+
     override fun listenForDataStructuresUpdate(): Flow<TypedResult<List<DataStructure>, CommonError>> =
         localDataSource.listenForDataStructuresUpdate()
 
@@ -78,8 +85,19 @@ internal class DataStructureRepositoryImpl @Inject constructor(
             )
     }
 
+    private fun stopDeletionWork(id: Int): TypedResult<Unit, CommonError> {
+        WorkManager.getInstance(context).cancelUniqueWork(id.toString())
+        val result = WorkManager.getInstance(context).cancelUniqueWork(id.toString()).result.get()
+
+        return if (result is State.SUCCESS) {
+            TypedResult.success(Unit)
+        } else {
+            TypedResult.failure(CommonError)
+        }
+    }
+
 
     companion object {
-        private const val  DeletionDelayHours = 1
+        private const val DeletionDelayHours = 1
     }
 }

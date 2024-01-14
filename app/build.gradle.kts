@@ -15,6 +15,10 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+
     buildTypes {
 
         debug {
@@ -58,6 +62,8 @@ dependencies {
     implementation(project(":data:repository:visualization-set-up"))
     implementation(project(":ui:navigation"))
     implementation(project(":ui:util"))
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
