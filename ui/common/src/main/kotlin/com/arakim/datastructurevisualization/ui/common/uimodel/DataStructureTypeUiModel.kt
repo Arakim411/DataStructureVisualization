@@ -37,12 +37,11 @@ sealed interface DataStructureTypeUiModel {
 val allDataStructuresTypeUiModels = immutableListOf(
     BinarySearchTree,
     HashMap,
-    LinkedList
 )
 
 internal fun DataStructureType.toUiModel(): DataStructureTypeUiModel = when (this) {
-    DataStructureType.BinarySearchTree -> com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.BinarySearchTree
-    DataStructureType.HashMap -> com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.HashMap
-    DataStructureType.LinkedList -> com.arakim.datastructurevisualization.ui.common.uimodel.DataStructureTypeUiModel.LinkedList
+    DataStructureType.BinarySearchTree -> BinarySearchTree
+    DataStructureType.HashMap -> HashMap
+    DataStructureType.LinkedList -> LinkedList
 
 }
