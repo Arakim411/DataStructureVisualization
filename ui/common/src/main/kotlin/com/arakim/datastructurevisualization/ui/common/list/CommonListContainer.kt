@@ -36,7 +36,7 @@ fun CommonListItem(
     @DrawableRes leadingIcon: Int,
     supportingText: String? = null,
     trailingIcon: Int? = null,
-    onTrailingIconClick: (() -> Unit)? = null
+    onTrailingIconClick: (() -> Unit)? = null,
 ) {
     ListDimens.apply {
         Box(

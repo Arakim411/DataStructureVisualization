@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="deleted_data_structures_screen_title">Deleted data structures</string>
+    <string name="stopped_deletion_process_for">Stopped deletion process for %s</string>
+    <string name="confirm_stop_deletion_process_message">Stop deletion process for:</string>
 </resources>
