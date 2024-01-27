@@ -4,23 +4,26 @@ android-gradle = "8.2.1"
 androidx-junit = "1.1.5"
 appcompat = "1.6.1"
 bom = "2023.09.00"
+colorPicker = "0.7.0"
 core-ktx = "1.12.0"
+coroutinesVersion = "1.7.3"
 desugar_jdk_libs = "2.0.4"
 espresso-core = "3.5.1"
+hilt = "2.44"
+hiltNavigationCompose = "1.0.0"
+hiltWork = "1.1.0"
 junit = "4.13.2"
+junit5 = "1.10.0.0"
+jupiter = "5.10.0"
 kotlin = "1.8.10"
 kotlinCompilerExtensionVersion = "1.4.3"
 ktlint = "11.5.1"
 lifecycle = "2.6.2"
 material = "1.9.0"
 navigationCompose = "2.7.2"
-hilt = "2.44"
-hiltWork = "1.1.0"
-hiltNavigationCompose = "1.0.0"
-coroutinesVersion = "1.7.3"
-colorPicker = "0.7.0"
 roomVersion = "2.6.0"
 workVersion = "2.9.0"
+mockVersion = "1.13.5"
 
 # Android config
 compileSdk = "34"
@@ -30,16 +33,14 @@ constraintlayout = "2.1.4"
 navigation-fragment-ktx = "2.7.4"
 navigation-ui-ktx = "2.7.4"
 kotlinx-datetime = "0.5.0"
+assertk = "0.26.1"
+turbine = "1.0.0"
 
 [libraries]
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
-androidx-core-ktx-1_9_0 = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
-androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 
+# androidX
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "bom" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-materialWindow = { module = "androidx.compose.material3:material3-window-size-class" }
@@ -48,37 +49,55 @@ androidx-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+androidx-core-ktx-1_9_0 = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
 androidx-lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
+androidx-work-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workVersion" }
+androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "workVersion" }
 androix-lifecycle-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
-desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
-google-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+
+# hilt and dagger
 google-dagger = { module = "com.google.dagger:dagger", version.ref = "hilt" }
+google-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 google-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 google-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltWork" }
 google-hilt-work-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltWork" }
 
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
-androidx-work-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workVersion" }
-androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "workVersion" }
+colorpicker = { group = "com.godaddy.android.colorpicker", name = "compose-color-picker-android", version.ref = "colorPicker" }
+compose-swipe = { module = "me.saket.swipe:swipe", version = "1.2.0" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 
+gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
+junit = { module = "junit:junit", version.ref = "junit" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
-
-junit = { module = "junit:junit", version.ref = "junit" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
 
-colorpicker = { group = "com.godaddy.android.colorpicker", name = "compose-color-picker-android", version.ref = "colorPicker" }
-compose-swipe = { module = "me.saket.swipe:swipe", version = "1.2.0" }
-gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
+
+# Tests
+tests-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+tests-jupiterApi = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+tests-jupiterEngine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+tests-jupiterParams = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jupiter" }
+tests-assertk = { module = "com.willowtreeapps.assertk:assertk-jvm", version.ref = "assertk" }
+tests-mockkCore = { module = "io.mockk:mockk", version.ref = "mockVersion" }
+tests-mockkAgent = { module = "io.mockk:mockk-agent-jvm", version.ref = "mockVersion" }
+tests-mockkAndroid = { module = "io.mockk:mockk-android", version.ref = "mockVersion" }
+tests-turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
+tests-coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesVersion" }
+
 
 [bundles]
 
