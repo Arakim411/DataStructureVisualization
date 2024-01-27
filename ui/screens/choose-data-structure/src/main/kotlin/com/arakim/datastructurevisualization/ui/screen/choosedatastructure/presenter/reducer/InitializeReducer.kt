@@ -72,12 +72,12 @@ class InitializeReducer @Inject constructor(
     }
 
     private fun onDataStructuresUpdate(result: TypedResult<List<DataStructure>, CommonError>) {
-        result
-            .onSuccess {
+        result.onSuccess {
                 onAction(InitializedAction(it.toUiModel()))
             }
             .onFailure {
                 emitSideEffect(FailedToGetDataStructures)
+                onAction(InitializedFailedAction)
             }
     }
 }
