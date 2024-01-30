@@ -23,7 +23,7 @@ material = "1.9.0"
 navigationCompose = "2.7.2"
 roomVersion = "2.6.0"
 workVersion = "2.9.0"
-mockVersion = "1.13.5"
+mockVersion = "1.13.9"
 
 # Android config
 compileSdk = "34"
@@ -35,6 +35,7 @@ navigation-ui-ktx = "2.7.4"
 kotlinx-datetime = "0.5.0"
 assertk = "0.26.1"
 turbine = "1.0.0"
+runner = "1.5.2"
 
 [libraries]
 
@@ -94,9 +95,13 @@ tests-jupiterParams = { module = "org.junit.jupiter:junit-jupiter-params", versi
 tests-assertk = { module = "com.willowtreeapps.assertk:assertk-jvm", version.ref = "assertk" }
 tests-mockkCore = { module = "io.mockk:mockk", version.ref = "mockVersion" }
 tests-mockkAgent = { module = "io.mockk:mockk-agent-jvm", version.ref = "mockVersion" }
-tests-mockkAndroid = { module = "io.mockk:mockk-android", version.ref = "mockVersion" }
 tests-turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 tests-coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesVersion" }
+
+tests-android-compose-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+tests-android-mockk = { module = "io.mockk:mockk-android", version.ref = "mockVersion" }
+tests-android-hilt = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt"}
+tests-androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 
 
 [bundles]
@@ -110,6 +115,27 @@ compose = [
     "androix-lifecycle-compose-viewmodel",
     "androidx-navigation-compose",
     "androidx-hilt-navigation-compose"
+]
+
+jvmTests = [
+    "tests-jupiter",
+    "tests-jupiterApi",
+    "tests-jupiterEngine",
+    "tests-jupiterParams",
+    "tests-assertk",
+    "tests-mockkCore",
+    "tests-mockkAgent",
+    "tests-turbine",
+    "tests-coroutine"
+]
+
+androidComposeTests = [
+    "tests-android-compose-junit4",
+    "tests-android-mockk",
+    "tests-mockkAgent",
+    "tests-assertk",
+    "tests-android-hilt",
+    "tests-androidx-runner",
 ]
 
 composeDebug = [
