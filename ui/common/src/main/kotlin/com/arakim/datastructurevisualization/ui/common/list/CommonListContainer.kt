@@ -25,7 +25,9 @@ import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import com.arakim.datastructurevisualization.ui.common.CommonTestTags
 import com.arakim.datastructurevisualization.ui.common.list.ListDimens.LeadingContainer
 import com.arakim.datastructurevisualization.ui.common.list.ListDimens.MainContainer
 
@@ -71,7 +73,9 @@ fun CommonListItem(
                     }
                 }
                 trailingIcon?.also {
-                    TrailingIcon(icon = trailingIcon, onClick = onTrailingIconClick)
+                    TrailingIcon(
+                        icon = trailingIcon, onClick = onTrailingIconClick
+                    )
                 }
             }
         }
@@ -91,11 +95,15 @@ private fun RowScope.TrailingIcon(
     Spacer(modifier = Modifier.weight(1f))
     Box(
         modifier = Modifier
+            .testTag(CommonTestTags.CommonListItemTrailingIcon)
             .clickable {
                 onClick?.invoke()
             }
             .alpha(iconAlphaAnim.value),
     ) {
-        Icon(painter = painterResource(id = icon), contentDescription = null)
+        Icon(
+            painter = painterResource(id = icon),
+            contentDescription = null,
+        )
     }
 }
