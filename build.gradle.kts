@@ -32,7 +32,6 @@ fun CommonExtension<*, *, *, *, *>.setUpAndroid(nameSpace: String) {
     }
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
