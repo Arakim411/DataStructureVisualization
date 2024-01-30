@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 
 @Composable
@@ -15,7 +16,7 @@ fun CommonErrorView() {
     val style = MaterialTheme.typography.titleMedium.copy(color = textColor)
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().testTag(CommonTestTags.ErrorView),
         Alignment.Center
     ) {
         Text(

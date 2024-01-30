@@ -1,13 +1,8 @@
 package com.arakim.datastructurevisualization.ui.screen.choosedatastructure.compose
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion
-import androidx.compose.ui.Modifier
+import com.arakim.datastructurevisualization.ui.common.CommonErrorView
+import com.arakim.datastructurevisualization.ui.common.CommonLoaderView
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.ErrorState
 import com.arakim.datastructurevisualization.ui.screen.choosedatastructure.presenter.ChooseDataStructureState.IdleState
@@ -24,9 +19,9 @@ internal fun StateView(
     onUpdateIsFavorite: (id: Int, isFavorite: Boolean) -> Unit,
 ) {
         when (state) {
-            ErrorState -> ErrorStateView()
+            ErrorState -> CommonErrorView()
             IdleState -> Unit
-            InitializingState -> LoadingView()
+            InitializingState -> CommonLoaderView()
             is ReadyState ->  StateReadyView(
                 dataStructures = state.dataStructures,
                 onDataStructureClick = onDataStructureClick,
@@ -36,25 +31,4 @@ internal fun StateView(
             )
         }
 
-}
-
-@Composable
-private fun ErrorStateView() {
-    //TODO implement, add common error view
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(text = "Something went wrong")
-    }
-}
-
-@Composable
-private fun LoadingView() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Companion.Center,
-    ) {
-        CircularProgressIndicator()
-    }
 }

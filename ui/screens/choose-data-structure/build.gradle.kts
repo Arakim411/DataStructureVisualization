@@ -8,6 +8,14 @@ plugins {
 }
 
 android {
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+
+    defaultConfig {
+        testInstrumentationRunner = "com.arakim.datastructurevisualization.testandroidutil.CustomTestRunner"
+    }
+
     buildFeatures {
         compose = true
     }
@@ -21,18 +29,22 @@ dependencies {
     implementation(project(":android-util"))
     implementation(project(":ui:navigation:destination"))
 
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
+    androidTestImplementation(project(":test-android-util"))
+
     testImplementation(project(":test-data-generator"))
     testImplementation(project(":test-util"))
 
-    testImplementation(libs.tests.jupiter)
-    testImplementation(libs.tests.jupiterApi)
-    testImplementation(libs.tests.jupiterEngine)
-    testImplementation(libs.tests.jupiterParams)
-    testImplementation(libs.tests.assertk)
-    testImplementation(libs.tests.mockkCore)
-    testImplementation(libs.tests.mockkAgent)
-    testImplementation(libs.tests.turbine)
-    testImplementation(libs.tests.coroutine)
+    androidTestImplementation(project(":test-data-generator"))
+    androidTestImplementation(project(":test-util"))
+    kaptAndroidTest(libs.google.hilt.compiler)
+
+    testImplementation(libs.bundles.jvmTests)
+    androidTestImplementation(libs.bundles.androidComposeTests)
+    debugImplementation(libs.bundles.composeDebug)
 
     kapt(libs.google.hilt.compiler)
     implementation(libs.google.hilt)
