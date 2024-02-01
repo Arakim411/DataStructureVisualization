@@ -15,11 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.arakim.datastructurevisualization.navigation.uicontroller.NavigationUiControllerState
+import com.arakim.datastructurevisualization.ui.common.CommonTestTags
 import com.arakim.datastructurevisualization.ui.common.CommonTopAppBar
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination
 import com.arakim.datastructurevisualization.ui.navigation.destination.MainDestination.BinarySearchTreeDestination
@@ -46,11 +48,11 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun ChooseDataStructureScreen(
+    viewModel: ChooseDataStructureViewModel = hiltViewModel<ChooseDataStructureViewModel>(),
     navUiControllerState: NavigationUiControllerState,
     navigate: (MainDestination) -> Unit,
 ) {
 
-    val viewModel = hiltViewModel<ChooseDataStructureViewModel>()
     val state = viewModel.presenter.stateFlow.collectAsStateWithLifecycle().value
 
     val isCreatingDataStructure = rememberSaveable { mutableStateOf(false) }
@@ -104,6 +106,7 @@ fun ChooseDataStructureScreen(
         floatingActionButton = {
             if (state is ReadyState)
                 FloatingActionButton(
+                    modifier = Modifier.testTag(CommonTestTags.FloatingActionButton),
                     onClick = {
                         isCreatingDataStructure.value = true
                     },

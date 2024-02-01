@@ -4,4 +4,5 @@ object CommonTestTags {
     const val ErrorView = "ErrorView"
     const val LoaderView = "LoaderView"
     const val CommonListItemTrailingIcon = "CommonListItemTrailingIcon"
+    const val FloatingActionButton = "FloatingActionButton"
 }

@@ -129,7 +129,17 @@ jvmTests = [
     "tests-coroutine"
 ]
 
+androidTests = [
+    "androidx-espresso-core",
+    "tests-android-mockk",
+    "tests-mockkAgent",
+    "tests-assertk",
+    "tests-android-hilt",
+    "tests-androidx-runner",
+]
+
 androidComposeTests = [
+    "androidx-espresso-core",
     "tests-android-compose-junit4",
     "tests-android-mockk",
     "tests-mockkAgent",
