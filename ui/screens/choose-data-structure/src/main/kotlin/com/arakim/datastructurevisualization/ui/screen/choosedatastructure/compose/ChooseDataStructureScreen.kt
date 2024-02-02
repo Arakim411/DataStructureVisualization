@@ -75,8 +75,6 @@ fun ChooseDataStructureScreen(
         }.launchIn(this)
     }
 
-
-
     @Stable
     fun onAction(action: ChooseDataStructureAction) {
         viewModel.presenter.onAction(action)
