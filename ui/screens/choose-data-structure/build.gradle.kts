@@ -31,8 +31,6 @@ dependencies {
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
     androidTestImplementation(project(":test-android-util"))
 
     testImplementation(project(":test-data-generator"))

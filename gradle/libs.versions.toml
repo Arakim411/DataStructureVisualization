@@ -97,6 +97,7 @@ tests-mockkCore = { module = "io.mockk:mockk", version.ref = "mockVersion" }
 tests-mockkAgent = { module = "io.mockk:mockk-agent-jvm", version.ref = "mockVersion" }
 tests-turbine = { module = "app.cash.turbine:turbine", version = "1.0.0" }
 tests-coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesVersion" }
+tests-room = { module = "androidx.room:room-testing", version.ref = "roomVersion" }
 
 tests-android-compose-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 tests-android-mockk = { module = "io.mockk:mockk-android", version.ref = "mockVersion" }
@@ -136,6 +137,7 @@ androidTests = [
     "tests-assertk",
     "tests-android-hilt",
     "tests-androidx-runner",
+    "tests-coroutine",
 ]
 
 androidComposeTests = [
